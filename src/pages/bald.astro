@@ -58,7 +58,7 @@ const absaetze = b.text.split(/\n\s*\n/).filter(Boolean);
   footer { display: flex; justify-content: center; gap: 24px; padding: 24px 16px 32px; font-size: .875rem; }
   footer a { color: var(--muted); text-decoration: none; }
   footer a:hover { color: var(--fg); }
-  @keyframes ein { from { opacity: 0; transform: translateY(14px); filter: blur(6px); } }
+  @keyframes ein { from { opacity: 0; transform: translateY(14px); } }
   @keyframes linie { from { transform: scaleX(0); } }
   @keyframes tritt { 0% { opacity: 0; } 12% { opacity: .9; } 55% { opacity: .35; } 100% { opacity: 0; } }
   @media (prefers-reduced-motion: reduce) {
