@@ -9,6 +9,7 @@ import '@fontsource/ibm-plex-mono/500.css';
 import '../styles/global.css';
 import einstellungen from '../data/einstellungen.json';
 import { alleSerien, alleFotos } from '../lib/inhalt';
+import Intro from '../components/Intro.astro';
 
 interface Props { titel?: string; beschreibung?: string; bild?: string; galerie?: string }
 const { titel, beschreibung = einstellungen.beschreibung, bild, galerie } = Astro.props;
@@ -35,6 +36,7 @@ const ogBild = bild ? new URL(bild, Astro.site).href : undefined;
   <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)}>
 </head>
 <body>
+  <Intro name={name} />
   <a class="skip" href="#inhalt">Zum Inhalt springen</a>
   <header class="site-head" id="kopf">
     <div class="wrap">
