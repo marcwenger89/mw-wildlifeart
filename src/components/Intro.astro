@@ -18,6 +18,7 @@ const teil2 = buchstaben(nachname);
   } catch (e) {}
 </script>
 <div class="intro" id="intro" aria-hidden="true">
+  <img class="intro-kamera" src="/logo/kamera-weiss.png" alt="" width="422" height="311">
   <div class="intro-logo">
     {teil1.map(b => <span class="intro-z" style={`--i:${b.i}`}>{b.z}</span>)}
     {nachname && <em class="intro-strich" style={`--i:${strich}`}>-</em>}
@@ -34,26 +35,31 @@ const teil2 = buchstaben(nachname);
     position: fixed; inset: 0; z-index: 200; background: var(--bg);
     display: grid; place-content: center; justify-items: center; gap: 18px;
     clip-path: inset(0 0 0 0);
-    animation: intro-weg 900ms var(--ease) 2300ms forwards;
+    animation: intro-weg 900ms var(--ease) 2900ms forwards;
   }
   html.intro-an .site-head .logo { opacity: 0; }
   html.intro-fertig .site-head .logo { opacity: 1; transition: opacity 600ms var(--ease); }
+  .intro-kamera {
+    width: clamp(140px, 22vw, 230px); height: auto; margin-bottom: 10px;
+    opacity: 0; transform: scale(.92); filter: blur(8px);
+    animation: intro-z 1100ms var(--ease) 100ms forwards;
+  }
   .intro-logo {
     font-family: var(--f-display); font-weight: 300; letter-spacing: -.02em; line-height: 1;
     font-size: clamp(2.6rem, 9vw, 6rem); white-space: nowrap; color: var(--fg);
   }
   .intro-z, .intro-strich {
     display: inline-block; opacity: 0; transform: translateY(.45em); filter: blur(6px);
-    animation: intro-z 800ms var(--ease) forwards; animation-delay: calc(200ms + var(--i) * 55ms);
+    animation: intro-z 800ms var(--ease) forwards; animation-delay: calc(750ms + var(--i) * 55ms);
   }
   .intro-strich { font-style: italic; color: var(--accent); }
   .intro-linie {
     display: block; width: min(320px, 50vw); height: 1px; background: var(--accent);
-    transform: scaleX(0); animation: intro-linie 1000ms var(--ease) 900ms forwards;
+    transform: scaleX(0); animation: intro-linie 1000ms var(--ease) 1450ms forwards;
   }
   .intro-sub {
     font: 500 .75rem/1.2 var(--f-mono); letter-spacing: .24em; text-transform: uppercase; color: var(--muted);
-    opacity: 0; animation: intro-ein 800ms var(--ease) 1300ms forwards;
+    opacity: 0; animation: intro-ein 800ms var(--ease) 1850ms forwards;
   }
   @keyframes intro-z { to { opacity: 1; transform: none; filter: none; } }
   @keyframes intro-linie { to { transform: scaleX(1); } }
@@ -75,6 +81,6 @@ const teil2 = buchstaben(nachname);
     const skip = () => ende();
     intro.addEventListener('click', skip);
     addEventListener('keydown', skip, { once: true });
-    setTimeout(ende, 4000); // Sicherheitsnetz
+    setTimeout(ende, 4600); // Sicherheitsnetz
   }
 </script>
