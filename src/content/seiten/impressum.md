@@ -2,25 +2,22 @@
 titel: Impressum
 ---
 
-**Platzhalter: Bitte im Admin-Bereich mit deinen Angaben ergänzen.**
-
-## Kontaktadresse
+## Kontakt
 
 MW-Wildlifeart  
-Vorname Nachname  
-Strasse Nr.  
-PLZ Ort  
+Marc Wenger  
 Schweiz
 
-E-Mail: über das [Kontaktformular](/#kontakt)
+E-Mail: [mr.wenger@gmx.ch](mailto:mr.wenger@gmx.ch)  
+Oder über das [Kontaktformular](/#kontakt)
 
 ## Verantwortlich für den Inhalt
 
-Vorname Nachname
+Marc Wenger
 
 ## Urheberrechte
 
-Alle Fotografien und Texte auf dieser Webseite sind urheberrechtlich geschützt und gehören MW-Wildlifeart. Jede Verwendung, Vervielfältigung oder Weitergabe ohne schriftliche Zustimmung ist untersagt.
+Alle Fotografien und Texte auf dieser Webseite sind urheberrechtlich geschützt und gehören Marc Wenger, MW-Wildlifeart. Jede Verwendung, Vervielfältigung oder Weitergabe ohne schriftliche Zustimmung ist untersagt.
 
 ## Haftung für Links
 
