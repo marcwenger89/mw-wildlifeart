@@ -2,11 +2,12 @@
 titel: Datenschutzerklärung
 ---
 
-**Platzhalter nach Schweizer Datenschutzgesetz (DSG). Bitte Angaben prüfen und ergänzen. Dies ist keine Rechtsberatung.**
+Diese Datenschutzerklärung richtet sich nach dem Schweizer Datenschutzgesetz (DSG).
 
 ## Verantwortliche Person
 
-Vorname Nachname, Strasse Nr., PLZ Ort, Schweiz. Erreichbar über das [Kontaktformular](/#kontakt).
+Marc Wenger, MW-Wildlifeart, Schweiz  
+E-Mail: [mr.wenger@gmx.ch](mailto:mr.wenger@gmx.ch), oder über das [Kontaktformular](/#kontakt).
 
 ## Welche Daten bearbeitet werden
 
@@ -14,11 +15,11 @@ Vorname Nachname, Strasse Nr., PLZ Ort, Schweiz. Erreichbar über das [Kontaktfo
 
 **Kontaktformular.** Wenn du das Formular nutzt, bearbeiten wir deinen Namen, deine E-Mail-Adresse und deine Nachricht, um deine Anfrage zu beantworten. Die Nachricht wird über den Dienst Web3Forms per E-Mail an uns weitergeleitet. Web3Forms speichert die Inhalte nach eigenen Angaben nicht dauerhaft.
 
-**Keine Cookies, kein Tracking.** Diese Webseite setzt keine Analyse- oder Werbe-Cookies ein. Schriften werden direkt von dieser Webseite geladen, nicht von Drittanbietern.
+**Keine Cookies, kein Tracking.** Diese Webseite setzt keine Cookies und keine Analyse- oder Werbedienste ein. Schriften werden direkt von dieser Webseite geladen, nicht von Drittanbietern. Im Speicher deines Browsers wird lediglich vermerkt, ob die Startanimation schon gezeigt wurde. Diese Angabe verlässt dein Gerät nicht und wird beim Schliessen des Browsers gelöscht.
 
 ## Hosting und Bekanntgabe ins Ausland
 
-Die Webseite wird von Netlify, Inc. (San Francisco, USA) betrieben. Für das Kontaktformular nutzen wir Web3Forms. Dabei können Personendaten in die USA übermittelt werden. Die Anbieter stützen sich auf Standardvertragsklauseln bzw. das Swiss-U.S. Data Privacy Framework (bitte beim jeweiligen Anbieter prüfen).
+Die Webseite wird von Netlify, Inc. (San Francisco, USA) betrieben. Für das Kontaktformular nutzen wir Web3Forms. Dabei können Personendaten in die USA übermittelt werden. Die Anbieter sichern diese Übermittlung nach eigenen Angaben mit Standardvertragsklauseln oder dem Swiss-U.S. Data Privacy Framework ab.
 
 ## Saal Digital
 
@@ -30,6 +31,6 @@ Nachrichten aus dem Kontaktformular bewahren wir nur so lange auf, wie es für d
 
 ## Deine Rechte
 
-Du kannst jederzeit Auskunft über deine bei uns bearbeiteten Daten verlangen, sowie deren Berichtigung oder Löschung. Wende dich dafür an die oben genannte Adresse.
+Du kannst jederzeit Auskunft über deine bei uns bearbeiteten Daten verlangen, sowie deren Berichtigung oder Löschung. Wende dich dafür an die oben genannte E-Mail-Adresse.
 
 Stand: Oktober 2026
