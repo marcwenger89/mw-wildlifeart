@@ -8,7 +8,7 @@ export async function getStaticPaths() {
 const { eintrag } = Astro.props;
 const { Content } = await render(eintrag);
 ---
-<Seite titel={eintrag.data.titel}>
+<Seite titel={eintrag.data.titel} immerOffen>
   <article class="text-page">
     <div class="wrap prose">
       <h1>{eintrag.data.titel}</h1>

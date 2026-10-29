@@ -11,8 +11,8 @@ import einstellungen from '../data/einstellungen.json';
 import { alleSerien, alleFotos } from '../lib/inhalt';
 import Intro from '../components/Intro.astro';
 
-interface Props { titel?: string; beschreibung?: string; bild?: string; galerie?: string }
-const { titel, beschreibung = einstellungen.beschreibung, bild, galerie } = Astro.props;
+interface Props { titel?: string; beschreibung?: string; bild?: string; galerie?: string; immerOffen?: boolean }
+const { titel, beschreibung = einstellungen.beschreibung, bild, galerie, immerOffen = false } = Astro.props;
 const name = einstellungen.seitenname;
 const seitentitel = titel ? `${titel} · ${name}` : name;
 const serien = await alleSerien();
@@ -20,6 +20,7 @@ const fotos = await alleFotos();
 const anzahl = (id: string) => fotos.filter(f => f.data.serie.id === id).length;
 const [vorname, ...rest] = name.split('-');
 const ogBild = bild ? new URL(bild, Astro.site).href : undefined;
+const baustelle = einstellungen.baustelle.aktiv && !immerOffen;
 ---
 <!doctype html>
 <html lang="de-CH">
@@ -35,6 +36,13 @@ const ogBild = bild ? new URL(bild, Astro.site).href : undefined;
   <link rel="icon" href="/favicon-64.png" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)}>
+  {baustelle && <meta name="robots" content="noindex">}
+  {baustelle && (
+    <script is:inline>
+      // «Work in progress» aktiv: Besucher sehen /bald/, freigeschaltete Geräte (über /vorschau/) die echte Seite
+      try { if (localStorage.getItem('mw-vorschau') !== '1') location.replace('/bald/'); } catch (e) { location.replace('/bald/'); }
+    </script>
+  )}
 </head>
 <body>
   <Intro name={name} />

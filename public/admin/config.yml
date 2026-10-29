@@ -136,6 +136,14 @@ collections:
               - { name: text, label: Text, widget: text }
               - { name: web3forms_schluessel, label: 'Web3Forms-Schlüssel (Access Key)', widget: string, required: false, hint: 'Von web3forms.com. Damit kommen Nachrichten direkt in dein Postfach.' }
           - { name: saal_hinweis, label: Hinweis unter dem Shop, widget: text }
+          - name: baustelle
+            label: '«Bald hier»-Seite (Work in progress)'
+            widget: object
+            fields:
+              - { name: aktiv, label: 'Eingeschaltet (Besucher sehen nur diese Seite)', widget: boolean, hint: 'Du selbst siehst die echte Seite über mw-wildlifeart.ch/vorschau/' }
+              - { name: eyebrow, label: Kleine Zeile oben, widget: string }
+              - { name: titel, label: Titel, widget: string }
+              - { name: text, label: 'Text (Leerzeile = neuer Absatz)', widget: text }
       - name: impressum
         label: Impressum
         file: src/content/seiten/impressum.md

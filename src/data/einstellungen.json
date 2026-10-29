@@ -1,11 +1,11 @@
 {
   "seitenname": "MW-Wildlifeart",
-  "beschreibung": "Wildtierfotografie aus der Schweiz: Alpen, Jura und Mittelland.",
+  "beschreibung": "Wildtierfotografie von Marc Wenger: Afrika, Skandinavien und die Schweiz.",
   "startseite": {
-    "titel": "Wildtiere der Schweiz,",
+    "titel": "Wildtiere aus aller Welt,",
     "titel_betont": "still",
     "titel_ende": "beobachtet.",
-    "text": "Fotografien aus Alpen, Jura und Mittelland. Jedes Bild entsteht mit Geduld und Abstand, ohne Lockmittel und ohne Störung.",
+    "text": "Fotografien aus Afrika, Skandinavien und der Schweiz. Jedes Bild entsteht mit Geduld und Abstand, ohne Lockmittel und ohne Störung.",
     "serien_titel": "Vier Lebensräume",
     "serien_text": "Jede Serie hat ihre eigene Galerie. Ein Klick auf ein Bild öffnet die Detailseite.",
     "shop_titel": "Bilder für die Wand und den Tisch",
@@ -21,5 +21,11 @@
     "text": "Fragen zu einem Bild, einem Print oder einer Zusammenarbeit? Ich antworte meistens innert weniger Tage.",
     "web3forms_schluessel": "49ba7ab8-5595-490c-a25e-4c4e420ad87b"
   },
-  "saal_hinweis": "Gedruckt und versendet von Saal Digital. Die Preise sind Beispielwerte in CHF, die echten Preise stehen in der Saal-Galerie."
+  "saal_hinweis": "Gedruckt und versendet von Saal Digital. Die Preise sind Beispielwerte in CHF, die echten Preise stehen in der Saal-Galerie.",
+  "baustelle": {
+    "aktiv": true,
+    "eyebrow": "Bald hier",
+    "titel": "Noch auf der Pirsch.",
+    "text": "Gute Bilder brauchen Geduld. Diese Seite sitzt noch im Tarnzelt und wartet auf das richtige Licht.\n\nBald zeige ich hier Wildtiere aus der Savanne Afrikas, den Wäldern Skandinaviens und den Bergen der Schweiz, still beobachtet und ohne Störung."
+  }
 }

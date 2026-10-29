@@ -1,0 +1,68 @@
+---
+// «Work in progress»-Seite. Solange baustelle.aktiv eingeschaltet ist, landen Besucher hier.
+import '@fontsource-variable/fraunces/opsz.css';
+import '@fontsource-variable/fraunces/opsz-italic.css';
+import '@fontsource/karla/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/global.css';
+import einstellungen from '../data/einstellungen.json';
+
+const b = einstellungen.baustelle;
+const absaetze = b.text.split(/\n\s*\n/).filter(Boolean);
+---
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{einstellungen.seitenname} · {b.eyebrow}</title>
+  <meta name="description" content={einstellungen.beschreibung}>
+  <meta name="theme-color" content="#101412">
+  <link rel="icon" href="/favicon-64.png" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  {!b.aktiv && <meta http-equiv="refresh" content="0; url=/">}
+</head>
+<body class="bald">
+  <main>
+    <img class="bald-logo" src="/logo/logo-weiss.png" alt="Marc Wenger Wildlifeart" width="727" height="410">
+    <span class="bald-linie" aria-hidden="true"></span>
+    <p class="eyebrow">{b.eyebrow}</p>
+    <h1>{b.titel}</h1>
+    {absaetze.map(t => <p class="bald-text">{t}</p>)}
+    <div class="spur" aria-hidden="true">
+      {Array.from({ length: 7 }, (_, i) => <span style={`--i:${i}`}></span>)}
+    </div>
+  </main>
+  <footer><a href="/impressum/">Impressum</a><a href="/datenschutz/">Datenschutz</a></footer>
+</body>
+</html>
+
+<style>
+  .bald { min-height: 100dvh; display: grid; grid-template-rows: 1fr auto; overflow-x: hidden; }
+  main {
+    display: grid; justify-items: center; align-content: center; text-align: center; gap: 18px;
+    padding: 64px max(16px, env(safe-area-inset-left, 0px)) 32px;
+  }
+  .bald-logo { width: clamp(200px, 34vw, 340px); height: auto; animation: ein 1400ms var(--ease) both; }
+  .bald-linie { width: min(240px, 50vw); height: 1px; background: var(--accent); margin-block: 10px 6px; transform-origin: center; animation: linie 1200ms var(--ease) 600ms both; }
+  .eyebrow { animation: ein 900ms var(--ease) 900ms both; }
+  h1 { font-size: clamp(2.2rem, 6vw, 4rem); letter-spacing: -.02em; animation: ein 1000ms var(--ease) 1050ms both; }
+  .bald-text { color: var(--muted); max-width: 46ch; animation: ein 1000ms var(--ease) 1250ms both; }
+  /* Fährte, die langsam über den Boden zieht */
+  .spur { display: flex; gap: 22px; margin-top: 26px; }
+  .spur span {
+    width: 7px; height: 9px; border-radius: 50% 50% 45% 45%; background: var(--accent);
+    opacity: 0; translate: 0 calc((var(--i) % 2) * 8px - 4px);
+    animation: tritt 4200ms ease-in-out calc(1800ms + var(--i) * 350ms) infinite;
+  }
+  footer { display: flex; justify-content: center; gap: 24px; padding: 24px 16px 32px; font-size: .875rem; }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--fg); }
+  @keyframes ein { from { opacity: 0; transform: translateY(14px); filter: blur(6px); } }
+  @keyframes linie { from { transform: scaleX(0); } }
+  @keyframes tritt { 0% { opacity: 0; } 12% { opacity: .9; } 55% { opacity: .35; } 100% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .bald *, .bald-logo { animation: none !important; }
+    .spur span { opacity: .5; }
+  }
+</style>
