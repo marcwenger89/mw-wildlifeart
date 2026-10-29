@@ -1,0 +1,28 @@
+---
+import Seite from '../../layouts/Seite.astro';
+import { alleBeitraege, datumCH } from '../../lib/inhalt';
+const beitraege = await alleBeitraege();
+---
+<Seite titel="Blog" beschreibung="Geschichten aus dem Feld: wie die Bilder von MW-Wildlifeart entstehen.">
+  <section class="gallery-page">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Pfad"><a href="/">Startseite</a><span aria-hidden="true">/</span><span>Blog</span></nav>
+      <div class="block-head">
+        <div>
+          <p class="eyebrow">{beitraege.length} Beiträge</p>
+          <h1 class="g-title">Aus dem Feld</h1>
+        </div>
+      </div>
+      <div class="posts">
+        {beitraege.map(p => (
+          <a class="post" href={`/blog/${p.id}/`}>
+            {p.data.bild && <div class="ph"><img src={p.data.bild} alt="" loading="lazy"></div>}
+            <span class="mono" style="color:var(--muted)">{datumCH(p.data.datum)}</span>
+            <h3>{p.data.titel}</h3>
+            <p>{p.data.kurztext}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Seite>

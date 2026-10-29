@@ -1,0 +1,24 @@
+---
+import Seite from '../../layouts/Seite.astro';
+import { render } from 'astro:content';
+import { alleBeitraege, datumCH } from '../../lib/inhalt';
+
+export async function getStaticPaths() {
+  return (await alleBeitraege()).map(p => ({ params: { slug: p.id }, props: { post: p } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+<Seite titel={post.data.titel} beschreibung={post.data.kurztext} bild={post.data.bild}>
+  <article class="text-page">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Pfad"><a href="/">Startseite</a><span aria-hidden="true">/</span><a href="/blog/">Blog</a></nav>
+      {post.data.bild && <img class="post-hero" src={post.data.bild} alt="">}
+      <div class="prose">
+        <p class="eyebrow">{datumCH(post.data.datum)}</p>
+        <h1>{post.data.titel}</h1>
+        <Content />
+      </div>
+    </div>
+  </article>
+</Seite>

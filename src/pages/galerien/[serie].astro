@@ -1,0 +1,43 @@
+---
+import Seite from '../../layouts/Seite.astro';
+import Mosaik from '../../components/Mosaik.astro';
+import { alleSerien, alleFotos } from '../../lib/inhalt';
+
+export async function getStaticPaths() {
+  const serien = await alleSerien();
+  return [
+    ...serien.map(s => ({ params: { serie: s.id }, props: { titel: s.data.titel, intro: s.data.kurztext } })),
+    { params: { serie: 'alle' }, props: { titel: 'Alle Bilder', intro: 'Alle Serien in einem Mosaik. Über die Knöpfe wechselst du zu einer einzelnen Galerie.' } },
+  ];
+}
+
+const { serie } = Astro.params;
+const { titel, intro } = Astro.props;
+const serien = await alleSerien();
+const alle = await alleFotos();
+const fotos = serie === 'alle' ? alle : alle.filter(f => f.data.serie.id === serie);
+---
+<Seite titel={titel} beschreibung={intro} galerie={serie} bild={fotos[0]?.data.bild}>
+  <section class="gallery-page">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Pfad">
+        <a href="/">Startseite</a><span aria-hidden="true">/</span>
+        <a href="/#serien">Galerien</a><span aria-hidden="true">/</span>
+        <span>{titel}</span>
+      </nav>
+      <div class="block-head">
+        <div>
+          <p class="eyebrow">{fotos.length} Bilder</p>
+          <h1 class="g-title">{titel}</h1>
+        </div>
+        <p>{intro}</p>
+      </div>
+      <nav class="filters" aria-label="Andere Galerien">
+        {serien.map(s => <a class="chip" href={`/galerien/${s.id}/`} aria-current={s.id === serie ? 'page' : undefined}>{s.data.titel}</a>)}
+        <a class="chip" href="/galerien/alle/" aria-current={serie === 'alle' ? 'page' : undefined}>Alle Bilder</a>
+      </nav>
+      <Mosaik fotos={fotos} von={serie} />
+      <p class="hint">Bild anklicken öffnet die Foto-Detailseite mit dem Knopf «Als Print kaufen».</p>
+    </div>
+  </section>
+</Seite>

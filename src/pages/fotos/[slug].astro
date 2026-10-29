@@ -1,0 +1,115 @@
+---
+import Seite from '../../layouts/Seite.astro';
+import { getEntry, render } from 'astro:content';
+import { alleFotos, SAAL_STANDARD } from '../../lib/inhalt';
+
+export async function getStaticPaths() {
+  const fotos = await alleFotos();
+  return fotos.map(f => ({ params: { slug: f.id }, props: { foto: f } }));
+}
+
+const { foto } = Astro.props;
+const serie = await getEntry(foto.data.serie);
+const reihe = (await alleFotos()).filter(f => f.data.serie.id === foto.data.serie.id);
+const k = reihe.findIndex(f => f.id === foto.id);
+const vorher = reihe[(k - 1 + reihe.length) % reihe.length];
+const nachher = reihe[(k + 1) % reihe.length];
+const { Content } = await render(foto);
+const d = foto.data;
+const kaufLink = d.saal_link || serie?.data.saal_link || SAAL_STANDARD;
+const exif = [
+  ['Brennweite', d.brennweite], ['Blende', d.blende], ['Belichtung', d.belichtung],
+  ['ISO', d.iso], ['Monat', d.monat], ['Ort', d.koordinaten],
+].filter(([, v]) => v);
+const lb = reihe.map(f => ({
+  src: f.data.bild,
+  cap: [f.data.titel, f.data.ort, f.data.brennweite, f.data.blende, f.data.belichtung, f.data.iso && `ISO ${f.data.iso}`].filter(Boolean).join(' · '),
+}));
+---
+<Seite titel={d.titel} beschreibung={`${d.titel}${d.ort ? ', ' + d.ort : ''}. Wildtierfotografie von MW-Wildlifeart.`} bild={d.bild} galerie={foto.data.serie.id}>
+  <div class="wrap">
+    <div class="detail-bar">
+      <a class="back" id="d-back" href={`/galerien/${foto.data.serie.id}/`}>
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+        Zurück zur Galerie
+      </a>
+      <span class="eyebrow">Serie · {serie?.data.titel}</span>
+    </div>
+  </div>
+  <div class="wrap detail-grid">
+    <button class="detail-img" type="button" id="d-imgbtn" aria-label="Vollbild öffnen">
+      <img src={d.bild} alt={d.titel} fetchpriority="high">
+      <span class="fs"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg>Vollbild</span>
+    </button>
+    <div class="detail-info">
+      <div>
+        {d.ort && <p class="eyebrow">{d.ort}</p>}
+        <h1>{d.titel}</h1>
+      </div>
+      <div class="story"><Content /></div>
+      {exif.length > 0 && <dl class="exif">{exif.map(([k, v]) => <><dt>{k}</dt><dd>{v}</dd></>)}</dl>}
+      <div>
+        <a class="btn primary" href={kaufLink} target="_blank" rel="noopener">
+          Als Print kaufen
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"/></svg>
+        </a>
+        <p class="buy-note">Öffnet {d.saal_link ? 'das Bild' : 'die Serie'} bei Saal Digital. Dort wählst du Format und Material.</p>
+      </div>
+      {reihe.length > 1 && (
+        <div class="detail-nav">
+          <a class="back" href={`/fotos/${vorher.id}/`} rel="prev">← Vorheriges Bild</a>
+          <a class="back" href={`/fotos/${nachher.id}/`} rel="next">Nächstes Bild →</a>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Vollbildansicht" data-bilder={JSON.stringify(lb)} data-start={k}>
+    <div class="lb-top">
+      <button class="lb-btn" type="button" id="lb-close" aria-label="Vollbild schliessen"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3 3 13"/></svg></button>
+    </div>
+    <div class="lb-stage"><img id="lb-img" alt=""></div>
+    <p class="lb-cap" id="lb-cap"></p>
+  </div>
+</Seite>
+
+<script>
+  // «Zurück» führt zur Galerie, aus der man gekommen ist
+  const von = new URLSearchParams(location.search).get('von');
+  if (von === 'alle') (document.getElementById('d-back') as HTMLAnchorElement).href = '/galerien/alle/';
+
+  // Vollbild mit Pfeiltasten und Wischen innerhalb der Serie
+  const lb = document.getElementById('lightbox')!;
+  const img = document.getElementById('lb-img') as HTMLImageElement;
+  const cap = document.getElementById('lb-cap')!;
+  const bilder: { src: string; cap: string }[] = JSON.parse(lb.dataset.bilder!);
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let i = Number(lb.dataset.start);
+  const fill = () => { img.src = bilder[i].src; img.alt = bilder[i].cap; cap.textContent = bilder[i].cap; };
+  const step = (dir: number) => { i = (i + dir + bilder.length) % bilder.length; fill(); };
+  const open = () => {
+    fill(); lb.hidden = false; document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => requestAnimationFrame(() => lb.classList.add('open')));
+    document.getElementById('lb-close')!.focus();
+  };
+  const close = () => {
+    lb.classList.remove('open');
+    setTimeout(() => { lb.hidden = true; document.body.style.overflow = ''; document.getElementById('d-imgbtn')!.focus(); }, calm ? 0 : 380);
+  };
+  document.getElementById('d-imgbtn')!.addEventListener('click', open);
+  document.getElementById('lb-close')!.addEventListener('click', close);
+  lb.addEventListener('click', e => { if (e.target === lb || (e.target as HTMLElement).classList.contains('lb-stage')) close(); });
+  let touchX: number | null = null;
+  lb.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', e => { if (touchX === null) return; const dx = e.changedTouches[0].clientX - touchX; if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1); touchX = null; });
+  document.addEventListener('keydown', e => {
+    if (lb.hidden) {
+      if (e.key === 'ArrowRight') (document.querySelector('a[rel=next]') as HTMLAnchorElement | null)?.click();
+      else if (e.key === 'ArrowLeft') (document.querySelector('a[rel=prev]') as HTMLAnchorElement | null)?.click();
+      return;
+    }
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowRight') step(1);
+    else if (e.key === 'ArrowLeft') step(-1);
+  });
+</script>

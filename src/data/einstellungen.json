@@ -1,0 +1,24 @@
+{
+  "seitenname": "MW-Wildlifeart",
+  "beschreibung": "Wildtierfotografie aus der Schweiz: Alpen, Jura und Mittelland.",
+  "startseite": {
+    "titel": "Wildtiere der Schweiz,",
+    "titel_betont": "still",
+    "titel_ende": "beobachtet.",
+    "text": "Fotografien aus Alpen, Jura und Mittelland. Jedes Bild entsteht mit Geduld und Abstand, ohne Lockmittel und ohne Störung.",
+    "serien_titel": "Vier Lebensräume",
+    "serien_text": "Jede Serie hat ihre eigene Galerie. Ein Klick auf ein Bild öffnet die Detailseite.",
+    "shop_titel": "Bilder für die Wand und den Tisch",
+    "shop_text": "Bestellung, Zahlung und Versand laufen über Saal Digital. Jeder Knopf führt direkt zur passenden Saal-Galerie."
+  },
+  "ueber_mich": {
+    "titel": "Hinter der Kamera",
+    "text": "Hier stellst du dich später vor: wer du bist, wie du zur Wildtierfotografie gekommen bist und was dir beim Fotografieren wichtig ist.\n\nEin kurzer, persönlicher Text wirkt hier am besten, zusammen mit einem Porträt im Feld.",
+    "bild": "/bilder/portrait.jpg"
+  },
+  "kontakt": {
+    "titel": "Schreib mir",
+    "text": "Fragen zu einem Bild, einem Print oder einer Zusammenarbeit? Ich antworte meistens innert weniger Tage."
+  },
+  "saal_hinweis": "Gedruckt und versendet von Saal Digital. Die Preise sind Beispielwerte in CHF, die echten Preise stehen in der Saal-Galerie."
+}

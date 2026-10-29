@@ -1,0 +1,149 @@
+# Admin-Bereich (Decap CMS). Anmeldung mit dem GitHub-Konto, Änderungen landen direkt im Repo
+# und Netlify veröffentlicht die Seite danach automatisch neu (dauert etwa eine Minute).
+backend:
+  name: github
+  repo: marcwenger89/mw-wildlifeart
+  branch: main
+  commit_messages:
+    create: 'Neu: {{collection}} «{{slug}}»'
+    update: 'Geändert: {{collection}} «{{slug}}»'
+    delete: 'Gelöscht: {{collection}} «{{slug}}»'
+    uploadMedia: 'Bild hochgeladen: {{path}}'
+    deleteMedia: 'Bild gelöscht: {{path}}'
+
+locale: de
+site_url: https://mw-wildlifeart.ch
+display_url: https://mw-wildlifeart.ch
+logo_url: /favicon.svg
+
+# Bilder als Web-Version hochladen (lange Seite etwa 2000 px, JPG)
+media_folder: public/bilder
+public_folder: /bilder
+
+collections:
+  - name: fotos
+    label: Fotos
+    label_singular: Foto
+    folder: src/content/fotos
+    create: true
+    slug: '{{slug}}'
+    summary: '{{titel}} · {{serie}}'
+    sortable_fields: [titel, serie, reihenfolge]
+    view_groups:
+      - { label: Serie, field: serie }
+    fields:
+      - { name: titel, label: Titel, widget: string }
+      - { name: serie, label: Serie, widget: relation, collection: serien, search_fields: [titel], value_field: '{{slug}}', display_fields: [titel] }
+      - { name: bild, label: Bild, widget: image, hint: 'Web-Version, lange Seite etwa 2000 px' }
+      - { name: ort, label: Ort, widget: string, required: false, hint: 'z. B. Vallée de Joux VD' }
+      - { name: koordinaten, label: Koordinaten, widget: string, required: false, hint: 'z. B. 46.62° N, 6.27° E. Leer lassen, wenn der Ort geheim bleiben soll.' }
+      - { name: monat, label: Monat, widget: string, required: false }
+      - { name: brennweite, label: Brennweite, widget: string, required: false, hint: 'z. B. 600 mm' }
+      - { name: blende, label: Blende, widget: string, required: false, hint: 'z. B. f/4' }
+      - { name: belichtung, label: Belichtungszeit, widget: string, required: false, hint: 'z. B. 1/1000 s' }
+      - { name: iso, label: ISO, widget: string, required: false, hint: 'nur die Zahl, z. B. 800' }
+      - { name: saal_link, label: Saal-Link für dieses Bild, widget: string, required: false, hint: 'Leer lassen, dann gilt der Saal-Link der Serie.' }
+      - { name: startseite, label: Auf der Startseite zeigen (grosses Bild oben), widget: boolean, default: false }
+      - { name: reihenfolge, label: Reihenfolge in der Serie, widget: number, value_type: int, default: 100, hint: 'Kleinere Zahl kommt zuerst.' }
+      - { name: body, label: Geschichte zum Bild, widget: markdown, required: false, buttons: [bold, italic, link], editor_components: [] }
+
+  - name: serien
+    label: Serien (Galerien)
+    label_singular: Serie
+    folder: src/content/serien
+    create: true
+    slug: '{{slug}}'
+    summary: '{{titel}}'
+    fields:
+      - { name: titel, label: Titel, widget: string }
+      - { name: kurztext, label: Kurztext, widget: text, required: false }
+      - { name: titelbild, label: Titelbild (hochformatig), widget: image }
+      - { name: saal_link, label: Link zur Saal-Galerie, widget: string, required: false }
+      - { name: reihenfolge, label: Reihenfolge, widget: number, value_type: int, default: 100, hint: 'Kleinere Zahl kommt zuerst.' }
+
+  - name: blog
+    label: Blog
+    label_singular: Beitrag
+    folder: src/content/blog
+    create: true
+    slug: '{{slug}}'
+    summary: '{{titel}} ({{datum}})'
+    sortable_fields: [datum, titel]
+    fields:
+      - { name: titel, label: Titel, widget: string }
+      - { name: datum, label: Datum, widget: datetime, date_format: 'DD.MM.YYYY', time_format: false, format: 'YYYY-MM-DD', picker_utc: true }
+      - { name: bild, label: Titelbild, widget: image, required: false }
+      - { name: kurztext, label: Kurztext für die Übersicht, widget: text }
+      - { name: entwurf, label: Entwurf (noch nicht anzeigen), widget: boolean, default: false }
+      - { name: body, label: Text, widget: markdown }
+
+  - name: shop
+    label: Shop
+    label_singular: Produkt
+    folder: src/content/shop
+    create: true
+    slug: '{{slug}}'
+    summary: '{{titel}}'
+    fields:
+      - { name: titel, label: Titel, widget: string }
+      - { name: beschreibung, label: Beschreibung, widget: text }
+      - { name: bild, label: Bild, widget: image }
+      - name: angaben
+        label: Angaben
+        label_singular: Angabe
+        widget: list
+        summary: '{{bezeichnung}}: {{wert}}'
+        fields:
+          - { name: bezeichnung, label: Bezeichnung, widget: string, hint: 'z. B. Formate oder ab' }
+          - { name: wert, label: Wert, widget: string, hint: 'z. B. CHF 45.–' }
+      - { name: knopf_text, label: Text auf dem Knopf, widget: string, default: 'Bei Saal Digital ansehen' }
+      - { name: saal_link, label: Link zu Saal Digital, widget: string }
+      - { name: reihenfolge, label: Reihenfolge, widget: number, value_type: int, default: 100 }
+
+  - name: seite
+    label: Seitentexte
+    files:
+      - name: einstellungen
+        label: Startseite, Über mich und Kontakt
+        file: src/data/einstellungen.json
+        fields:
+          - { name: seitenname, label: Name der Seite, widget: string }
+          - { name: beschreibung, label: Beschreibung für Suchmaschinen, widget: text }
+          - name: startseite
+            label: Startseite
+            widget: object
+            fields:
+              - { name: titel, label: 'Titel (Anfang)', widget: string }
+              - { name: titel_betont, label: 'Titel (betontes Wort, in Gold)', widget: string, required: false }
+              - { name: titel_ende, label: 'Titel (Ende)', widget: string, required: false }
+              - { name: text, label: Einleitung, widget: text }
+              - { name: serien_titel, label: Titel Serien-Bereich, widget: string }
+              - { name: serien_text, label: Text Serien-Bereich, widget: text }
+              - { name: shop_titel, label: Titel Shop-Bereich, widget: string }
+              - { name: shop_text, label: Text Shop-Bereich, widget: text }
+          - name: ueber_mich
+            label: Über mich
+            widget: object
+            fields:
+              - { name: titel, label: Titel, widget: string }
+              - { name: text, label: 'Text (Leerzeile = neuer Absatz)', widget: text }
+              - { name: bild, label: Porträt, widget: image, required: false }
+          - name: kontakt
+            label: Kontakt
+            widget: object
+            fields:
+              - { name: titel, label: Titel, widget: string }
+              - { name: text, label: Text, widget: text }
+          - { name: saal_hinweis, label: Hinweis unter dem Shop, widget: text }
+      - name: impressum
+        label: Impressum
+        file: src/content/seiten/impressum.md
+        fields:
+          - { name: titel, label: Titel, widget: string }
+          - { name: body, label: Text, widget: markdown }
+      - name: datenschutz
+        label: Datenschutz
+        file: src/content/seiten/datenschutz.md
+        fields:
+          - { name: titel, label: Titel, widget: string }
+          - { name: body, label: Text, widget: markdown }

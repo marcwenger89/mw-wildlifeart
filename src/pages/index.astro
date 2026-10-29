@@ -1,0 +1,165 @@
+---
+import Seite from '../layouts/Seite.astro';
+import Kontaktformular from '../components/Kontaktformular.astro';
+import einstellungen from '../data/einstellungen.json';
+import { getCollection } from 'astro:content';
+import { alleSerien, alleFotos, alleBeitraege, datumCH } from '../lib/inhalt';
+
+const s = einstellungen.startseite;
+const serien = await alleSerien();
+const fotos = await alleFotos();
+const heroFotos = (() => { const h = fotos.filter(f => f.data.startseite); return h.length ? h : fotos.slice(0, 3); })();
+const shop = (await getCollection('shop')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+const beitraege = (await alleBeitraege()).slice(0, 3);
+const ueber = einstellungen.ueber_mich;
+const absaetze = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
+const anzahl = (id: string) => fotos.filter(f => f.data.serie.id === id).length;
+---
+<Seite bild={heroFotos[0]?.data.bild}>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-frame" id="hero">
+        {heroFotos.map((f, i) => (
+          <img src={f.data.bild} alt={f.data.titel} class={i === 0 ? 'on instant' : undefined}
+               loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined}
+               data-titel={f.data.titel} data-ort={f.data.ort ?? ''} data-link={`/fotos/${f.id}/`}>
+        ))}
+        <div class="hero-caption">
+          <div>
+            <p class="eyebrow" style="color:inherit;opacity:.8">Aktuelles Bild</p>
+            <p class="mono"><a id="hero-cap" href={`/fotos/${heroFotos[0]?.id}/`}>{heroFotos[0]?.data.titel}{heroFotos[0]?.data.ort && ` · ${heroFotos[0].data.ort}`}</a></p>
+          </div>
+          {heroFotos.length > 1 && (
+            <div class="hero-dots" id="hero-dots" aria-label="Bild wählen">
+              {heroFotos.map((_, i) => <button type="button" aria-label={`Bild ${i + 1}`} class={i === 0 ? 'on' : undefined}></button>)}
+            </div>
+          )}
+        </div>
+      </div>
+      <div class="hero-text">
+        <h1>{s.titel} {s.titel_betont && <em>{s.titel_betont}</em>} {s.titel_ende}</h1>
+        <div>
+          <p>{s.text}</p>
+          <div class="btn-row">
+            <a class="btn primary" href="#serien">Galerien ansehen</a>
+            <a class="btn" href="#shop">Prints und Kalender</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="serien">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <p class="eyebrow">Serien</p>
+          <h2>{s.serien_titel}</h2>
+        </div>
+        <p>{s.serien_text}</p>
+      </div>
+      <div class="series">
+        {serien.map(serie => (
+          <a class="serie" href={`/galerien/${serie.id}/`}>
+            <div class="ph"><img src={serie.data.titelbild} alt="" loading="lazy"></div>
+            <h3>{serie.data.titel}</h3>
+            <div class="meta"><span class="mono">{anzahl(serie.id)} Bilder</span><span aria-hidden="true">→</span></div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="shop">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <p class="eyebrow">Shop</p>
+          <h2>{s.shop_titel}</h2>
+        </div>
+        <p>{s.shop_text}</p>
+      </div>
+      <div class="shop">
+        {shop.map(p => (
+          <div class="product">
+            <div class="ph"><img src={p.data.bild} alt="" loading="lazy"></div>
+            <h3>{p.data.titel}</h3>
+            <p>{p.data.beschreibung}</p>
+            {p.data.angaben.length > 0 && <dl>{p.data.angaben.map(a => <><dt>{a.bezeichnung}</dt><dd>{a.wert}</dd></>)}</dl>}
+            <div><a class="btn" href={p.data.saal_link} target="_blank" rel="noopener">{p.data.knopf_text}
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"/></svg></a></div>
+          </div>
+        ))}
+      </div>
+      <p class="saal-note">{einstellungen.saal_hinweis}</p>
+    </div>
+  </section>
+
+  {beitraege.length > 0 && (
+    <section class="block" id="blog">
+      <div class="wrap">
+        <div class="block-head">
+          <div>
+            <p class="eyebrow">Blog</p>
+            <h2>Aus dem Feld</h2>
+          </div>
+          <a class="btn" href="/blog/">Alle Beiträge</a>
+        </div>
+        <div class="posts">
+          {beitraege.map(p => (
+            <a class="post" href={`/blog/${p.id}/`}>
+              {p.data.bild && <div class="ph"><img src={p.data.bild} alt="" loading="lazy"></div>}
+              <span class="mono" style="color:var(--muted)">{datumCH(p.data.datum)}</span>
+              <h3>{p.data.titel}</h3>
+              <p>{p.data.kurztext}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="block" id="ueber">
+    <div class="wrap about">
+      <div>
+        <p class="eyebrow">Über mich</p>
+        <h2>{ueber.titel}</h2>
+        {absaetze(ueber.text).map(t => <p>{t}</p>)}
+        {ueber.bild && <img class="portrait" src={ueber.bild} alt="Porträt" loading="lazy">}
+      </div>
+      <div id="kontakt">
+        <p class="eyebrow">Kontakt</p>
+        <h2>{einstellungen.kontakt.titel}</h2>
+        <p>{einstellungen.kontakt.text}</p>
+        <Kontaktformular />
+      </div>
+    </div>
+  </section>
+</Seite>
+
+<script>
+  // Hero: Bilder überblenden, bei «Bewegung reduzieren» kein automatischer Wechsel
+  const hero = document.getElementById('hero');
+  if (hero) {
+    const imgs = [...hero.querySelectorAll<HTMLImageElement>('img')];
+    const dots = [...document.querySelectorAll<HTMLButtonElement>('#hero-dots button')];
+    const cap = document.getElementById('hero-cap') as HTMLAnchorElement;
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let idx = 0, timer: number | undefined;
+    requestAnimationFrame(() => requestAnimationFrame(() => imgs[0]?.classList.remove('instant')));
+    const show = (k: number) => {
+      idx = k;
+      imgs.forEach((el, i) => el.classList.toggle('on', i === k));
+      dots.forEach((b, i) => b.classList.toggle('on', i === k));
+      const d = imgs[k].dataset;
+      cap.textContent = d.titel + (d.ort ? ' · ' + d.ort : '');
+      cap.href = d.link!;
+    };
+    const restart = () => {
+      clearInterval(timer);
+      if (!calm && imgs.length > 1) timer = window.setInterval(() => show((idx + 1) % imgs.length), 6500);
+    };
+    dots.forEach((b, i) => b.addEventListener('click', () => { show(i); restart(); }));
+    restart();
+  }
+</script>

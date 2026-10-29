@@ -1,0 +1,13 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { fotos: CollectionEntry<'fotos'>[]; von: string }
+const { fotos, von } = Astro.props;
+---
+<div class="mosaic">
+  {fotos.map(f => (
+    <a class="tile" href={`/fotos/${f.id}/?von=${von}`}>
+      <img src={f.data.bild} alt={f.data.titel} loading="lazy">
+      <span class="cap"><strong>{f.data.titel}</strong>{f.data.ort && <span>{f.data.ort}</span>}</span>
+    </a>
+  ))}
+</div>

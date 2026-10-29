@@ -1,0 +1,121 @@
+---
+import '@fontsource-variable/fraunces/opsz.css';
+import '@fontsource-variable/fraunces/opsz-italic.css';
+import '@fontsource/karla/400.css';
+import '@fontsource/karla/500.css';
+import '@fontsource/karla/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/global.css';
+import einstellungen from '../data/einstellungen.json';
+import { alleSerien, alleFotos } from '../lib/inhalt';
+
+interface Props { titel?: string; beschreibung?: string; bild?: string; galerie?: string }
+const { titel, beschreibung = einstellungen.beschreibung, bild, galerie } = Astro.props;
+const name = einstellungen.seitenname;
+const seitentitel = titel ? `${titel} · ${name}` : name;
+const serien = await alleSerien();
+const fotos = await alleFotos();
+const anzahl = (id: string) => fotos.filter(f => f.data.serie.id === id).length;
+const [vorname, ...rest] = name.split('-');
+const ogBild = bild ? new URL(bild, Astro.site).href : undefined;
+---
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{seitentitel}</title>
+  <meta name="description" content={beschreibung}>
+  <meta property="og:title" content={seitentitel}>
+  <meta property="og:description" content={beschreibung}>
+  {ogBild && <meta property="og:image" content={ogBild}>}
+  <meta name="theme-color" content="#101412">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)}>
+</head>
+<body>
+  <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+  <header class="site-head" id="kopf">
+    <div class="wrap">
+      <a class="logo" href="/">{vorname}{rest.length > 0 && <><em>-</em>{rest.join('-')}</>}</a>
+      <nav class="site-nav" aria-label="Hauptnavigation">
+        <div class="nav-drop" id="nav-drop">
+          <button type="button" class="nav-drop-btn" id="nav-drop-btn" aria-expanded="false" aria-controls="nav-drop-list" data-current={galerie ? '' : undefined}>
+            Galerien
+            <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 3.5 5 6.5l3-3"/></svg>
+          </button>
+          <ul class="nav-drop-list" id="nav-drop-list">
+            {serien.map(s => (
+              <li><a href={`/galerien/${s.id}/`} aria-current={galerie === s.id ? 'page' : undefined}><span>{s.data.titel}</span><span class="mono">{anzahl(s.id)}</span></a></li>
+            ))}
+            <li class="sep"><a href="/galerien/alle/" aria-current={galerie === 'alle' ? 'page' : undefined}><span>Alle Bilder</span><span class="mono">{fotos.length}</span></a></li>
+          </ul>
+        </div>
+        <a href="/#shop">Shop</a>
+        <a href="/#blog">Blog</a>
+        <a href="/#ueber">Über mich</a>
+        <a href="/#kontakt">Kontakt</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inhalt">
+    <slot />
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <p>© {new Date().getFullYear()} {name}</p>
+      <nav aria-label="Rechtliches">
+        <a href="/impressum/">Impressum</a>
+        <a href="/datenschutz/">Datenschutz</a>
+        <a href="/#kontakt">Kontakt</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    // Kopfzeile wird beim Scrollen schmaler
+    const kopf = document.getElementById('kopf')!;
+    const onScroll = () => kopf.classList.toggle('scrolled', scrollY > 30);
+    addEventListener('scroll', onScroll, { passive: true }); onScroll();
+    const setHeadH = () => document.documentElement.style.setProperty('--head-h', kopf.offsetHeight + 'px');
+    setHeadH(); addEventListener('resize', setHeadH);
+
+    // Aufklapp-Liste «Galerien»: Klick oder Hover
+    const drop = document.getElementById('nav-drop')!, btn = document.getElementById('nav-drop-btn')!;
+    let openedBy: string | null = null;
+    const setDrop = (open: boolean, by: string | null = null) => {
+      openedBy = open ? by : null;
+      drop.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    };
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      if (drop.classList.contains('open') && openedBy === 'click') setDrop(false); else setDrop(true, 'click');
+    });
+    if (matchMedia('(hover: hover)').matches) {
+      drop.addEventListener('mouseenter', () => { if (!drop.classList.contains('open')) setDrop(true, 'hover'); });
+      drop.addEventListener('mouseleave', () => { if (openedBy === 'hover') setDrop(false); });
+    }
+    document.addEventListener('click', e => { if (!drop.contains(e.target as Node)) setDrop(false); });
+    drop.addEventListener('keydown', e => { if (e.key === 'Escape' && drop.classList.contains('open')) { setDrop(false); btn.focus(); } });
+
+    // Einblenden beim Scrollen (nur was beim Laden noch nicht sichtbar ist)
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if ('IntersectionObserver' in window && !calm) {
+      const targets = document.querySelectorAll<HTMLElement>('.block-head, .serie, .tile, .product, .post, .about > div');
+      const io = new IntersectionObserver(entries => entries.forEach(en => {
+        if (en.isIntersecting) { en.target.classList.add('reveal-in'); en.target.classList.remove('reveal-pending'); io.unobserve(en.target); }
+      }), { rootMargin: '0px 0px -8% 0px' });
+      targets.forEach((el, i) => {
+        if (el.getBoundingClientRect().top < innerHeight) return;
+        el.classList.add('reveal-pending');
+        el.style.transitionDelay = (i % 3) * 80 + 'ms';
+        io.observe(el);
+      });
+    }
+  </script>
+</body>
+</html>
