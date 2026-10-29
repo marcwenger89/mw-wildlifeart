@@ -1,0 +1,34 @@
+---
+// Schaltet auf diesem Gerät die echte Seite frei, solange die «Work in progress»-Seite aktiv ist.
+import '@fontsource/karla/400.css';
+import '../styles/global.css';
+---
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Vorschau</title>
+</head>
+<body>
+  <main class="wrap prose" style="padding-block: 80px">
+    <h1>Vorschau</h1>
+    <p id="status">…</p>
+    <p class="btn-row"><button class="btn primary" id="an" type="button">Echte Seite ansehen</button><button class="btn" id="aus" type="button">Vorschau beenden</button></p>
+  </main>
+  <script>
+    const status = document.getElementById('status')!;
+    const zeigen = () => {
+      let an = false;
+      try { an = localStorage.getItem('mw-vorschau') === '1'; } catch (e) {}
+      status.textContent = an
+        ? 'Auf diesem Gerät siehst du die echte Seite, auch wenn für Besucher die «Bald hier»-Seite aktiv ist.'
+        : 'Auf diesem Gerät siehst du gerade dasselbe wie alle Besucher.';
+    };
+    document.getElementById('an')!.addEventListener('click', () => { try { localStorage.setItem('mw-vorschau', '1'); } catch (e) {} location.href = '/'; });
+    document.getElementById('aus')!.addEventListener('click', () => { try { localStorage.removeItem('mw-vorschau'); } catch (e) {} zeigen(); });
+    zeigen();
+  </script>
+</body>
+</html>

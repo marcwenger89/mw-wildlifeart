@@ -21,5 +21,11 @@
     "text": "Fragen zu einem Bild, einem Print oder einer Zusammenarbeit? Ich antworte meistens innert weniger Tage.",
     "web3forms_schluessel": "49ba7ab8-5595-490c-a25e-4c4e420ad87b"
   },
-  "saal_hinweis": "Gedruckt und versendet von Saal Digital. Die Preise sind Beispielwerte in CHF, die echten Preise stehen in der Saal-Galerie."
+  "saal_hinweis": "Gedruckt und versendet von Saal Digital. Die Preise sind Beispielwerte in CHF, die echten Preise stehen in der Saal-Galerie.",
+  "baustelle": {
+    "aktiv": true,
+    "eyebrow": "Bald hier",
+    "titel": "Noch auf der Pirsch.",
+    "text": "Gute Bilder brauchen Geduld. Diese Seite sitzt noch im Tarnzelt und wartet auf das richtige Licht.\n\nBald zeige ich hier Wildtiere aus Alpen, Jura und Mittelland, still beobachtet und ohne Störung."
+  }
 }
