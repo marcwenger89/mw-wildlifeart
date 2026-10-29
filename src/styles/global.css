@@ -66,8 +66,8 @@ p { margin: 0; }
 .site-head.scrolled .wrap { padding-block: 14px; }
 @media (prefers-reduced-motion: reduce) { .site-head .wrap { transition: none; } }
 .logo { font-family: var(--f-display); font-size: 1.5rem; font-weight: 400; letter-spacing: -.01em; text-decoration: none; display: inline-flex; align-items: center; gap: 12px; align-self: center; }
-.logo img { width: auto; height: 64px; transition: height 300ms var(--ease); }
-.site-head.scrolled .logo img { height: 44px; }
+.logo img { width: 34px; height: 34px; transition: width 300ms var(--ease), height 300ms var(--ease); }
+.site-head.scrolled .logo img { width: 28px; height: 28px; }
 .logo em { font-style: italic; font-weight: 300; color: var(--accent); }
 .site-nav { display: flex; flex-wrap: wrap; gap: 6px 26px; font-size: .9375rem; }
 .site-nav > a { text-decoration: none; color: var(--muted); padding-block: 4px; border-bottom: 1px solid transparent; transition: color 300ms, border-color 300ms; }
@@ -288,6 +288,5 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
   .site-head.scrolled .wrap { padding-block: 10px; }
   .site-nav { gap: 2px 18px; font-size: .875rem; }
   .logo { font-size: 1.3rem; gap: 10px; }
-  .logo img { height: 48px; }
-  .site-head.scrolled .logo img { height: 38px; }
+  .logo img { width: 28px; height: 28px; }
 }

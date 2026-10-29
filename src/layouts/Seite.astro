@@ -18,6 +18,7 @@ const seitentitel = titel ? `${titel} · ${name}` : name;
 const serien = await alleSerien();
 const fotos = await alleFotos();
 const anzahl = (id: string) => fotos.filter(f => f.data.serie.id === id).length;
+const [vorname, ...rest] = name.split('-');
 const ogBild = bild ? new URL(bild, Astro.site).href : undefined;
 ---
 <!doctype html>
@@ -40,7 +41,7 @@ const ogBild = bild ? new URL(bild, Astro.site).href : undefined;
   <a class="skip" href="#inhalt">Zum Inhalt springen</a>
   <header class="site-head" id="kopf">
     <div class="wrap">
-      <a class="logo" href="/" aria-label={name}><img src="/logo/logo-weiss.png" alt="" width="727" height="410"></a>
+      <a class="logo" href="/"><img src="/logo/elefant-weiss.png" alt="" width="34" height="34"><span>{vorname}{rest.length > 0 && <><em>-</em>{rest.join('-')}</>}</span></a>
       <nav class="site-nav" aria-label="Hauptnavigation">
         <div class="nav-drop" id="nav-drop">
           <button type="button" class="nav-drop-btn" id="nav-drop-btn" aria-expanded="false" aria-controls="nav-drop-list" data-current={galerie ? '' : undefined}>
