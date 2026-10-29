@@ -14,7 +14,7 @@ backend:
 locale: de
 site_url: https://mw-wildlifeart.ch
 display_url: https://mw-wildlifeart.ch
-logo_url: /favicon.svg
+logo_url: /logo/logo-schwarz.png
 
 # Bilder als Web-Version hochladen (lange Seite etwa 2000 px, JPG)
 media_folder: public/bilder
