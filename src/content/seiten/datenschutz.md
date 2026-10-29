@@ -12,13 +12,13 @@ Vorname Nachname, Strasse Nr., PLZ Ort, Schweiz. Erreichbar über das [Kontaktfo
 
 **Besuch der Webseite.** Beim Aufruf der Seite speichert unser Hosting-Anbieter technisch notwendige Daten wie IP-Adresse, Datum und Uhrzeit, aufgerufene Seite und Browser in Server-Protokollen. Diese Daten dienen dem sicheren Betrieb der Seite.
 
-**Kontaktformular.** Wenn du das Formular nutzt, bearbeiten wir deinen Namen, deine E-Mail-Adresse und deine Nachricht, um deine Anfrage zu beantworten. Die Nachricht wird per E-Mail an uns weitergeleitet.
+**Kontaktformular.** Wenn du das Formular nutzt, bearbeiten wir deinen Namen, deine E-Mail-Adresse und deine Nachricht, um deine Anfrage zu beantworten. Die Nachricht wird über den Dienst Web3Forms per E-Mail an uns weitergeleitet. Web3Forms speichert die Inhalte nach eigenen Angaben nicht dauerhaft.
 
 **Keine Cookies, kein Tracking.** Diese Webseite setzt keine Analyse- oder Werbe-Cookies ein. Schriften werden direkt von dieser Webseite geladen, nicht von Drittanbietern.
 
 ## Hosting und Bekanntgabe ins Ausland
 
-Die Webseite und das Kontaktformular werden von Netlify, Inc. (San Francisco, USA) betrieben. Dabei können Personendaten in die USA übermittelt werden. Netlify stützt sich auf Standardvertragsklauseln und ist unter dem Swiss-U.S. Data Privacy Framework zertifiziert.
+Die Webseite wird von Netlify, Inc. (San Francisco, USA) betrieben. Für das Kontaktformular nutzen wir Web3Forms. Dabei können Personendaten in die USA übermittelt werden. Die Anbieter stützen sich auf Standardvertragsklauseln bzw. das Swiss-U.S. Data Privacy Framework (bitte beim jeweiligen Anbieter prüfen).
 
 ## Saal Digital
 

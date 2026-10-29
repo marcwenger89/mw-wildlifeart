@@ -1,11 +1,29 @@
 ---
-// Netlify erkennt das Formular beim Veröffentlichen und leitet Nachrichten per E-Mail weiter.
+import einstellungen from '../data/einstellungen.json';
+// Mit Schlüssel von web3forms.com gehen Nachrichten direkt an die hinterlegte Mailadresse (gratis).
+// Ohne Schlüssel sammelt Netlify Forms die Nachrichten im Netlify-Konto.
+const schluessel = einstellungen.kontakt.web3forms_schluessel?.trim();
+const danke = new URL('/danke/', Astro.site).href;
 ---
-<form class="contact" name="kontakt" method="POST" action="/danke/" data-netlify="true" netlify-honeypot="bot-field">
-  <input type="hidden" name="form-name" value="kontakt">
-  <p class="hp"><label>Nicht ausfüllen: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
-  <div class="field"><label for="c-name">Name</label><input id="c-name" name="name" autocomplete="name" required></div>
-  <div class="field"><label for="c-mail">E-Mail</label><input id="c-mail" name="email" type="email" autocomplete="email" required></div>
-  <div class="field"><label for="c-msg">Nachricht</label><textarea id="c-msg" name="nachricht" required></textarea></div>
-  <div><button class="btn primary" type="submit">Nachricht senden</button></div>
-</form>
+{schluessel ? (
+  <form class="contact" method="POST" action="https://api.web3forms.com/submit">
+    <input type="hidden" name="access_key" value={schluessel}>
+    <input type="hidden" name="subject" value="Neue Nachricht über mw-wildlifeart.ch">
+    <input type="hidden" name="from_name" value="MW-Wildlifeart Webseite">
+    <input type="hidden" name="redirect" value={danke}>
+    <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="field"><label for="c-name">Name</label><input id="c-name" name="name" autocomplete="name" required></div>
+    <div class="field"><label for="c-mail">E-Mail</label><input id="c-mail" name="email" type="email" autocomplete="email" required></div>
+    <div class="field"><label for="c-msg">Nachricht</label><textarea id="c-msg" name="message" required></textarea></div>
+    <div><button class="btn primary" type="submit">Nachricht senden</button></div>
+  </form>
+) : (
+  <form class="contact" name="kontakt" method="POST" action="/danke/" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="kontakt">
+    <p class="hp"><label>Nicht ausfüllen: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+    <div class="field"><label for="c-name">Name</label><input id="c-name" name="name" autocomplete="name" required></div>
+    <div class="field"><label for="c-mail">E-Mail</label><input id="c-mail" name="email" type="email" autocomplete="email" required></div>
+    <div class="field"><label for="c-msg">Nachricht</label><textarea id="c-msg" name="nachricht" required></textarea></div>
+    <div><button class="btn primary" type="submit">Nachricht senden</button></div>
+  </form>
+)}
