@@ -35,7 +35,7 @@ const teil2 = buchstaben(nachname);
     position: fixed; inset: 0; z-index: 200; background: var(--bg);
     display: grid; place-content: center; justify-items: center; gap: 18px;
     clip-path: inset(0 0 0 0);
-    animation: intro-weg 900ms var(--ease) 2900ms forwards;
+    animation: intro-weg 900ms var(--ease) 5200ms forwards;
   }
   html.intro-an .site-head .logo { opacity: 0; }
   html.intro-fertig .site-head .logo { opacity: 1; transition: opacity 600ms var(--ease); }
@@ -81,6 +81,6 @@ const teil2 = buchstaben(nachname);
     const skip = () => ende();
     intro.addEventListener('click', skip);
     addEventListener('keydown', skip, { once: true });
-    setTimeout(ende, 4600); // Sicherheitsnetz
+    setTimeout(ende, 7000); // Sicherheitsnetz
   }
 </script>
