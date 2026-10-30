@@ -1,0 +1,15 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { serien: CollectionEntry<'serien'>[]; fotos: CollectionEntry<'fotos'>[] }
+const { serien, fotos } = Astro.props;
+const anzahl = (id: string) => fotos.filter(f => f.data.serie.id === id).length;
+---
+<div class="series">
+  {serien.map(serie => (
+    <a class="serie" href={`/galerien/${serie.id}/`}>
+      <div class="ph"><img src={serie.data.titelbild} alt="" loading="lazy"></div>
+      <h3>{serie.data.titel}</h3>
+      <div class="meta"><span class="mono">{anzahl(serie.id)} {anzahl(serie.id) === 1 ? 'Bild' : 'Bilder'}</span><span aria-hidden="true">→</span></div>
+    </a>
+  ))}
+</div>

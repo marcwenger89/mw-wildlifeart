@@ -1,0 +1,24 @@
+---
+import Seite from '../../layouts/Seite.astro';
+import GalerieKarten from '../../components/GalerieKarten.astro';
+import einstellungen from '../../data/einstellungen.json';
+import { alleSerien, alleFotos } from '../../lib/inhalt';
+const serien = await alleSerien();
+const fotos = await alleFotos();
+const s = einstellungen.startseite;
+---
+<Seite titel="Galerien" beschreibung="Alle Galerien von MW-Wildlifeart." galerie="uebersicht">
+  <section class="gallery-page">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Pfad"><a href="/">Startseite</a><span aria-hidden="true">/</span><span>Galerien</span></nav>
+      <div class="block-head">
+        <div>
+          <p class="eyebrow">{serien.length} Galerien</p>
+          <h1 class="g-title">{s.serien_titel}</h1>
+        </div>
+        <a class="btn" href="/galerien/alle/">Alle Bilder</a>
+      </div>
+      <GalerieKarten serien={serien} fotos={fotos} />
+    </div>
+  </section>
+</Seite>

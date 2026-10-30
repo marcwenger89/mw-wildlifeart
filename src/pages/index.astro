@@ -1,12 +1,15 @@
 ---
 import Seite from '../layouts/Seite.astro';
 import Kontaktformular from '../components/Kontaktformular.astro';
+import GalerieKarten from '../components/GalerieKarten.astro';
 import einstellungen from '../data/einstellungen.json';
 import { getCollection } from 'astro:content';
 import { alleSerien, alleFotos, alleBeitraege, datumCH } from '../lib/inhalt';
 
 const s = einstellungen.startseite;
 const serien = await alleSerien();
+// Startseite: höchstens eine Reihe (4). Angehakte Galerien zuerst, sonst die ersten nach Reihenfolge.
+const serienVorne = (() => { const v = serien.filter(g => g.data.startseite); return (v.length ? v : serien).slice(0, 4); })();
 const fotos = await alleFotos();
 const heroFotos = (() => { const h = fotos.filter(f => f.data.startseite); return h.length ? h : fotos.slice(0, 3); })();
 const shopAktiv = einstellungen.shop.aktiv;
@@ -14,7 +17,6 @@ const shop = (await getCollection('shop')).sort((a, b) => a.data.reihenfolge - b
 const beitraege = (await alleBeitraege()).slice(0, 3);
 const ueber = einstellungen.ueber_mich;
 const absaetze = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
-const anzahl = (id: string) => fotos.filter(f => f.data.serie.id === id).length;
 ---
 <Seite bild={heroFotos[0]?.data.bild}>
   <section class="hero">
@@ -60,16 +62,9 @@ const anzahl = (id: string) => fotos.filter(f => f.data.serie.id === id).length;
           <h2>{s.serien_titel}</h2>
         </div>
         {s.serien_text && <p>{s.serien_text}</p>}
+        {serien.length > serienVorne.length && <a class="btn" href="/galerien/">Alle Galerien</a>}
       </div>
-      <div class="series">
-        {serien.map(serie => (
-          <a class="serie" href={`/galerien/${serie.id}/`}>
-            <div class="ph"><img src={serie.data.titelbild} alt="" loading="lazy"></div>
-            <h3>{serie.data.titel}</h3>
-            <div class="meta"><span class="mono">{anzahl(serie.id)} Bilder</span><span aria-hidden="true">→</span></div>
-          </a>
-        ))}
-      </div>
+      <GalerieKarten serien={serienVorne} fotos={fotos} />
     </div>
   </section>
 

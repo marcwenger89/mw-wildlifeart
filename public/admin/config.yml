@@ -70,6 +70,7 @@ collections:
       - { name: titelbild, label: Titelbild (hochformatig), widget: image }
       - { name: saal_link, label: Link zur Saal-Galerie, widget: string, required: false }
       - { name: reihenfolge, label: Reihenfolge, widget: number, value_type: int, default: 100, hint: 'Kleinere Zahl kommt zuerst.' }
+      - { name: startseite, label: Auf der Startseite zeigen, widget: boolean, default: false, hint: 'Auf der Startseite stehen höchstens 4 Galerien. Ist keine angehakt, erscheinen die ersten 4 nach Reihenfolge. Hat es mehr, erscheint der Knopf «Alle Galerien».' }
 
   - name: blog
     label: Blog

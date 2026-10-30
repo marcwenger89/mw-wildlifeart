@@ -13,6 +13,7 @@ const serien = defineCollection({
     kurztext: z.string().default(''),
     titelbild: z.string(),
     reihenfolge: z.number().default(100),
+    startseite: z.boolean().default(false),
     saal_link: z.string().optional(),
   }),
 });
