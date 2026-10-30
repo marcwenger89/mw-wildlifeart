@@ -8,6 +8,8 @@ brennweite: 74mm
 blende: f/2.8
 belichtung: 1/640
 iso: "1250"
+tags:
+  - Hyäne
 startseite: true
 ausschnitt: center
 startbild: /bilder/hyäne_desktop_start_1.jpg
