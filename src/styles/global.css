@@ -48,7 +48,7 @@ body::before {
   background: linear-gradient(170deg, var(--verlauf-wald), var(--verlauf-mitte) 55%, var(--verlauf-sand));
 }
 a { color: inherit; }
-img { display: block; max-width: 100%; }
+img { display: block; max-width: 100%; -webkit-user-drag: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 h1, h2, h3 { font-family: var(--f-display); font-weight: 300; line-height: 1.1; text-wrap: balance; margin: 0; }
 p { margin: 0; }
