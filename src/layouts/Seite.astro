@@ -14,6 +14,7 @@ import Intro from '../components/Intro.astro';
 interface Props { titel?: string; beschreibung?: string; bild?: string; galerie?: string; immerOffen?: boolean }
 const { titel, beschreibung = einstellungen.beschreibung, bild, galerie, immerOffen = false } = Astro.props;
 const name = einstellungen.seitenname;
+const shopAktiv = einstellungen.shop.aktiv;
 const seitentitel = titel ? `${titel} · ${name}` : name;
 const serien = await alleSerien();
 const fotos = await alleFotos();
@@ -63,7 +64,7 @@ const baustelle = einstellungen.baustelle.aktiv && !immerOffen;
             <li class="sep"><a href="/galerien/alle/" aria-current={galerie === 'alle' ? 'page' : undefined}><span>Alle Bilder</span><span class="mono">{fotos.length}</span></a></li>
           </ul>
         </div>
-        <a href="/#shop">Shop</a>
+        {shopAktiv && <a href="/#shop">Shop</a>}
         <a href="/#blog">Blog</a>
         <a href="/#ueber">Über mich</a>
         <a href="/#kontakt">Kontakt</a>
