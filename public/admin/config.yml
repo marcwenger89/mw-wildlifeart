@@ -178,7 +178,7 @@ collections:
               - { name: titel_ende, label: 'Titel (Ende)', widget: string, required: false }
               - { name: text, label: Einleitung, widget: text }
               - { name: serien_titel, label: Titel Galerien-Bereich, widget: string }
-              - { name: serien_text, label: Text Galerien-Bereich, widget: text }
+              - { name: serien_text, label: Text Galerien-Bereich, widget: text, required: false, hint: 'Leer lassen = kein Text' }
               - { name: shop_titel, label: Titel Shop-Bereich, widget: string }
               - { name: shop_text, label: Text Shop-Bereich, widget: text }
           - name: ueber_mich
