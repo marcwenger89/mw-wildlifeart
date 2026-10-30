@@ -32,6 +32,10 @@ const fotos = defineCollection({
   }),
 });
 
+// Leere Felder aus dem Admin (null oder '') wie «nicht gesetzt» behandeln, damit der Standardwert greift
+const optional = <T extends z.ZodTypeAny>(schema: T) =>
+  z.preprocess(v => (v === null || v === '' ? undefined : v), schema);
+
 const blog = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/blog' }),
   schema: z.object({
@@ -46,11 +50,11 @@ const blog = defineCollection({
       bilder: z.array(z.object({
         bild: z.string(),
         alt: z.string().default(''),
-        format: z.enum(['quer', 'hoch', 'quadrat', 'breit', 'original']).default('quer'),
-        breite: z.enum(['voll', 'halb']).default('voll'),
+        format: optional(z.enum(['quer', 'hoch', 'quadrat', 'breit', 'original']).default('quer')),
+        breite: optional(z.enum(['voll', 'halb']).default('voll')),
       })).default([]),
-      bildbreite: z.number().min(15).max(100).default(50),
-      bildseite: z.enum(['rechts', 'links', 'unten']).default('rechts'),
+      bildbreite: optional(z.number().min(15).max(100).default(50)),
+      bildseite: optional(z.enum(['rechts', 'links', 'unten']).default('rechts')),
     })).default([]),
   }),
 });
