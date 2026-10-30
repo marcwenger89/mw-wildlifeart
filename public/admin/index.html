@@ -19,7 +19,7 @@
   <script src="https://unpkg.com/decap-cms@3.17.1/dist/decap-cms.js"></script>
   <script>
     // Knopf «Alle abgeschlossenen Entwürfe veröffentlichen»: übernimmt alle Entwürfe in der Spalte «Abgeschlossen»
-    // nacheinander auf main. Alle ausser dem letzten bekommen [skip ci], darum gibt es nur einen Build.
+    // zusammen als einen einzigen Commit auf main. Ein Commit = ein Push = ein Build bei Cloudflare.
     (function () {
       var REPO = 'marcwenger89/mw-wildlifeart';
       var API = 'https://api.github.com/repos/' + REPO;
@@ -29,18 +29,18 @@
         try { return JSON.parse(localStorage.getItem('decap-cms-user') || '{}').token; } catch (e) { return null; }
       }
 
-      function gh(pfad, optionen) {
+      async function gh(pfad, optionen) {
         optionen = optionen || {};
         optionen.headers = { Authorization: 'token ' + token(), Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' };
-        return fetch(API + pfad, optionen);
+        var res = await fetch(API + pfad, optionen);
+        if (!res.ok) throw new Error('GitHub meldet einen Fehler (' + res.status + ' bei ' + pfad + ').');
+        return res.status === 204 ? null : res.json();
       }
 
-      function warten(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+      function json(methode, daten) { return { method: methode, body: JSON.stringify(daten) }; }
 
       async function bereiteEntwuerfe() {
-        var res = await gh('/pulls?state=open&base=main&per_page=100');
-        if (!res.ok) throw new Error('Entwürfe konnten nicht geladen werden (' + res.status + ').');
-        var prs = await res.json();
+        var prs = await gh('/pulls?state=open&base=main&per_page=100');
         return prs
           .filter(function (pr) {
             return pr.head.ref.indexOf('cms/') === 0 && pr.labels.some(function (l) { return l.name === LABEL; });
@@ -48,21 +48,14 @@
           .sort(function (a, b) { return a.number - b.number; });
       }
 
-      async function zusammenfuehren(pr, letzter) {
-        var titel = pr.title + (letzter ? '' : ' [skip ci]');
-        for (var versuch = 0; versuch < 4; versuch++) {
-          var res = await gh('/pulls/' + pr.number + '/merge', {
-            method: 'PUT',
-            body: JSON.stringify({ merge_method: 'squash', commit_title: titel, commit_message: 'Gesammelt veröffentlicht im Admin.', sha: pr.head.sha })
-          });
-          if (res.ok) {
-            await gh('/git/refs/heads/' + pr.head.ref.split('/').map(encodeURIComponent).join('/'), { method: 'DELETE' });
-            return true;
-          }
-          // GitHub braucht nach dem vorherigen Zusammenführen kurz, bis der nächste Entwurf wieder bereit ist
-          await warten(2000);
+      async function dateienVon(pr) {
+        var alle = [];
+        for (var seite = 1; seite <= 10; seite++) {
+          var teil = await gh('/pulls/' + pr.number + '/files?per_page=100&page=' + seite);
+          alle = alle.concat(teil);
+          if (teil.length < 100) break;
         }
-        return false;
+        return alle;
       }
 
       async function veroeffentlichen(knopf) {
@@ -78,23 +71,37 @@
           var liste = prs.map(function (pr) { return '• ' + pr.title; }).join('\n');
           if (!confirm(prs.length + ' Entwürfe veröffentlichen? Das kostet einen Build.\n\n' + liste)) return;
 
-          var fehler = [];
+          knopf.textContent = 'Veröffentliche …';
+          // Alle Änderungen der Entwürfe in einem Dateibaum sammeln (bei gleicher Datei gewinnt der neuere Entwurf)
+          var eintraege = {};
           for (var i = 0; i < prs.length; i++) {
-            knopf.textContent = 'Veröffentliche ' + (i + 1) + ' von ' + prs.length + ' …';
-            // Klappt der letzte nicht, gibt es keinen Build; das einzelne Veröffentlichen danach baut alles mit
-            var letzter = i === prs.length - 1;
-            var ok = await zusammenfuehren(prs[i], letzter);
-            if (!ok) fehler.push(prs[i].title);
+            var dateien = await dateienVon(prs[i]);
+            dateien.forEach(function (d) {
+              if (d.status === 'renamed' && d.previous_filename) {
+                eintraege[d.previous_filename] = { path: d.previous_filename, mode: '100644', type: 'blob', sha: null };
+              }
+              eintraege[d.filename] = { path: d.filename, mode: '100644', type: 'blob', sha: d.status === 'removed' ? null : d.sha };
+            });
           }
-          if (fehler.length) {
-            alert('Diese Entwürfe konnten nicht veröffentlicht werden:\n\n' + fehler.join('\n') +
-              '\n\nBitte einzeln im «Arbeitsablauf» veröffentlichen. Der Rest ist übernommen.');
-          } else {
-            alert('Fertig. Die Seite ist in etwa einer Minute online aktualisiert.');
+
+          var main = await gh('/git/ref/heads/main');
+          var basis = await gh('/git/commits/' + main.object.sha);
+          var baum = await gh('/git/trees', json('POST', { base_tree: basis.tree.sha, tree: Object.values(eintraege) }));
+          var nachricht = 'Veröffentlicht: ' + prs.length + ' Entwürfe\n\n' + liste;
+          var commit = await gh('/git/commits', json('POST', { message: nachricht, tree: baum.sha, parents: [main.object.sha] }));
+          await gh('/git/refs/heads/main', json('PATCH', { sha: commit.sha, force: false }));
+
+          // Entwürfe sind jetzt auf main: Anfragen schliessen und Entwurf-Zweige löschen
+          for (var j = 0; j < prs.length; j++) {
+            try {
+              await gh('/pulls/' + prs[j].number, json('PATCH', { state: 'closed' }));
+              await gh('/git/refs/heads/' + prs[j].head.ref.split('/').map(encodeURIComponent).join('/'), { method: 'DELETE' });
+            } catch (e) { /* Aufräumen ist nicht kritisch */ }
           }
+          alert('Fertig. Die Seite ist in etwa einer Minute online aktualisiert.');
           location.reload();
         } catch (e) {
-          alert(e.message);
+          alert(e.message + '\n\nEs wurde nichts veröffentlicht. Einfach nochmals versuchen.');
         } finally {
           knopf.disabled = false;
           knopf.textContent = 'Alle abgeschlossenen Entwürfe veröffentlichen';
