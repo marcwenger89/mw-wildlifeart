@@ -71,7 +71,7 @@ collections:
           - { label: Unten rechts, value: 'right bottom' }
       - { name: startbild, label: 'Startseite: eigener Zuschnitt PC (optional)', widget: image, required: false, hint: 'Breitformat 2:1, z. B. 2400 × 1200 px. Wird statt des Fotos oben auf der Startseite gezeigt.' }
       - { name: startbild_handy, label: 'Startseite: eigener Zuschnitt Handy (optional)', widget: image, required: false, hint: 'Hochformat 4:5, z. B. 1080 × 1350 px. Leer = Handy nimmt das PC-Bild bzw. das Foto.' }
-      - { name: hochgeladen, label: Hochgeladen am, widget: datetime, date_format: 'DD.MM.YYYY', time_format: 'HH:mm', required: false, hint: 'Wird beim Erstellen automatisch gesetzt. Das neueste Foto steht in der Galerie zuerst. Nur ändern, wenn ein Bild weiter nach vorne oder hinten soll.' }
+      - { name: hochgeladen, label: Hochgeladen am, widget: datetime, format: 'YYYY-MM-DDTHH:mm', date_format: 'DD.MM.YYYY', time_format: 'HH:mm', required: false, hint: 'Wird beim Erstellen automatisch gesetzt. Das neueste Foto steht in der Galerie zuerst. Nur ändern, wenn ein Bild weiter nach vorne oder hinten soll.' }
       - { name: body, label: Geschichte zum Bild, widget: markdown, required: false, buttons: [bold, italic, link], editor_components: [] }
 
   - name: serien
