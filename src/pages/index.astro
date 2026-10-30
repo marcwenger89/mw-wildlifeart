@@ -9,6 +9,7 @@ const s = einstellungen.startseite;
 const serien = await alleSerien();
 const fotos = await alleFotos();
 const heroFotos = (() => { const h = fotos.filter(f => f.data.startseite); return h.length ? h : fotos.slice(0, 3); })();
+const shopAktiv = einstellungen.shop.aktiv;
 const shop = (await getCollection('shop')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
 const beitraege = (await alleBeitraege()).slice(0, 3);
 const ueber = einstellungen.ueber_mich;
@@ -42,7 +43,9 @@ const anzahl = (id: string) => fotos.filter(f => f.data.serie.id === id).length;
           <p>{s.text}</p>
           <div class="btn-row">
             <a class="btn primary" href="#serien">Galerien ansehen</a>
-            <a class="btn" href="#shop">Prints und Kalender</a>
+            {shopAktiv
+              ? <a class="btn" href="#shop">Prints und Kalender</a>
+              : <a class="btn" href="#ueber">Über mich</a>}
           </div>
         </div>
       </div>
@@ -70,6 +73,7 @@ const anzahl = (id: string) => fotos.filter(f => f.data.serie.id === id).length;
     </div>
   </section>
 
+  {shopAktiv && (
   <section class="block" id="shop">
     <div class="wrap">
       <div class="block-head">
@@ -94,6 +98,7 @@ const anzahl = (id: string) => fotos.filter(f => f.data.serie.id === id).length;
       <p class="saal-note">{einstellungen.saal_hinweis}</p>
     </div>
   </section>
+  )}
 
   {beitraege.length > 0 && (
     <section class="block" id="blog">

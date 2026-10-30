@@ -21,6 +21,9 @@
     "text": "Fragen zu einem Bild, einem Print oder einer Zusammenarbeit? Ich antworte meistens innert weniger Tage.",
     "web3forms_schluessel": "49ba7ab8-5595-490c-a25e-4c4e420ad87b"
   },
+  "shop": {
+    "aktiv": false
+  },
   "saal_hinweis": "Gedruckt und versendet von Saal Digital. Die Preise sind Beispielwerte in CHF, die echten Preise stehen in der Saal-Galerie.",
   "baustelle": {
     "aktiv": true,

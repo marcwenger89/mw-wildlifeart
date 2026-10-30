@@ -2,6 +2,7 @@
 import Seite from '../../layouts/Seite.astro';
 import { getEntry, render } from 'astro:content';
 import { alleFotos, SAAL_STANDARD } from '../../lib/inhalt';
+import einstellungen from '../../data/einstellungen.json';
 
 export async function getStaticPaths() {
   const fotos = await alleFotos();
@@ -48,6 +49,7 @@ const lb = reihe.map(f => ({
       </div>
       <div class="story"><Content /></div>
       {exif.length > 0 && <dl class="exif">{exif.map(([k, v]) => <><dt>{k}</dt><dd>{v}</dd></>)}</dl>}
+      {einstellungen.shop.aktiv && (
       <div>
         <a class="btn primary" href={kaufLink} target="_blank" rel="noopener">
           Als Print kaufen
@@ -55,6 +57,7 @@ const lb = reihe.map(f => ({
         </a>
         <p class="buy-note">Öffnet {d.saal_link ? 'das Bild' : 'die Serie'} bei Saal Digital. Dort wählst du Format und Material.</p>
       </div>
+      )}
       {reihe.length > 1 && (
         <div class="detail-nav">
           <a class="back" href={`/fotos/${vorher.id}/`} rel="prev">← Vorheriges Bild</a>
