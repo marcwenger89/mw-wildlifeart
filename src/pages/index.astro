@@ -23,9 +23,13 @@ const absaetze = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
     <div class="wrap">
       <div class="hero-frame" id="hero">
         {heroFotos.map((f, i) => (
-          <img src={f.data.bild} alt={f.data.titel} class={i === 0 ? 'on instant' : undefined}
-               loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined}
-               data-titel={f.data.titel} data-ort={f.data.ort ?? ''} data-link={`/fotos/${f.id}/`}>
+          <picture>
+            {f.data.startbild_handy && <source media="(max-width: 640px)" srcset={f.data.startbild_handy}>}
+            <img src={f.data.startbild ?? f.data.bild} alt={f.data.titel} class={i === 0 ? 'on instant' : undefined}
+                 style={`object-position: ${f.data.ausschnitt}`}
+                 loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined}
+                 data-titel={f.data.titel} data-ort={f.data.ort ?? ''} data-link={`/fotos/${f.id}/`}>
+          </picture>
         ))}
         <div class="hero-caption">
           <div>
