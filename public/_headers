@@ -1,0 +1,7 @@
+# Wird von Cloudflare Pages gelesen. Bilder und Schriften lange zwischenspeichern.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

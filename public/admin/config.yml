@@ -1,15 +1,21 @@
-# Admin-Bereich (Decap CMS). Anmeldung mit dem GitHub-Konto, Änderungen landen direkt im Repo
-# und Netlify veröffentlicht die Seite danach automatisch neu (dauert etwa eine Minute).
+# Admin-Bereich (Decap CMS). Anmeldung mit dem GitHub-Konto (über /api/auth, Cloudflare Pages Function).
+# Entwurfsmodus: «Speichern» legt nur einen Entwurf an (eigener Zweig auf GitHub, nichts geht online).
+# Erst «Veröffentlichen» übernimmt den Eintrag auf main, dann baut Cloudflare die Seite neu (etwa eine Minute).
 backend:
   name: github
   repo: marcwenger89/mw-wildlifeart
   branch: main
+  base_url: https://www.mw-wildlifeart.ch
+  auth_endpoint: api/auth
+  squash_merges: true
   commit_messages:
     create: 'Neu: {{collection}} «{{slug}}»'
     update: 'Geändert: {{collection}} «{{slug}}»'
     delete: 'Gelöscht: {{collection}} «{{slug}}»'
     uploadMedia: 'Bild hochgeladen: {{path}}'
     deleteMedia: 'Bild gelöscht: {{path}}'
+
+publish_mode: editorial_workflow
 
 locale: de
 site_url: https://mw-wildlifeart.ch

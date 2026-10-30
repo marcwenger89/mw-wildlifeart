@@ -1,6 +1,6 @@
 # MW-Wildlifeart
 
-Webseite für Wildtierfotografie. Gebaut mit [Astro](https://astro.build), gehostet auf Netlify, Inhalte über den Admin-Bereich (Decap CMS) unter `/admin/`.
+Webseite für Wildtierfotografie. Gebaut mit [Astro](https://astro.build), gehostet auf Cloudflare Pages, Inhalte über den Admin-Bereich (Decap CMS) unter `/admin/`.
 
 ## Wo was liegt
 
@@ -27,3 +27,10 @@ Der Knopf auf jeder Foto-Detailseite nimmt den Saal-Link des Fotos. Ist dort kei
 npm install
 npm run dev
 ```
+
+## Hosting (Cloudflare Pages)
+
+- Baut automatisch bei jedem Commit auf `main` (`npm run build`, Ausgabe `dist`, Node 22 über `.node-version`).
+- Vorschau-Builds für andere Zweige sind aus, damit Entwürfe aus dem Admin keine Builds verbrauchen.
+- Admin-Anmeldung: `functions/api/auth.js` und `functions/api/callback.js` (GitHub OAuth App, Variablen `GITHUB_CLIENT_ID` und `GITHUB_CLIENT_SECRET` im Cloudflare-Projekt).
+- Kopfzeilen (Caching, Sicherheit): `public/_headers`.

@@ -19,7 +19,7 @@ E-Mail: [mr.wenger@gmx.ch](mailto:mr.wenger@gmx.ch), oder über das [Kontaktform
 
 ## Hosting und Bekanntgabe ins Ausland
 
-Die Webseite wird von Netlify, Inc. (San Francisco, USA) betrieben. Für das Kontaktformular nutzen wir Web3Forms. Dabei können Personendaten in die USA übermittelt werden. Die Anbieter sichern diese Übermittlung nach eigenen Angaben mit Standardvertragsklauseln oder dem Swiss-U.S. Data Privacy Framework ab.
+Die Webseite wird bei Cloudflare, Inc. (San Francisco, USA) gehostet. Cloudflare stellt die Seite über ein weltweites Netz von Rechenzentren bereit und kann dabei auch Server ausserhalb der Schweiz nutzen. Für das Kontaktformular nutzen wir Web3Forms. Dabei können Personendaten in die USA übermittelt werden. Die Anbieter sichern diese Übermittlung nach eigenen Angaben mit Standardvertragsklauseln oder dem Swiss-U.S. Data Privacy Framework ab.
 
 ## Saal Digital
 
