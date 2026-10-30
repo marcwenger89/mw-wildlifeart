@@ -1,6 +1,6 @@
 ---
 titel: Fotobücher
-beschreibung: Ausgewählte Serien als gebundenes Buch mit kurzen Texten.
+beschreibung: Ausgewählte Galerien als gebundenes Buch mit kurzen Texten.
 bild: /bilder/shop-fotobuecher.jpg
 angaben:
   - bezeichnung: Umfang

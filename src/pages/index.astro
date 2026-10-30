@@ -56,10 +56,10 @@ const anzahl = (id: string) => fotos.filter(f => f.data.serie.id === id).length;
     <div class="wrap">
       <div class="block-head">
         <div>
-          <p class="eyebrow">Serien</p>
+          <p class="eyebrow">Galerien</p>
           <h2>{s.serien_titel}</h2>
         </div>
-        <p>{s.serien_text}</p>
+        {s.serien_text && <p>{s.serien_text}</p>}
       </div>
       <div class="series">
         {serien.map(serie => (

@@ -36,12 +36,12 @@ collections:
     identifier_field: titel
     slug: '{{slug}}'
     summary: '{{titel}} · {{serie}}'
-    sortable_fields: [titel, serie, reihenfolge]
+    sortable_fields: [hochgeladen, titel, serie]
     view_groups:
-      - { label: Serie, field: serie }
+      - { label: Galerie, field: serie }
     fields:
       - { name: titel, label: Titel, widget: string }
-      - { name: serie, label: Serie, widget: relation, collection: serien, search_fields: [titel], value_field: '{{slug}}', display_fields: [titel] }
+      - { name: serie, label: Galerie, widget: relation, collection: serien, search_fields: [titel], value_field: '{{slug}}', display_fields: [titel] }
       - { name: bild, label: Bild, widget: image, hint: 'Web-Version, lange Seite etwa 2000 px' }
       - { name: ort, label: Ort, widget: string, required: false, hint: 'z. B. Vallée de Joux VD' }
       - { name: koordinaten, label: Koordinaten, widget: string, required: false, hint: 'z. B. 46.62° N, 6.27° E. Leer lassen, wenn der Ort geheim bleiben soll.' }
@@ -50,14 +50,15 @@ collections:
       - { name: blende, label: Blende, widget: string, required: false, hint: 'z. B. f/4' }
       - { name: belichtung, label: Belichtungszeit, widget: string, required: false, hint: 'z. B. 1/1000 s' }
       - { name: iso, label: ISO, widget: string, required: false, hint: 'nur die Zahl, z. B. 800' }
-      - { name: saal_link, label: Saal-Link für dieses Bild, widget: string, required: false, hint: 'Leer lassen, dann gilt der Saal-Link der Serie.' }
+      - { name: saal_link, label: Saal-Link für dieses Bild, widget: string, required: false, hint: 'Leer lassen, dann gilt der Saal-Link der Galerie.' }
+      - { name: tags, label: Tags, widget: relation, collection: seite, file: tags, search_fields: ['tags.*'], value_field: 'tags.*', display_fields: ['tags.*'], multiple: true, required: false, hint: 'Zum Filtern unter «Alle Bilder». Neue Tags legst du unter Seitentexte → Tags an.' }
       - { name: startseite, label: Auf der Startseite zeigen (grosses Bild oben), widget: boolean, default: false }
-      - { name: reihenfolge, label: Reihenfolge in der Serie, widget: number, value_type: int, default: 100, hint: 'Kleinere Zahl kommt zuerst.' }
+      - { name: hochgeladen, label: Hochgeladen am, widget: datetime, date_format: 'DD.MM.YYYY', time_format: 'HH:mm', required: false, hint: 'Wird beim Erstellen automatisch gesetzt. Das neueste Foto steht in der Galerie zuerst. Nur ändern, wenn ein Bild weiter nach vorne oder hinten soll.' }
       - { name: body, label: Geschichte zum Bild, widget: markdown, required: false, buttons: [bold, italic, link], editor_components: [] }
 
   - name: serien
-    label: Serien (Galerien)
-    label_singular: Serie
+    label: Galerien
+    label_singular: Galerie
     folder: src/content/serien
     create: true
     identifier_field: titel
@@ -157,6 +158,11 @@ collections:
   - name: seite
     label: Seitentexte
     files:
+      - name: tags
+        label: Tags (Auswahl für die Fotos)
+        file: src/data/tags.json
+        fields:
+          - { name: tags, label: Tags, label_singular: Tag, widget: list, field: { name: tag, label: Tag, widget: string }, hint: 'z. B. Tierarten. Was hier steht, kannst du bei jedem Foto auswählen. Auf der Seite erscheinen nur Tags, die mindestens ein Foto hat.' }
       - name: einstellungen
         label: Startseite, Über mich und Kontakt
         file: src/data/einstellungen.json
@@ -171,8 +177,8 @@ collections:
               - { name: titel_betont, label: 'Titel (betontes Wort, in Gold)', widget: string, required: false }
               - { name: titel_ende, label: 'Titel (Ende)', widget: string, required: false }
               - { name: text, label: Einleitung, widget: text }
-              - { name: serien_titel, label: Titel Serien-Bereich, widget: string }
-              - { name: serien_text, label: Text Serien-Bereich, widget: text }
+              - { name: serien_titel, label: Titel Galerien-Bereich, widget: string }
+              - { name: serien_text, label: Text Galerien-Bereich, widget: text, required: false, hint: 'Leer lassen = kein Text' }
               - { name: shop_titel, label: Titel Shop-Bereich, widget: string }
               - { name: shop_text, label: Text Shop-Bereich, widget: text }
           - name: ueber_mich

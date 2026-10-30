@@ -35,7 +35,7 @@ const lb = reihe.map(f => ({
         <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
         Zurück zur Galerie
       </a>
-      <span class="eyebrow">Serie · {serie?.data.titel}</span>
+      <span class="eyebrow">Galerie · {serie?.data.titel}</span>
     </div>
   </div>
   <div class="wrap detail-grid">
@@ -56,7 +56,7 @@ const lb = reihe.map(f => ({
           Als Print kaufen
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"/></svg>
         </a>
-        <p class="buy-note">Öffnet {d.saal_link ? 'das Bild' : 'die Serie'} bei Saal Digital. Dort wählst du Format und Material.</p>
+        <p class="buy-note">Öffnet {d.saal_link ? 'das Bild' : 'die Galerie'} bei Saal Digital. Dort wählst du Format und Material.</p>
       </div>
       )}
       {reihe.length > 1 && (
@@ -88,7 +88,7 @@ const lb = reihe.map(f => ({
   const von = new URLSearchParams(location.search).get('von');
   if (von === 'alle') (document.getElementById('d-back') as HTMLAnchorElement).href = '/galerien/alle/';
 
-  // Vollbild: ganzes Bild eingepasst, Blättern innerhalb der Serie mit Pfeilen, Tastatur, Mausrad und Wischen
+  // Vollbild: ganzes Bild eingepasst, Blättern innerhalb der Galerie mit Pfeilen, Tastatur, Mausrad und Wischen
   const lb = document.getElementById('lightbox')!;
   const stage = document.getElementById('lb-stage')!;
   const img = document.getElementById('lb-img') as HTMLImageElement;

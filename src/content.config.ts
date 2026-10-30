@@ -2,6 +2,10 @@ import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+// Leere Felder aus dem Admin (null oder '') wie «nicht gesetzt» behandeln, damit der Standardwert greift
+const optional = <T extends z.ZodTypeAny>(schema: T) =>
+  z.preprocess(v => (v === null || v === '' ? undefined : v), schema);
+
 const serien = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/serien' }),
   schema: z.object({
@@ -28,13 +32,10 @@ const fotos = defineCollection({
     iso: z.string().optional(),
     saal_link: z.string().optional(),
     startseite: z.boolean().default(false),
-    reihenfolge: z.number().default(100),
+    hochgeladen: optional(z.coerce.date().optional()),
+    tags: optional(z.array(z.string()).default([])),
   }),
 });
-
-// Leere Felder aus dem Admin (null oder '') wie «nicht gesetzt» behandeln, damit der Standardwert greift
-const optional = <T extends z.ZodTypeAny>(schema: T) =>
-  z.preprocess(v => (v === null || v === '' ? undefined : v), schema);
 
 const blog = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/blog' }),
