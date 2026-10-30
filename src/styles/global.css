@@ -307,16 +307,21 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 /* ---------- Vollbild ---------- */
 .lightbox {
   position: fixed; inset: 0; z-index: 70; background: var(--lightbox); color: var(--lightbox-fg);
-  display: grid; grid-template-rows: auto minmax(0, 1fr) auto;
+  display: grid; grid-template-rows: auto minmax(0, 1fr);
   padding: calc(env(safe-area-inset-top, 0px) + 12px) max(12px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 14px) max(12px, env(safe-area-inset-left, 0px));
   opacity: 0; transition: opacity 400ms var(--ease); touch-action: pinch-zoom;
 }
 .lightbox.open { opacity: 1; }
 @media (prefers-reduced-motion: reduce) { .lightbox { transition: none; } }
 .lb-top { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
-/* Das ganze Bild wird in die freie Fläche eingepasst und zentriert, nie abgeschnitten */
-.lb-stage { position: relative; min-height: 0; margin-top: 10px; }
-.lb-stage img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: contain; transition: opacity 160ms var(--ease); }
+/* Das ganze Bild wird eingepasst und zentriert, nie abgeschnitten; die Infos stehen direkt darunter */
+.lb-stage { position: relative; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.lb-stage img {
+  max-width: 100%; width: auto; height: auto;
+  max-height: calc(100vh - 44px - 26px - 4.5rem);
+  max-height: calc(100dvh - 44px - 26px - 4.5rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  transition: opacity 160ms var(--ease);
+}
 .lb-stage img.weg { opacity: 0; }
 .lb-nav { position: absolute; top: 50%; translate: 0 -50%; background: rgba(11, 14, 12, .45); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
 .lb-prev { left: 4px; }
@@ -327,7 +332,8 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 .lb-btn { background: rgba(233, 236, 230, .08); color: var(--lightbox-fg); border: 1px solid rgba(233, 236, 230, .2); width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; }
 .lb-btn:hover { background: rgba(233, 236, 230, .18); }
 .lb-btn svg { width: 18px; height: 18px; }
-.lb-cap { text-align: center; font: .8125rem/1.5 var(--f-mono); opacity: .8; padding-top: 10px; margin: 0; min-height: 1.5em; }
+.lb-cap { text-align: center; font: .8125rem/1.5 var(--f-mono); opacity: .8; margin: 1em 0 0; padding-inline: 8px; }
+.lb-cap:empty { display: none; }
 
 /* Schmalere Kopfzeile auf dem Handy */
 @media (max-width: 640px) {
