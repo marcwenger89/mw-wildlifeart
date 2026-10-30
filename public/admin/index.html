@@ -5,8 +5,116 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
   <title>Admin · MW-Wildlifeart</title>
+  <style>
+    #alle-veroeffentlichen {
+      position: fixed; right: 16px; bottom: 16px; z-index: 9999;
+      padding: 10px 16px; border: 0; border-radius: 6px;
+      background: #3a69c7; color: #fff; font: 600 14px/1.2 system-ui, sans-serif;
+      box-shadow: 0 2px 8px rgba(0,0,0,.25); cursor: pointer;
+    }
+    #alle-veroeffentlichen:disabled { background: #8a93a6; cursor: wait; }
+  </style>
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@3.17.1/dist/decap-cms.js"></script>
+  <script>
+    // Knopf «Alle bereiten Entwürfe veröffentlichen»: übernimmt alle Entwürfe in der Spalte «Bereit»
+    // nacheinander auf main. Alle ausser dem letzten bekommen [skip ci], darum gibt es nur einen Build.
+    (function () {
+      var REPO = 'marcwenger89/mw-wildlifeart';
+      var API = 'https://api.github.com/repos/' + REPO;
+      var LABEL = 'decap-cms/pending_publish';
+
+      function token() {
+        try { return JSON.parse(localStorage.getItem('decap-cms-user') || '{}').token; } catch (e) { return null; }
+      }
+
+      function gh(pfad, optionen) {
+        optionen = optionen || {};
+        optionen.headers = { Authorization: 'token ' + token(), Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' };
+        return fetch(API + pfad, optionen);
+      }
+
+      function warten(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+      async function bereiteEntwuerfe() {
+        var res = await gh('/pulls?state=open&base=main&per_page=100');
+        if (!res.ok) throw new Error('Entwürfe konnten nicht geladen werden (' + res.status + ').');
+        var prs = await res.json();
+        return prs
+          .filter(function (pr) {
+            return pr.head.ref.indexOf('cms/') === 0 && pr.labels.some(function (l) { return l.name === LABEL; });
+          })
+          .sort(function (a, b) { return a.number - b.number; });
+      }
+
+      async function zusammenfuehren(pr, letzter) {
+        var titel = pr.title + (letzter ? '' : ' [skip ci]');
+        for (var versuch = 0; versuch < 4; versuch++) {
+          var res = await gh('/pulls/' + pr.number + '/merge', {
+            method: 'PUT',
+            body: JSON.stringify({ merge_method: 'squash', commit_title: titel, commit_message: 'Gesammelt veröffentlicht im Admin.', sha: pr.head.sha })
+          });
+          if (res.ok) {
+            await gh('/git/refs/heads/' + pr.head.ref.split('/').map(encodeURIComponent).join('/'), { method: 'DELETE' });
+            return true;
+          }
+          // GitHub braucht nach dem vorherigen Zusammenführen kurz, bis der nächste Entwurf wieder bereit ist
+          await warten(2000);
+        }
+        return false;
+      }
+
+      async function veroeffentlichen(knopf) {
+        if (!token()) { alert('Bitte zuerst anmelden.'); return; }
+        knopf.disabled = true;
+        knopf.textContent = 'Suche Entwürfe …';
+        try {
+          var prs = await bereiteEntwuerfe();
+          if (!prs.length) {
+            alert('In der Spalte «Bereit» liegt kein Entwurf. Zieh die Karten im «Arbeitsablauf» zuerst nach «Bereit».');
+            return;
+          }
+          var liste = prs.map(function (pr) { return '• ' + pr.title; }).join('\n');
+          if (!confirm(prs.length + ' Entwürfe veröffentlichen? Das kostet einen Build.\n\n' + liste)) return;
+
+          var fehler = [];
+          for (var i = 0; i < prs.length; i++) {
+            knopf.textContent = 'Veröffentliche ' + (i + 1) + ' von ' + prs.length + ' …';
+            // Klappt der letzte nicht, gibt es keinen Build; das einzelne Veröffentlichen danach baut alles mit
+            var letzter = i === prs.length - 1;
+            var ok = await zusammenfuehren(prs[i], letzter);
+            if (!ok) fehler.push(prs[i].title);
+          }
+          if (fehler.length) {
+            alert('Diese Entwürfe konnten nicht veröffentlicht werden:\n\n' + fehler.join('\n') +
+              '\n\nBitte einzeln im «Arbeitsablauf» veröffentlichen. Der Rest ist übernommen.');
+          } else {
+            alert('Fertig. Die Seite ist in etwa einer Minute online aktualisiert.');
+          }
+          location.reload();
+        } catch (e) {
+          alert(e.message);
+        } finally {
+          knopf.disabled = false;
+          knopf.textContent = 'Alle bereiten Entwürfe veröffentlichen';
+        }
+      }
+
+      function knopfZeigen() {
+        var knopf = document.getElementById('alle-veroeffentlichen');
+        if (!token()) { if (knopf) knopf.remove(); return; }
+        if (knopf) return;
+        knopf = document.createElement('button');
+        knopf.id = 'alle-veroeffentlichen';
+        knopf.type = 'button';
+        knopf.textContent = 'Alle bereiten Entwürfe veröffentlichen';
+        knopf.addEventListener('click', function () { veroeffentlichen(knopf); });
+        document.body.appendChild(knopf);
+      }
+
+      setInterval(knopfZeigen, 1000);
+    })();
+  </script>
 </body>
 </html>
