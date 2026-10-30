@@ -5,7 +5,7 @@ const { fotos, von } = Astro.props;
 ---
 <div class="mosaic">
   {fotos.map(f => (
-    <a class="tile" href={`/fotos/${f.id}/?von=${von}`}>
+    <a class="tile" href={`/fotos/${f.id}/?von=${von}`} data-tags={f.data.tags.join('|')}>
       <img src={f.data.bild} alt={f.data.titel} loading="lazy">
       <span class="cap"><strong>{f.data.titel}</strong>{f.data.ort && <span>{f.data.ort}</span>}</span>
     </a>

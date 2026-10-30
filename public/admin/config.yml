@@ -51,6 +51,7 @@ collections:
       - { name: belichtung, label: Belichtungszeit, widget: string, required: false, hint: 'z. B. 1/1000 s' }
       - { name: iso, label: ISO, widget: string, required: false, hint: 'nur die Zahl, z. B. 800' }
       - { name: saal_link, label: Saal-Link für dieses Bild, widget: string, required: false, hint: 'Leer lassen, dann gilt der Saal-Link der Galerie.' }
+      - { name: tags, label: Tags, widget: relation, collection: seite, file: tags, search_fields: ['tags.*'], value_field: 'tags.*', display_fields: ['tags.*'], multiple: true, required: false, hint: 'Zum Filtern unter «Alle Bilder». Neue Tags legst du unter Seitentexte → Tags an.' }
       - { name: startseite, label: Auf der Startseite zeigen (grosses Bild oben), widget: boolean, default: false }
       - { name: hochgeladen, label: Hochgeladen am, widget: datetime, date_format: 'DD.MM.YYYY', time_format: 'HH:mm', required: false, hint: 'Wird beim Erstellen automatisch gesetzt. Das neueste Foto steht in der Galerie zuerst. Nur ändern, wenn ein Bild weiter nach vorne oder hinten soll.' }
       - { name: body, label: Geschichte zum Bild, widget: markdown, required: false, buttons: [bold, italic, link], editor_components: [] }
@@ -157,6 +158,11 @@ collections:
   - name: seite
     label: Seitentexte
     files:
+      - name: tags
+        label: Tags (Auswahl für die Fotos)
+        file: src/data/tags.json
+        fields:
+          - { name: tags, label: Tags, label_singular: Tag, widget: list, field: { name: tag, label: Tag, widget: string }, hint: 'z. B. Tierarten. Was hier steht, kannst du bei jedem Foto auswählen. Auf der Seite erscheinen nur Tags, die mindestens ein Foto hat.' }
       - name: einstellungen
         label: Startseite, Über mich und Kontakt
         file: src/data/einstellungen.json

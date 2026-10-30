@@ -8,7 +8,7 @@ export async function getStaticPaths() {
   const serien = await alleSerien();
   return [
     ...serien.map(s => ({ params: { serie: s.id }, props: { titel: s.data.titel, intro: s.data.kurztext } })),
-    { params: { serie: 'alle' }, props: { titel: 'Alle Bilder', intro: 'Alle Galerien in einem Mosaik. Über die Knöpfe wechselst du zu einer einzelnen Galerie.' } },
+    { params: { serie: 'alle' }, props: { titel: 'Alle Bilder', intro: 'Alle Galerien in einem Mosaik. Über die Knöpfe wechselst du zu einer einzelnen Galerie, mit «Filtern nach» findest du zum Beispiel eine bestimmte Tierart.' } },
   ];
 }
 
@@ -17,6 +17,8 @@ const { titel, intro } = Astro.props;
 const serien = await alleSerien();
 const alle = await alleFotos();
 const fotos = serie === 'alle' ? alle : alle.filter(f => f.data.serie.id === serie);
+// Nur Tags anbieten, die bei mindestens einem Foto vorkommen
+const tags = serie === 'alle' ? [...new Set(fotos.flatMap(f => f.data.tags))].sort((a, b) => a.localeCompare(b, 'de-CH')) : [];
 ---
 <Seite titel={titel} beschreibung={intro} galerie={serie} bild={fotos[0]?.data.bild}>
   <section class="gallery-page">
@@ -28,17 +30,56 @@ const fotos = serie === 'alle' ? alle : alle.filter(f => f.data.serie.id === ser
       </nav>
       <div class="block-head">
         <div>
-          <p class="eyebrow">{fotos.length} Bilder</p>
+          <p class="eyebrow"><span id="anzahl">{fotos.length}</span> <span id="anzahl-wort">{fotos.length === 1 ? 'Bild' : 'Bilder'}</span></p>
           <h1 class="g-title">{titel}</h1>
         </div>
         <p>{intro}</p>
       </div>
       <nav class="filters" aria-label="Andere Galerien">
-        {serien.map(s => <a class="chip" href={`/galerien/${s.id}/`} aria-current={s.id === serie ? 'page' : undefined}>{s.data.titel}</a>)}
         <a class="chip" href="/galerien/alle/" aria-current={serie === 'alle' ? 'page' : undefined}>Alle Bilder</a>
+        {serien.map(s => <a class="chip" href={`/galerien/${s.id}/`} aria-current={s.id === serie ? 'page' : undefined}>{s.data.titel}</a>)}
       </nav>
+      {tags.length > 0 && (
+        <div class="tag-filter">
+          <label for="tag-wahl">Filtern nach</label>
+          <select id="tag-wahl">
+            <option value="">Alle Motive</option>
+            {tags.map(t => <option value={t}>{t}</option>)}
+          </select>
+        </div>
+      )}
       <Mosaik fotos={fotos} von={serie} />
+      <p class="tag-leer" id="tag-leer" hidden>Zu diesem Tag gibt es noch keine Bilder.</p>
       <p class="hint">Bild anklicken öffnet die Foto-Detailseite{einstellungen.shop.aktiv && ' mit dem Knopf «Als Print kaufen»'}.</p>
     </div>
   </section>
 </Seite>
+
+<script>
+  // Tag-Filter auf «Alle Bilder»: blendet Kacheln aus, merkt sich die Wahl in der Adresse (?tag=…)
+  const wahl = document.getElementById('tag-wahl') as HTMLSelectElement | null;
+  if (wahl) {
+    const kacheln = [...document.querySelectorAll<HTMLElement>('.mosaic .tile')];
+    const anzahl = document.getElementById('anzahl')!;
+    const leer = document.getElementById('tag-leer')!;
+    const anwenden = () => {
+      const tag = wahl.value;
+      let sichtbar = 0;
+      for (const k of kacheln) {
+        const passt = !tag || (k.dataset.tags ?? '').split('|').includes(tag);
+        k.hidden = !passt;
+        if (passt) sichtbar++;
+      }
+      anzahl.textContent = String(sichtbar);
+      document.getElementById('anzahl-wort')!.textContent = sichtbar === 1 ? 'Bild' : 'Bilder';
+      leer.hidden = sichtbar > 0;
+      const url = new URL(location.href);
+      if (tag) url.searchParams.set('tag', tag); else url.searchParams.delete('tag');
+      history.replaceState(history.state, '', url);
+    };
+    const start = new URLSearchParams(location.search).get('tag');
+    if (start && [...wahl.options].some(o => o.value === start)) wahl.value = start;
+    wahl.addEventListener('change', anwenden);
+    anwenden();
+  }
+</script>

@@ -33,6 +33,7 @@ const fotos = defineCollection({
     saal_link: z.string().optional(),
     startseite: z.boolean().default(false),
     hochgeladen: optional(z.coerce.date().optional()),
+    tags: optional(z.array(z.string()).default([])),
   }),
 });
 

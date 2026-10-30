@@ -102,7 +102,7 @@ p { margin: 0; }
 .nav-drop-list::before { content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 12px; }
 .nav-drop.open .nav-drop-list { opacity: 1; visibility: visible; transform: none; transition: opacity 220ms var(--ease), transform 220ms var(--ease), visibility 0s; }
 @media (prefers-reduced-motion: reduce) { .nav-drop-list, .nav-drop-btn svg { transition: none !important; } }
-.nav-drop-list li.sep { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 6px; }
+.nav-drop-list li.sep { border-bottom: 1px solid var(--line); margin-bottom: 6px; padding-bottom: 6px; }
 .nav-drop-list a {
   display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding: 9px 18px;
   color: var(--fg); text-decoration: none; transition: background-color 200ms;
@@ -180,6 +180,18 @@ section.block { padding-block: 72px; border-top: 1px solid var(--line); }
 }
 .chip:hover { color: var(--fg); border-color: var(--muted); }
 .chip[aria-current="page"] { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+.tag-filter { display: flex; align-items: center; gap: 12px; margin: -12px 0 28px; }
+.tag-filter label { color: var(--muted); font-size: .875rem; }
+.tag-filter select {
+  font: 500 .875rem/1 var(--f-body); color: var(--fg); background: var(--surface); padding: 9px 36px 9px 14px;
+  border: 1px solid var(--line); border-radius: 999px; cursor: pointer; max-width: 100%; min-width: 0;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%239aa49d' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+}
+.tag-filter select:hover, .tag-filter select:focus-visible { border-color: var(--muted); }
+.tag-leer { color: var(--muted); }
+.tile[hidden] { display: none; }
 .mosaic { columns: 3 300px; column-gap: 14px; }
 .tile {
   break-inside: avoid; margin: 0 0 14px; position: relative; overflow: hidden; cursor: zoom-in;
