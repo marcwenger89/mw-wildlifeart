@@ -80,6 +80,11 @@ p { margin: 0; }
 .logo img { width: 34px; height: 34px; transition: width 300ms var(--ease), height 300ms var(--ease); }
 .site-head.scrolled .logo img { width: 28px; height: 28px; }
 .logo em { font-style: italic; font-weight: 300; color: var(--accent); }
+/* Instagram-Symbol neben dem Schriftzug: so hoch wie «MW», Abstand etwa so breit wie «MW» */
+.brand { display: inline-flex; align-items: center; font-family: var(--f-display); font-size: 1.5rem; }
+.insta { display: inline-flex; margin-left: 1.55em; color: var(--muted); transition: color 300ms; }
+.insta:hover, .insta:focus-visible { color: var(--fg); }
+.insta svg { width: .78em; height: .78em; fill: none; stroke: currentColor; stroke-width: 1.8; }
 .site-nav { display: flex; flex-wrap: wrap; gap: 6px 26px; font-size: 1.0625rem; }
 .site-nav > a { text-decoration: none; color: var(--muted); padding-block: 4px; border-bottom: 1px solid transparent; transition: color 300ms, border-color 300ms; }
 .site-nav > a:hover, .site-nav > a[aria-current="page"] { color: var(--fg); border-color: var(--accent); }
@@ -352,6 +357,7 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
   .site-head .wrap { padding-block: 16px 12px; gap: 6px 20px; }
   .site-head.scrolled .wrap { padding-block: 10px; }
   .site-nav { gap: 2px 18px; font-size: .9375rem; }
-  .logo { font-size: 1.3rem; gap: 10px; }
+  .logo, .brand { font-size: 1.3rem; }
+  .logo { gap: 10px; }
   .logo img { width: 28px; height: 28px; }
 }

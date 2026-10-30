@@ -50,7 +50,14 @@ const baustelle = einstellungen.baustelle.aktiv && !immerOffen;
   <a class="skip" href="#inhalt">Zum Inhalt springen</a>
   <header class="site-head" id="kopf">
     <div class="wrap">
-      <a class="logo" href="/"><img src="/logo/elefant-weiss.png" alt="" width="34" height="34"><span>{vorname}{rest.length > 0 && <><em>-</em>{rest.join('-')}</>}</span></a>
+      <div class="brand">
+        <a class="logo" href="/"><img src="/logo/elefant-weiss.png" alt="" width="34" height="34"><span>{vorname}{rest.length > 0 && <><em>-</em>{rest.join('-')}</>}</span></a>
+        {einstellungen.instagram && (
+          <a class="insta" href={einstellungen.instagram} target="_blank" rel="noopener" aria-label="MW-Wildlifeart auf Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" /><circle cx="12" cy="12" r="4.3" /><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none" /></svg>
+          </a>
+        )}
+      </div>
       <nav class="site-nav" aria-label="Hauptnavigation">
         <div class="nav-drop" id="nav-drop">
           <button type="button" class="nav-drop-btn" id="nav-drop-btn" aria-expanded="false" aria-controls="nav-drop-list" data-current={galerie ? '' : undefined}>
