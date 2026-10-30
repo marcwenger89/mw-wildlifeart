@@ -8,6 +8,8 @@ brennweite: 400mm Festbrennweite
 blende: f/4
 belichtung: 1/2000
 iso: "320"
+tags:
+  - Elefant
 startseite: true
 reihenfolge: 100
 ---
