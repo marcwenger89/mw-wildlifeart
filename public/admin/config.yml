@@ -170,7 +170,7 @@ collections:
         fields:
           - { name: seitenname, label: Name der Seite, widget: string }
           - { name: beschreibung, label: Beschreibung für Suchmaschinen, widget: text }
-          - { name: instagram, label: Instagram-Link, widget: string, required: false, hint: 'Symbol neben dem Schriftzug oben. Leer lassen = kein Symbol.' }
+          - { name: instagram, label: Instagram-Link, widget: string, required: false, hint: 'Farbiges Symbol rechts im Menü und Hinweis unter dem Kontaktformular. Leer lassen = beides weg.' }
           - name: startseite
             label: Startseite
             widget: object

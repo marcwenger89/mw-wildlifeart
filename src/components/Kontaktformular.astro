@@ -1,8 +1,11 @@
 ---
 import einstellungen from '../data/einstellungen.json';
+import InstaSymbol from './InstaSymbol.astro';
 // Mit Schlüssel von web3forms.com gehen Nachrichten direkt an die hinterlegte Mailadresse (gratis).
 // Ohne Schlüssel erscheint statt des Formulars ein Mail-Link.
 const schluessel = einstellungen.kontakt.web3forms_schluessel?.trim();
+const insta = einstellungen.instagram?.trim();
+const instaName = insta?.replace(/\/+$/, '').split('/').pop();
 const danke = new URL('/danke/', Astro.site).href;
 ---
 {schluessel ? (
@@ -19,4 +22,9 @@ const danke = new URL('/danke/', Astro.site).href;
   </form>
 ) : (
   <p>Schreib mir an <a href="mailto:mr.wenger@gmx.ch">mr.wenger@gmx.ch</a>.</p>
+)}
+{insta && (
+  <p class="insta-hinweis">
+    <a href={insta} target="_blank" rel="noopener"><InstaSymbol id="insta-kontakt" /><span>Neue Bilder zeige ich auch auf Instagram: <strong>@{instaName}</strong></span></a>
+  </p>
 )}

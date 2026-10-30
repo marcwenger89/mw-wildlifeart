@@ -1,0 +1,21 @@
+---
+// Instagram-Symbol in den Instagram-Farben. id muss pro Seite eindeutig sein (Verlauf).
+interface Props { id: string }
+const { id } = Astro.props;
+---
+<svg class="insta-svg" viewBox="0 0 24 24" aria-hidden="true">
+  <defs>
+    <radialGradient id={id} cx="0.3" cy="1.05" r="1.25">
+      <stop offset="0" stop-color="#fdd56b" />
+      <stop offset=".3" stop-color="#fa7e1e" />
+      <stop offset=".55" stop-color="#d62976" />
+      <stop offset=".8" stop-color="#962fbf" />
+      <stop offset="1" stop-color="#4f5bd5" />
+    </radialGradient>
+  </defs>
+  <g fill="none" stroke={`url(#${id})`} stroke-width="2">
+    <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" />
+    <circle cx="12" cy="12" r="4.3" />
+  </g>
+  <circle cx="17.4" cy="6.6" r="1.25" fill={`url(#${id})`} />
+</svg>
