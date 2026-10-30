@@ -20,11 +20,12 @@ const d = foto.data;
 const kaufLink = d.saal_link || serie?.data.saal_link || SAAL_STANDARD;
 const exif = [
   ['Brennweite', d.brennweite], ['Blende', d.blende], ['Belichtung', d.belichtung],
-  ['ISO', d.iso], ['Monat', d.monat], ['Ort', d.koordinaten],
+  ['ISO', d.iso], ['Koordinaten', d.koordinaten], ['Monat', d.monat],
 ].filter(([, v]) => v);
 const lb = reihe.map(f => ({
   src: f.data.bild,
-  cap: [f.data.titel, f.data.ort, f.data.brennweite, f.data.blende, f.data.belichtung, f.data.iso && `ISO ${f.data.iso}`].filter(Boolean).join(' · '),
+  alt: f.data.titel,
+  cap: [f.data.ort, f.data.brennweite, f.data.belichtung, f.data.iso && `ISO\u00a0${f.data.iso}`].filter(Boolean).join(' · '),
 }));
 ---
 <Seite titel={d.titel} beschreibung={`${d.titel}${d.ort ? ', ' + d.ort : ''}. Wildtierfotografie von MW-Wildlifeart.`} bild={d.bild} galerie={foto.data.serie.id}>
@@ -69,7 +70,6 @@ const lb = reihe.map(f => ({
 
   <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Vollbildansicht" data-bilder={JSON.stringify(lb)} data-start={k}>
     <div class="lb-top">
-      {lb.length > 1 && <span class="lb-count" id="lb-count" aria-live="polite"></span>}
       <button class="lb-btn" type="button" id="lb-close" aria-label="Vollbild schliessen"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3 3 13"/></svg></button>
     </div>
     <div class="lb-stage" id="lb-stage">
@@ -93,15 +93,13 @@ const lb = reihe.map(f => ({
   const stage = document.getElementById('lb-stage')!;
   const img = document.getElementById('lb-img') as HTMLImageElement;
   const cap = document.getElementById('lb-cap')!;
-  const count = document.getElementById('lb-count');
-  const bilder: { src: string; cap: string }[] = JSON.parse(lb.dataset.bilder!);
+  const bilder: { src: string; alt: string; cap: string }[] = JSON.parse(lb.dataset.bilder!);
   const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mehrere = bilder.length > 1;
   let i = Number(lb.dataset.start);
   const vorladen = (n: number) => { new Image().src = bilder[(n + bilder.length) % bilder.length].src; };
   const fill = () => {
-    img.src = bilder[i].src; img.alt = bilder[i].cap; cap.textContent = bilder[i].cap;
-    if (count) count.textContent = `${i + 1} / ${bilder.length}`;
+    img.src = bilder[i].src; img.alt = bilder[i].alt; cap.textContent = bilder[i].cap;
     if (mehrere) { vorladen(i + 1); vorladen(i - 1); }
   };
   let wechsel = 0;
