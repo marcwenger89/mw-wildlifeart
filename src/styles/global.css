@@ -18,6 +18,11 @@
   --t-fade: 900ms;
   --t-hover: 700ms;
   --head-h: 76px;
+  /* Hintergrundverlauf «Waldrand am Abend» (MW 05), linear und blasser: Helligkeit zwischen MW 05 und MW 07 */
+  --verlauf-wald: #232f24;
+  --verlauf-mitte: #101412;
+  --verlauf-sand: #363225;
+  --kopf-bg: rgba(22, 30, 23, .78);
   color-scheme: dark;
 }
 @media (prefers-reduced-motion: reduce) { :root { --t-fade: 1ms; --t-hover: 1ms; } }
@@ -36,6 +41,11 @@ body {
   margin: 0; background: var(--bg); color: var(--fg);
   font: 400 1.0625rem/1.65 var(--f-body);
   -webkit-font-smoothing: antialiased;
+}
+/* Fest stehender Verlauf hinter der ganzen Seite (auch auf dem iPhone, daher als eigene Ebene) */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(170deg, var(--verlauf-wald), var(--verlauf-mitte) 55%, var(--verlauf-sand));
 }
 a { color: inherit; }
 img { display: block; max-width: 100%; }
@@ -56,7 +66,8 @@ p { margin: 0; }
 /* ---------- Kopfzeile ---------- */
 .site-head {
   position: sticky; top: 0; z-index: 20;
-  background: var(--bg); border-bottom: 1px solid transparent;
+  background: var(--kopf-bg); border-bottom: 1px solid transparent;
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
   padding-top: env(safe-area-inset-top, 0px);
   transition: border-color 300ms;
   view-transition-name: kopfzeile;
