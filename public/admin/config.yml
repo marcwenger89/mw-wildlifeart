@@ -53,6 +53,24 @@ collections:
       - { name: saal_link, label: Saal-Link für dieses Bild, widget: string, required: false, hint: 'Leer lassen, dann gilt der Saal-Link der Galerie.' }
       - { name: tags, label: Tags, widget: relation, collection: seite, file: tags, search_fields: ['tags.*'], value_field: 'tags.*', display_fields: ['tags.*'], multiple: true, required: false, hint: 'Zum Filtern unter «Alle Bilder». Neue Tags legst du unter Seitentexte → Tags an.' }
       - { name: startseite, label: Auf der Startseite zeigen (grosses Bild oben), widget: boolean, default: false }
+      - name: ausschnitt
+        label: 'Startseite: Bildausschnitt'
+        widget: select
+        required: false
+        default: center
+        hint: 'Nur wenn das Bild auf der Startseite ist. Das grosse Bild oben ist breit (am Handy hoch) und schneidet dein Foto zu. Hier wählst du, welcher Teil sichtbar bleibt.'
+        options:
+          - { label: Mitte, value: center }
+          - { label: Oben, value: 'center top' }
+          - { label: Unten, value: 'center bottom' }
+          - { label: Links, value: 'left center' }
+          - { label: Rechts, value: 'right center' }
+          - { label: Oben links, value: 'left top' }
+          - { label: Oben rechts, value: 'right top' }
+          - { label: Unten links, value: 'left bottom' }
+          - { label: Unten rechts, value: 'right bottom' }
+      - { name: startbild, label: 'Startseite: eigener Zuschnitt PC (optional)', widget: image, required: false, hint: 'Breitformat 2:1, z. B. 2400 × 1200 px. Wird statt des Fotos oben auf der Startseite gezeigt.' }
+      - { name: startbild_handy, label: 'Startseite: eigener Zuschnitt Handy (optional)', widget: image, required: false, hint: 'Hochformat 4:5, z. B. 1080 × 1350 px. Leer = Handy nimmt das PC-Bild bzw. das Foto.' }
       - { name: hochgeladen, label: Hochgeladen am, widget: datetime, date_format: 'DD.MM.YYYY', time_format: 'HH:mm', required: false, hint: 'Wird beim Erstellen automatisch gesetzt. Das neueste Foto steht in der Galerie zuerst. Nur ändern, wenn ein Bild weiter nach vorne oder hinten soll.' }
       - { name: body, label: Geschichte zum Bild, widget: markdown, required: false, buttons: [bold, italic, link], editor_components: [] }
 
@@ -70,6 +88,7 @@ collections:
       - { name: titelbild, label: Titelbild (hochformatig), widget: image }
       - { name: saal_link, label: Link zur Saal-Galerie, widget: string, required: false }
       - { name: reihenfolge, label: Reihenfolge, widget: number, value_type: int, default: 100, hint: 'Kleinere Zahl kommt zuerst.' }
+      - { name: startseite, label: Auf der Startseite zeigen, widget: boolean, default: false, hint: 'Auf der Startseite stehen höchstens 4 Galerien. Ist keine angehakt, erscheinen die ersten 4 nach Reihenfolge. Hat es mehr, erscheint der Knopf «Alle Galerien».' }
 
   - name: blog
     label: Blog
@@ -169,6 +188,7 @@ collections:
         fields:
           - { name: seitenname, label: Name der Seite, widget: string }
           - { name: beschreibung, label: Beschreibung für Suchmaschinen, widget: text }
+          - { name: instagram, label: Instagram-Link, widget: string, required: false, hint: 'Farbiges Symbol rechts im Menü und Hinweis unter dem Kontaktformular. Leer lassen = beides weg.' }
           - name: startseite
             label: Startseite
             widget: object

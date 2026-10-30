@@ -13,6 +13,7 @@ const serien = defineCollection({
     kurztext: z.string().default(''),
     titelbild: z.string(),
     reihenfolge: z.number().default(100),
+    startseite: z.boolean().default(false),
     saal_link: z.string().optional(),
   }),
 });
@@ -32,6 +33,9 @@ const fotos = defineCollection({
     iso: z.string().optional(),
     saal_link: z.string().optional(),
     startseite: z.boolean().default(false),
+    ausschnitt: optional(z.string().default('center')),
+    startbild: optional(z.string().optional()),
+    startbild_handy: optional(z.string().optional()),
     hochgeladen: optional(z.coerce.date().optional()),
     tags: optional(z.array(z.string()).default([])),
   }),

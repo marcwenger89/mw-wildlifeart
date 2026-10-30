@@ -80,6 +80,15 @@ p { margin: 0; }
 .logo img { width: 34px; height: 34px; transition: width 300ms var(--ease), height 300ms var(--ease); }
 .site-head.scrolled .logo img { width: 28px; height: 28px; }
 .logo em { font-style: italic; font-weight: 300; color: var(--accent); }
+/* Instagram: farbiges Symbol rechts im Menü und Hinweis unter dem Kontaktformular */
+.insta-svg { width: 1.2em; height: 1.2em; display: block; }
+.site-nav > a.nav-insta { display: inline-flex; align-items: center; border-bottom: 0; transition: transform 300ms var(--ease); }
+.site-nav > a.nav-insta:hover { transform: scale(1.12); }
+.insta-hinweis { margin-top: 28px; }
+.insta-hinweis a { display: inline-flex; align-items: center; gap: 12px; color: var(--muted); text-decoration: none; transition: color 300ms; }
+.insta-hinweis a:hover { color: var(--fg); }
+.insta-hinweis strong { color: var(--fg); font-weight: 500; }
+.insta-hinweis .insta-svg { width: 1.6em; height: 1.6em; flex: none; }
 .site-nav { display: flex; flex-wrap: wrap; gap: 6px 26px; font-size: 1.0625rem; }
 .site-nav > a { text-decoration: none; color: var(--muted); padding-block: 4px; border-bottom: 1px solid transparent; transition: color 300ms, border-color 300ms; }
 .site-nav > a:hover, .site-nav > a[aria-current="page"] { color: var(--fg); border-color: var(--accent); }

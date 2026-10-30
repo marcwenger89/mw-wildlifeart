@@ -8,6 +8,7 @@ import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
 import '../styles/global.css';
 import einstellungen from '../data/einstellungen.json';
+import InstaSymbol from '../components/InstaSymbol.astro';
 import { alleSerien, alleFotos } from '../lib/inhalt';
 import Intro from '../components/Intro.astro';
 
@@ -68,6 +69,7 @@ const baustelle = einstellungen.baustelle.aktiv && !immerOffen;
         <a href="/#blog">Blog</a>
         <a href="/#ueber">Über mich</a>
         <a href="/#kontakt">Kontakt</a>
+        {einstellungen.instagram && <a class="nav-insta" href={einstellungen.instagram} target="_blank" rel="noopener" aria-label="MW-Wildlifeart auf Instagram"><InstaSymbol id="insta-kopf" /></a>}
       </nav>
     </div>
   </header>
