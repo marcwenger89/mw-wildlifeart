@@ -40,6 +40,12 @@ const blog = defineCollection({
     bild: z.string().optional(),
     kurztext: z.string().default(''),
     entwurf: z.boolean().default(false),
+    kopfbild: z.boolean().default(true),
+    abschnitte: z.array(z.object({
+      text: z.string().default(''),
+      bilder: z.array(z.object({ bild: z.string(), alt: z.string().default('') })).default([]),
+      bildgroesse: z.enum(['klein', 'gross']).default('gross'),
+    })).default([]),
   }),
 });
 

@@ -226,6 +226,7 @@ section.block { padding-block: 72px; border-top: 1px solid var(--line); }
 .about h2 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); margin-block: 10px 18px; }
 .about p + p { margin-top: 14px; }
 .about p { color: var(--muted); max-width: 60ch; }
+.about .btn { margin-top: 24px; }
 .about .portrait { margin-top: 28px; max-width: 360px; aspect-ratio: 4 / 5; object-fit: cover; }
 form.contact { display: grid; gap: 14px; margin-top: 18px; }
 .field { display: grid; gap: 6px; }
@@ -252,6 +253,20 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 .prose a { color: var(--accent); }
 .prose img { margin: 24px 0; }
 .post-hero { margin: 8px 0 36px; aspect-ratio: 16 / 9; width: 100%; object-fit: cover; }
+
+/* Abschnitte mit Bildern daneben (Blog) */
+.abschnitt.mit-bild { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 56px; align-items: start; margin-block: 8px 32px; }
+.abschnitt.klein { grid-template-columns: minmax(0, 68ch) 260px; }
+.abschnitt-bilder { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; position: sticky; top: 110px; }
+.abschnitt-bilder img { margin: 0; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+.abschnitt-bilder img:first-child { grid-column: 1 / -1; }
+.klein .abschnitt-bilder { grid-template-columns: 1fr; }
+.klein .abschnitt-bilder img { aspect-ratio: 4 / 5; }
+@media (max-width: 860px) {
+  .abschnitt.mit-bild, .abschnitt.klein { grid-template-columns: minmax(0, 1fr); }
+  .abschnitt-bilder { position: static; }
+  .klein .abschnitt-bilder { order: -1; max-width: 260px; }
+}
 
 /* ---------- Einblenden beim Scrollen ---------- */
 .reveal-pending { opacity: 0; transform: translateY(22px); }

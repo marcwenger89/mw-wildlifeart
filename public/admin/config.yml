@@ -84,7 +84,32 @@ collections:
       - { name: bild, label: Titelbild, widget: image, required: false }
       - { name: kurztext, label: Kurztext für die Übersicht, widget: text }
       - { name: entwurf, label: Entwurf (noch nicht anzeigen), widget: boolean, default: false }
-      - { name: body, label: Text, widget: markdown }
+      - { name: kopfbild, label: Titelbild oben im Beitrag zeigen, widget: boolean, default: true, hint: 'Aus = Titelbild nur in der Blog-Übersicht.' }
+      - { name: body, label: Text, widget: markdown, required: false }
+      - name: abschnitte
+        label: Abschnitte mit Bildern daneben
+        label_singular: Abschnitt
+        widget: list
+        required: false
+        summary: '{{fields.text}}'
+        hint: 'Erscheinen nach dem Text. Bilder stehen rechts neben dem Abschnitt, auf dem Handy darüber bzw. darunter.'
+        fields:
+          - { name: text, label: Text, widget: markdown, buttons: [bold, italic, link, heading-two, bulleted-list], editor_components: [] }
+          - name: bildgroesse
+            label: Bildgrösse
+            widget: select
+            default: gross
+            options:
+              - { label: 'Klein (z.B. Porträt, 800 × 1000 px, Hochformat 4:5)', value: klein }
+              - { label: 'Gross (1. Bild 1800 × 1200 px, weitere 1200 × 800 px, Querformat 3:2)', value: gross }
+          - name: bilder
+            label: Bilder
+            label_singular: Bild
+            widget: list
+            required: false
+            fields:
+              - { name: bild, label: Bild, widget: image }
+              - { name: alt, label: 'Bildbeschreibung (für Suchmaschinen und Screenreader)', widget: string, required: false }
 
   - name: shop
     label: Shop
@@ -138,6 +163,8 @@ collections:
               - { name: titel, label: Titel, widget: string }
               - { name: text, label: 'Text (Leerzeile = neuer Absatz)', widget: text }
               - { name: bild, label: Porträt, widget: image, required: false }
+              - { name: link, label: 'Link des Knopfs (leer = kein Knopf)', widget: string, required: false, hint: 'z.B. /blog/hinter-der-kamera/' }
+              - { name: knopf_text, label: Text des Knopfs, widget: string, required: false, default: 'Mehr über mich' }
           - name: kontakt
             label: Kontakt
             widget: object
