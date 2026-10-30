@@ -1,6 +1,7 @@
 # Admin-Bereich (Decap CMS). Anmeldung mit dem GitHub-Konto (über /api/auth, Cloudflare Pages Function).
 # Entwurfsmodus: «Speichern» legt nur einen Entwurf an (eigener Zweig auf GitHub, nichts geht online).
 # Erst «Veröffentlichen» übernimmt den Eintrag auf main, dann baut Cloudflare die Seite neu (etwa eine Minute).
+# Löschen löst keinen eigenen Build aus ([skip ci]): Gelöschtes verschwindet von der Seite beim nächsten Veröffentlichen.
 backend:
   name: github
   repo: marcwenger89/mw-wildlifeart
@@ -11,9 +12,9 @@ backend:
   commit_messages:
     create: 'Neu: {{collection}} «{{slug}}»'
     update: 'Geändert: {{collection}} «{{slug}}»'
-    delete: 'Gelöscht: {{collection}} «{{slug}}»'
+    delete: 'Gelöscht: {{collection}} «{{slug}}» [skip ci]'
     uploadMedia: 'Bild hochgeladen: {{path}}'
-    deleteMedia: 'Bild gelöscht: {{path}}'
+    deleteMedia: 'Bild gelöscht: {{path}} [skip ci]'
 
 publish_mode: editorial_workflow
 
