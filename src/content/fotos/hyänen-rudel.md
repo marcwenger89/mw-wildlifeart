@@ -13,6 +13,6 @@ tags:
 startseite: true
 ausschnitt: center
 startbild: /bilder/hyäne_desktop_start_1.jpg
-startbild_handy: /bilder/hyäne-handy_start_1.jpg
-hochgeladen: 31.10.2026T00:23
+startbild_handy: /bilder/hyaene_handy_start_1.jpg
+hochgeladen: 2026-10-31T00:52
 ---
