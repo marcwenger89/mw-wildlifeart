@@ -5,7 +5,7 @@ export async function alleSerien() {
   return serien.sort((a, b) => a.data.reihenfolge - b.data.reihenfolge || a.data.titel.localeCompare(b.data.titel, 'de-CH'));
 }
 
-/** Alle Fotos, sortiert nach Serie und danach das neueste zuerst (Fotos ohne Datum am Schluss). */
+/** Alle Fotos, sortiert nach Galerie und danach das neueste zuerst (Fotos ohne Datum am Schluss). */
 export async function alleFotos() {
   const serien = await alleSerien();
   const rang = new Map(serien.map((s, i) => [s.id, i]));

@@ -8,7 +8,7 @@ export async function getStaticPaths() {
   const serien = await alleSerien();
   return [
     ...serien.map(s => ({ params: { serie: s.id }, props: { titel: s.data.titel, intro: s.data.kurztext } })),
-    { params: { serie: 'alle' }, props: { titel: 'Alle Bilder', intro: 'Alle Serien in einem Mosaik. Über die Knöpfe wechselst du zu einer einzelnen Galerie.' } },
+    { params: { serie: 'alle' }, props: { titel: 'Alle Bilder', intro: 'Alle Galerien in einem Mosaik. Über die Knöpfe wechselst du zu einer einzelnen Galerie.' } },
   ];
 }
 

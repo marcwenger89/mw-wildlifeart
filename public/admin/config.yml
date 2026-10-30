@@ -38,10 +38,10 @@ collections:
     summary: '{{titel}} · {{serie}}'
     sortable_fields: [hochgeladen, titel, serie]
     view_groups:
-      - { label: Serie, field: serie }
+      - { label: Galerie, field: serie }
     fields:
       - { name: titel, label: Titel, widget: string }
-      - { name: serie, label: Serie, widget: relation, collection: serien, search_fields: [titel], value_field: '{{slug}}', display_fields: [titel] }
+      - { name: serie, label: Galerie, widget: relation, collection: serien, search_fields: [titel], value_field: '{{slug}}', display_fields: [titel] }
       - { name: bild, label: Bild, widget: image, hint: 'Web-Version, lange Seite etwa 2000 px' }
       - { name: ort, label: Ort, widget: string, required: false, hint: 'z. B. Vallée de Joux VD' }
       - { name: koordinaten, label: Koordinaten, widget: string, required: false, hint: 'z. B. 46.62° N, 6.27° E. Leer lassen, wenn der Ort geheim bleiben soll.' }
@@ -50,14 +50,14 @@ collections:
       - { name: blende, label: Blende, widget: string, required: false, hint: 'z. B. f/4' }
       - { name: belichtung, label: Belichtungszeit, widget: string, required: false, hint: 'z. B. 1/1000 s' }
       - { name: iso, label: ISO, widget: string, required: false, hint: 'nur die Zahl, z. B. 800' }
-      - { name: saal_link, label: Saal-Link für dieses Bild, widget: string, required: false, hint: 'Leer lassen, dann gilt der Saal-Link der Serie.' }
+      - { name: saal_link, label: Saal-Link für dieses Bild, widget: string, required: false, hint: 'Leer lassen, dann gilt der Saal-Link der Galerie.' }
       - { name: startseite, label: Auf der Startseite zeigen (grosses Bild oben), widget: boolean, default: false }
       - { name: hochgeladen, label: Hochgeladen am, widget: datetime, date_format: 'DD.MM.YYYY', time_format: 'HH:mm', required: false, hint: 'Wird beim Erstellen automatisch gesetzt. Das neueste Foto steht in der Galerie zuerst. Nur ändern, wenn ein Bild weiter nach vorne oder hinten soll.' }
       - { name: body, label: Geschichte zum Bild, widget: markdown, required: false, buttons: [bold, italic, link], editor_components: [] }
 
   - name: serien
-    label: Serien (Galerien)
-    label_singular: Serie
+    label: Galerien
+    label_singular: Galerie
     folder: src/content/serien
     create: true
     identifier_field: titel
@@ -171,8 +171,8 @@ collections:
               - { name: titel_betont, label: 'Titel (betontes Wort, in Gold)', widget: string, required: false }
               - { name: titel_ende, label: 'Titel (Ende)', widget: string, required: false }
               - { name: text, label: Einleitung, widget: text }
-              - { name: serien_titel, label: Titel Serien-Bereich, widget: string }
-              - { name: serien_text, label: Text Serien-Bereich, widget: text }
+              - { name: serien_titel, label: Titel Galerien-Bereich, widget: string }
+              - { name: serien_text, label: Text Galerien-Bereich, widget: text }
               - { name: shop_titel, label: Titel Shop-Bereich, widget: string }
               - { name: shop_text, label: Text Shop-Bereich, widget: text }
           - name: ueber_mich

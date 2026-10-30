@@ -7,7 +7,7 @@ Webseite für Wildtierfotografie. Gebaut mit [Astro](https://astro.build), gehos
 | Inhalt | Ordner |
 | --- | --- |
 | Fotos (ein Eintrag pro Bild, mit Geschichte und Aufnahmedaten) | `src/content/fotos/` |
-| Serien (Galerien) | `src/content/serien/` |
+| Galerien | `src/content/serien/` |
 | Blog | `src/content/blog/` |
 | Shop-Kacheln mit Saal-Links | `src/content/shop/` |
 | Impressum, Datenschutz | `src/content/seiten/` |
@@ -19,7 +19,7 @@ Design und Inhalte sind getrennt: Das Design lässt sich ändern, ohne die Inhal
 
 ## «Als Print kaufen»
 
-Der Knopf auf jeder Foto-Detailseite nimmt den Saal-Link des Fotos. Ist dort keiner eingetragen, gilt der Saal-Link der Serie.
+Der Knopf auf jeder Foto-Detailseite nimmt den Saal-Link des Fotos. Ist dort keiner eingetragen, gilt der Saal-Link der Galerie.
 
 ## Lokal starten
 
