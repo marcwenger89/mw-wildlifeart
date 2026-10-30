@@ -36,7 +36,7 @@ collections:
     identifier_field: titel
     slug: '{{slug}}'
     summary: '{{titel}} · {{serie}}'
-    sortable_fields: [titel, serie, reihenfolge]
+    sortable_fields: [hochgeladen, titel, serie]
     view_groups:
       - { label: Serie, field: serie }
     fields:
@@ -52,7 +52,7 @@ collections:
       - { name: iso, label: ISO, widget: string, required: false, hint: 'nur die Zahl, z. B. 800' }
       - { name: saal_link, label: Saal-Link für dieses Bild, widget: string, required: false, hint: 'Leer lassen, dann gilt der Saal-Link der Serie.' }
       - { name: startseite, label: Auf der Startseite zeigen (grosses Bild oben), widget: boolean, default: false }
-      - { name: reihenfolge, label: Reihenfolge in der Serie, widget: number, value_type: int, default: 100, hint: 'Kleinere Zahl kommt zuerst.' }
+      - { name: hochgeladen, label: Hochgeladen am, widget: datetime, date_format: 'DD.MM.YYYY', time_format: 'HH:mm', required: false, hint: 'Wird beim Erstellen automatisch gesetzt. Das neueste Foto steht in der Galerie zuerst. Nur ändern, wenn ein Bild weiter nach vorne oder hinten soll.' }
       - { name: body, label: Geschichte zum Bild, widget: markdown, required: false, buttons: [bold, italic, link], editor_components: [] }
 
   - name: serien

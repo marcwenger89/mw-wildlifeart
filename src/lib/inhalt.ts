@@ -5,14 +5,14 @@ export async function alleSerien() {
   return serien.sort((a, b) => a.data.reihenfolge - b.data.reihenfolge || a.data.titel.localeCompare(b.data.titel, 'de-CH'));
 }
 
-/** Alle Fotos, sortiert nach Serie und danach nach Reihenfolge innerhalb der Serie. */
+/** Alle Fotos, sortiert nach Serie und danach das neueste zuerst (Fotos ohne Datum am Schluss). */
 export async function alleFotos() {
   const serien = await alleSerien();
   const rang = new Map(serien.map((s, i) => [s.id, i]));
   const fotos = await getCollection('fotos');
   return fotos.sort((a, b) =>
     (rang.get(a.data.serie.id) ?? 99) - (rang.get(b.data.serie.id) ?? 99) ||
-    a.data.reihenfolge - b.data.reihenfolge ||
+    (b.data.hochgeladen?.getTime() ?? 0) - (a.data.hochgeladen?.getTime() ?? 0) ||
     a.data.titel.localeCompare(b.data.titel, 'de-CH'));
 }
 
