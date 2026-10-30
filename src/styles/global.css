@@ -258,6 +258,8 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 .abschnitt.mit-bild { display: grid; grid-template-columns: minmax(0, 1fr) var(--bildbreite, 50%); gap: 24px 56px; align-items: start; margin-block: 8px 32px; }
 .abschnitt.links { grid-template-columns: var(--bildbreite, 50%) minmax(0, 1fr); }
 .abschnitt.links .abschnitt-bilder { order: -1; }
+.abschnitt.unten { grid-template-columns: minmax(0, 1fr); }
+.abschnitt.unten .abschnitt-bilder { position: static; width: var(--bildbreite, 100%); }
 .abschnitt-bilder { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; position: sticky; top: 110px; }
 .abschnitt-bilder img { margin: 0; width: 100%; object-fit: cover; }
 .abschnitt-bilder img.voll { grid-column: 1 / -1; }
@@ -269,6 +271,7 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 @media (max-width: 860px) {
   .abschnitt.mit-bild { grid-template-columns: minmax(0, 1fr); }
   .abschnitt-bilder { position: static; }
+  .abschnitt.unten .abschnitt-bilder { width: 100%; }
   .schmal .abschnitt-bilder { order: -1; max-width: 300px; }
 }
 

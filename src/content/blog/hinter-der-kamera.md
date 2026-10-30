@@ -22,8 +22,8 @@ abschnitte:
       Unvergessen bleibt ein Abend in Skandinavien: Auf der Pirsch durch den Wald stand plötzlich ein Elch wenige Meter vor mir, im schönsten Abendlicht, und wir schauten uns direkt in die Augen.
 
       Und in Afrika gab es viele Momente, in denen Licht, Stimmung, Tierwelt und Emotionen aufeinandertrafen.
-    bildbreite: 50
-    bildseite: rechts
+    bildbreite: 100
+    bildseite: unten
     bilder:
       - bild: /bilder/hinter-der-kamera-elch.jpg
         alt: Elch im Abendlicht in Skandinavien

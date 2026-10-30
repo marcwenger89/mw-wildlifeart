@@ -49,8 +49,8 @@ const blog = defineCollection({
         format: z.enum(['quer', 'hoch', 'quadrat', 'breit', 'original']).default('quer'),
         breite: z.enum(['voll', 'halb']).default('voll'),
       })).default([]),
-      bildbreite: z.number().min(15).max(75).default(50),
-      bildseite: z.enum(['rechts', 'links']).default('rechts'),
+      bildbreite: z.number().min(15).max(100).default(50),
+      bildseite: z.enum(['rechts', 'links', 'unten']).default('rechts'),
     })).default([]),
   }),
 });

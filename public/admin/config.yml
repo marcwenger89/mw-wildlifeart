@@ -95,12 +95,12 @@ collections:
         hint: 'Erscheinen nach dem Text. Bilder stehen neben dem Abschnitt, auf dem Handy darunter (schmale Bildspalte: darüber).'
         fields:
           - { name: text, label: Text, widget: markdown, buttons: [bold, italic, link, heading-two, bulleted-list], editor_components: [] }
-          - { name: bildbreite, label: 'Breite der Bildspalte in % (15–75)', widget: number, value_type: int, min: 15, max: 75, step: 5, default: 50, hint: 'z.B. 25 für ein kleines Porträt, 50 für halb Text, halb Bilder.' }
+          - { name: bildbreite, label: 'Breite der Bilder in % (15–100)', widget: number, value_type: int, min: 15, max: 100, step: 5, default: 50, hint: 'Neben dem Text: z.B. 25 für ein kleines Porträt, 50 für halb/halb (über 75 wird es eng). Unter dem Text: Breite des Bildblocks, 100 = ganze Breite.' }
           - name: bildseite
-            label: Bilder auf welcher Seite
+            label: Wo stehen die Bilder
             widget: select
             default: rechts
-            options: [{ label: Rechts, value: rechts }, { label: Links, value: links }]
+            options: [{ label: Rechts neben dem Text, value: rechts }, { label: Links neben dem Text, value: links }, { label: Unter dem Text, value: unten }]
           - name: bilder
             label: Bilder
             label_singular: Bild

@@ -21,7 +21,7 @@ const { Content } = await render(post);
         <Content />
       </div>
       {post.data.abschnitte.map(a => (
-        <section class:list={['abschnitt', a.bilder.length > 0 && ['mit-bild', a.bildseite, a.bildbreite < 40 && 'schmal']]}
+        <section class:list={['abschnitt', a.bilder.length > 0 && ['mit-bild', a.bildseite, a.bildseite !== 'unten' && a.bildbreite < 40 && 'schmal']]}
                  style={a.bilder.length > 0 ? `--bildbreite: ${a.bildbreite}%` : undefined}>
           <div class="prose" set:html={einfachesMarkdown(a.text)} />
           {a.bilder.length > 0 && (
