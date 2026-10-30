@@ -1,5 +1,6 @@
 ---
 titel: Afrika
 titelbild: /bilder/elefant-mit-logo-schwarz.jpg
-reihenfolge: 100
+reihenfolge: 1
+startseite: true
 ---
