@@ -92,6 +92,11 @@ const baustelle = einstellungen.baustelle.aktiv && !immerOffen;
     const kopf = document.getElementById('kopf')!;
     const onScroll = () => kopf.classList.toggle('scrolled', scrollY > 30);
     addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+    // Bilder schützen: kein Rechtsklick-Menü und kein Herausziehen (Screenshots bleiben möglich)
+    const istBild = (e: Event) => (e.target as Element | null)?.closest?.('img, picture');
+    addEventListener('contextmenu', e => { if (istBild(e)) e.preventDefault(); });
+    addEventListener('dragstart', e => { if (istBild(e)) e.preventDefault(); });
     const setHeadH = () => document.documentElement.style.setProperty('--head-h', kopf.offsetHeight + 'px');
     setHeadH(); addEventListener('resize', setHeadH);
 
