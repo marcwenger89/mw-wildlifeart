@@ -18,10 +18,11 @@
   --t-fade: 900ms;
   --t-hover: 700ms;
   --head-h: 76px;
-  /* Dezenter Hintergrundverlauf: Wald oben links, Sand unten rechts */
-  --verlauf-wald: rgba(74, 104, 76, .24);
-  --verlauf-sand: rgba(184, 152, 102, .16);
-  --kopf-bg: rgba(16, 20, 18, .8);
+  /* Hintergrundverlauf «Düne und Akazie» (MW 07): Akaziengrün oben, Dünensand unten */
+  --verlauf-wald: #1b2419;
+  --verlauf-mitte: #121410;
+  --verlauf-sand: #2a2418;
+  --kopf-bg: rgba(20, 26, 20, .78);
   color-scheme: dark;
 }
 @media (prefers-reduced-motion: reduce) { :root { --t-fade: 1ms; --t-hover: 1ms; } }
@@ -44,9 +45,7 @@ body {
 /* Fest stehender Verlauf hinter der ganzen Seite (auch auf dem iPhone, daher als eigene Ebene) */
 body::before {
   content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background:
-    radial-gradient(120% 80% at 0% 0%, var(--verlauf-wald), transparent 60%),
-    radial-gradient(120% 80% at 100% 100%, var(--verlauf-sand), transparent 60%);
+  background: linear-gradient(170deg, var(--verlauf-wald), var(--verlauf-mitte) 55%, var(--verlauf-sand));
 }
 a { color: inherit; }
 img { display: block; max-width: 100%; }
