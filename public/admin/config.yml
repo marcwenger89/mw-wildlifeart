@@ -92,23 +92,38 @@ collections:
         widget: list
         required: false
         summary: '{{fields.text}}'
-        hint: 'Erscheinen nach dem Text. Bilder stehen rechts neben dem Abschnitt, auf dem Handy darüber bzw. darunter.'
+        hint: 'Erscheinen nach dem Text. Bilder stehen neben dem Abschnitt, auf dem Handy darunter (schmale Bildspalte: darüber).'
         fields:
           - { name: text, label: Text, widget: markdown, buttons: [bold, italic, link, heading-two, bulleted-list], editor_components: [] }
-          - name: bildgroesse
-            label: Bildgrösse
+          - { name: bildbreite, label: 'Breite der Bilder in % (15–100)', widget: number, value_type: int, min: 15, max: 100, step: 5, default: 50, hint: 'Neben dem Text: z.B. 25 für ein kleines Porträt, 50 für halb/halb (über 75 wird es eng). Unter dem Text: Breite des Bildblocks, 100 = ganze Breite.' }
+          - name: bildseite
+            label: Wo stehen die Bilder
             widget: select
-            default: gross
-            options:
-              - { label: 'Klein (z.B. Porträt, 800 × 1000 px, Hochformat 4:5)', value: klein }
-              - { label: 'Gross (1. Bild 1800 × 1200 px, weitere 1200 × 800 px, Querformat 3:2)', value: gross }
+            default: rechts
+            options: [{ label: Rechts neben dem Text, value: rechts }, { label: Links neben dem Text, value: links }, { label: Unter dem Text, value: unten }]
           - name: bilder
             label: Bilder
             label_singular: Bild
             widget: list
             required: false
+            hint: 'Reihenfolge per Ziehen ändern.'
             fields:
               - { name: bild, label: Bild, widget: image }
+              - name: format
+                label: Format
+                widget: select
+                default: quer
+                options:
+                  - { label: 'Querformat 3:2 (z.B. 1800 × 1200 px)', value: quer }
+                  - { label: 'Hochformat 4:5 (z.B. 800 × 1000 px)', value: hoch }
+                  - { label: 'Quadrat 1:1 (z.B. 1200 × 1200 px)', value: quadrat }
+                  - { label: 'Breitbild 16:9 (z.B. 1920 × 1080 px)', value: breit }
+                  - { label: 'Original (nicht zuschneiden)', value: original }
+              - name: breite
+                label: Breite in der Bildspalte
+                widget: select
+                default: voll
+                options: [{ label: 'Ganze Breite', value: voll }, { label: 'Halbe Breite (zwei nebeneinander)', value: halb }]
               - { name: alt, label: 'Bildbeschreibung (für Suchmaschinen und Screenreader)', widget: string, required: false }
 
   - name: shop
