@@ -287,6 +287,12 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 @media (max-width: 900px) { .detail-grid { grid-template-columns: minmax(0, 1fr); } }
 .detail-img { position: relative; background: var(--line); cursor: zoom-in; border: 0; padding: 0; display: block; width: 100%; }
 .detail-img img { width: 100%; height: auto; }
+/* Am Computer passt das ganze Bild in den Bildschirm, die Infos stehen daneben */
+@media (min-width: 901px) {
+  .detail-img { background: none; justify-self: start; width: auto; }
+  .detail-img img { width: auto; max-height: calc(100svh - var(--head-h) - 110px); }
+  .detail-info { position: sticky; top: calc(var(--head-h) + 24px); }
+}
 .detail-img .fs { position: absolute; right: 12px; bottom: 12px; background: var(--scrim); color: #f1f3ee; font: 500 .8125rem/1 var(--f-body); padding: 9px 12px; display: inline-flex; gap: 8px; align-items: center; }
 .detail-info { display: grid; gap: 22px; }
 .detail-info h1 { font-size: clamp(2rem, 4vw, 3.2rem); letter-spacing: -.015em; margin-top: 10px; }
@@ -301,19 +307,33 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 /* ---------- Vollbild ---------- */
 .lightbox {
   position: fixed; inset: 0; z-index: 70; background: var(--lightbox); color: var(--lightbox-fg);
-  display: grid; grid-template-rows: auto minmax(0, 1fr) auto;
+  display: grid; grid-template-rows: auto minmax(0, 1fr);
   padding: calc(env(safe-area-inset-top, 0px) + 12px) max(12px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 14px) max(12px, env(safe-area-inset-left, 0px));
-  opacity: 0; transition: opacity 400ms var(--ease);
+  opacity: 0; transition: opacity 400ms var(--ease); touch-action: pinch-zoom;
 }
 .lightbox.open { opacity: 1; }
 @media (prefers-reduced-motion: reduce) { .lightbox { transition: none; } }
 .lb-top { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
-.lb-stage { display: grid; place-items: center; min-height: 0; }
-.lb-stage img { max-height: 100%; max-width: 100%; object-fit: contain; }
+/* Das ganze Bild wird eingepasst und zentriert, nie abgeschnitten; die Infos stehen direkt darunter */
+.lb-stage { position: relative; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.lb-stage img {
+  max-width: 100%; width: auto; height: auto;
+  max-height: calc(100vh - 44px - 26px - 4.5rem);
+  max-height: calc(100dvh - 44px - 26px - 4.5rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  transition: opacity 160ms var(--ease);
+}
+.lb-stage img.weg { opacity: 0; }
+.lb-nav { position: absolute; top: 50%; translate: 0 -50%; background: rgba(11, 14, 12, .45); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.lb-prev { left: 4px; }
+.lb-next { right: 4px; }
+@media (hover: hover) { .lb-nav { opacity: .7; transition: opacity 200ms var(--ease); } .lightbox:hover .lb-nav { opacity: 1; } }
+@media (min-width: 900px) { .lb-prev { left: 16px; } .lb-next { right: 16px; } .lb-nav { width: 52px; height: 52px; } }
+@media (prefers-reduced-motion: reduce) { .lb-stage img, .lb-nav { transition: none; } }
 .lb-btn { background: rgba(233, 236, 230, .08); color: var(--lightbox-fg); border: 1px solid rgba(233, 236, 230, .2); width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; }
 .lb-btn:hover { background: rgba(233, 236, 230, .18); }
 .lb-btn svg { width: 18px; height: 18px; }
-.lb-cap { text-align: center; font: .8125rem/1.5 var(--f-mono); opacity: .8; padding-top: 10px; }
+.lb-cap { text-align: center; font: .8125rem/1.5 var(--f-mono); opacity: .8; margin: 1em 0 0; padding-inline: 8px; }
+.lb-cap:empty { display: none; }
 
 /* Schmalere Kopfzeile auf dem Handy */
 @media (max-width: 640px) {
