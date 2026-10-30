@@ -18,11 +18,11 @@
   --t-fade: 900ms;
   --t-hover: 700ms;
   --head-h: 76px;
-  /* Hintergrundverlauf «Waldrand am Abend» (MW 05), linear: Waldgrün oben, Sand unten */
-  --verlauf-wald: #2b3b2c;
+  /* Hintergrundverlauf «Waldrand am Abend» (MW 05), linear und blasser: Helligkeit zwischen MW 05 und MW 07 */
+  --verlauf-wald: #232f24;
   --verlauf-mitte: #101412;
-  --verlauf-sand: #423c2c;
-  --kopf-bg: rgba(26, 36, 27, .78);
+  --verlauf-sand: #363225;
+  --kopf-bg: rgba(22, 30, 23, .78);
   color-scheme: dark;
 }
 @media (prefers-reduced-motion: reduce) { :root { --t-fade: 1ms; --t-hover: 1ms; } }
