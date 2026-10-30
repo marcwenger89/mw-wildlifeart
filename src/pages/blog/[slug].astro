@@ -2,6 +2,7 @@
 import Seite from '../../layouts/Seite.astro';
 import { render } from 'astro:content';
 import { alleBeitraege, datumCH } from '../../lib/inhalt';
+import { einfachesMarkdown } from '../../lib/text';
 
 export async function getStaticPaths() {
   return (await alleBeitraege()).map(p => ({ params: { slug: p.id }, props: { post: p } }));
@@ -13,12 +14,22 @@ const { Content } = await render(post);
   <article class="text-page">
     <div class="wrap">
       <nav class="crumbs" aria-label="Pfad"><a href="/">Startseite</a><span aria-hidden="true">/</span><a href="/blog/">Blog</a></nav>
-      {post.data.bild && <img class="post-hero" src={post.data.bild} alt="">}
+      {post.data.bild && post.data.kopfbild && <img class="post-hero" src={post.data.bild} alt="">}
       <div class="prose">
         <p class="eyebrow">{datumCH(post.data.datum)}</p>
         <h1>{post.data.titel}</h1>
         <Content />
       </div>
+      {post.data.abschnitte.map(a => (
+        <section class:list={['abschnitt', a.bilder.length > 0 && ['mit-bild', a.bildgroesse]]}>
+          <div class="prose" set:html={einfachesMarkdown(a.text)} />
+          {a.bilder.length > 0 && (
+            <div class="abschnitt-bilder">
+              {a.bilder.map(b => <img src={b.bild} alt={b.alt} loading="lazy">)}
+            </div>
+          )}
+        </section>
+      ))}
     </div>
   </article>
 </Seite>

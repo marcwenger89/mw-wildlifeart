@@ -130,6 +130,7 @@ const anzahl = (id: string) => fotos.filter(f => f.data.serie.id === id).length;
         <p class="eyebrow">Über mich</p>
         <h2>{ueber.titel}</h2>
         {absaetze(ueber.text).map(t => <p>{t}</p>)}
+        {ueber.link && <a class="btn" href={ueber.link}>{ueber.knopf_text || 'Mehr über mich'}</a>}
         {ueber.bild && <img class="portrait" src={ueber.bild} alt="Porträt" loading="lazy">}
       </div>
       <div id="kontakt">
