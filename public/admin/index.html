@@ -18,7 +18,7 @@
 <body>
   <script src="https://unpkg.com/decap-cms@3.17.1/dist/decap-cms.js"></script>
   <script>
-    // Knopf «Alle bereiten Entwürfe veröffentlichen»: übernimmt alle Entwürfe in der Spalte «Bereit»
+    // Knopf «Alle abgeschlossenen Entwürfe veröffentlichen»: übernimmt alle Entwürfe in der Spalte «Abgeschlossen»
     // nacheinander auf main. Alle ausser dem letzten bekommen [skip ci], darum gibt es nur einen Build.
     (function () {
       var REPO = 'marcwenger89/mw-wildlifeart';
@@ -72,7 +72,7 @@
         try {
           var prs = await bereiteEntwuerfe();
           if (!prs.length) {
-            alert('In der Spalte «Bereit» liegt kein Entwurf. Zieh die Karten im «Arbeitsablauf» zuerst nach «Bereit».');
+            alert('In der Spalte «Abgeschlossen» liegt kein Entwurf. Zieh die Karten im «Arbeitsablauf» zuerst nach «Abgeschlossen».');
             return;
           }
           var liste = prs.map(function (pr) { return '• ' + pr.title; }).join('\n');
@@ -97,7 +97,7 @@
           alert(e.message);
         } finally {
           knopf.disabled = false;
-          knopf.textContent = 'Alle bereiten Entwürfe veröffentlichen';
+          knopf.textContent = 'Alle abgeschlossenen Entwürfe veröffentlichen';
         }
       }
 
@@ -108,7 +108,7 @@
         knopf = document.createElement('button');
         knopf.id = 'alle-veroeffentlichen';
         knopf.type = 'button';
-        knopf.textContent = 'Alle bereiten Entwürfe veröffentlichen';
+        knopf.textContent = 'Alle abgeschlossenen Entwürfe veröffentlichen';
         knopf.addEventListener('click', function () { veroeffentlichen(knopf); });
         document.body.appendChild(knopf);
       }
