@@ -36,7 +36,13 @@ const fotos = defineCollection({
     ausschnitt: optional(z.string().default('center')),
     startbild: optional(z.string().optional()),
     startbild_handy: optional(z.string().optional()),
-    hochgeladen: optional(z.coerce.date().optional()),
+    // Admin speicherte anfangs «TT.MM.JJJJTHH:mm» statt ISO, beides annehmen
+    hochgeladen: optional(
+      z.preprocess((wert) => {
+        const m = typeof wert === 'string' && wert.match(/^(\d{2})\.(\d{2})\.(\d{4})(?:T(\d{2}:\d{2}))?$/);
+        return m ? `${m[3]}-${m[2]}-${m[1]}T${m[4] ?? '00:00'}` : wert;
+      }, z.coerce.date().optional())
+    ),
     tags: optional(z.array(z.string()).default([])),
   }),
 });
