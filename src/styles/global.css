@@ -18,6 +18,10 @@
   --t-fade: 900ms;
   --t-hover: 700ms;
   --head-h: 76px;
+  /* Dezenter Hintergrundverlauf: Wald oben links, Sand unten rechts */
+  --verlauf-wald: rgba(74, 104, 76, .24);
+  --verlauf-sand: rgba(184, 152, 102, .16);
+  --kopf-bg: rgba(16, 20, 18, .8);
   color-scheme: dark;
 }
 @media (prefers-reduced-motion: reduce) { :root { --t-fade: 1ms; --t-hover: 1ms; } }
@@ -36,6 +40,13 @@ body {
   margin: 0; background: var(--bg); color: var(--fg);
   font: 400 1.0625rem/1.65 var(--f-body);
   -webkit-font-smoothing: antialiased;
+}
+/* Fest stehender Verlauf hinter der ganzen Seite (auch auf dem iPhone, daher als eigene Ebene) */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 0% 0%, var(--verlauf-wald), transparent 60%),
+    radial-gradient(120% 80% at 100% 100%, var(--verlauf-sand), transparent 60%);
 }
 a { color: inherit; }
 img { display: block; max-width: 100%; }
@@ -56,7 +67,8 @@ p { margin: 0; }
 /* ---------- Kopfzeile ---------- */
 .site-head {
   position: sticky; top: 0; z-index: 20;
-  background: var(--bg); border-bottom: 1px solid transparent;
+  background: var(--kopf-bg); border-bottom: 1px solid transparent;
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
   padding-top: env(safe-area-inset-top, 0px);
   transition: border-color 300ms;
   view-transition-name: kopfzeile;
