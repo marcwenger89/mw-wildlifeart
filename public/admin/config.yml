@@ -32,6 +32,7 @@ collections:
     label_singular: Foto
     folder: src/content/fotos
     create: true
+    identifier_field: titel
     slug: '{{slug}}'
     summary: '{{titel}} · {{serie}}'
     sortable_fields: [titel, serie, reihenfolge]
@@ -58,6 +59,7 @@ collections:
     label_singular: Serie
     folder: src/content/serien
     create: true
+    identifier_field: titel
     slug: '{{slug}}'
     summary: '{{titel}}'
     fields:
@@ -72,6 +74,7 @@ collections:
     label_singular: Beitrag
     folder: src/content/blog
     create: true
+    identifier_field: titel
     slug: '{{slug}}'
     summary: '{{titel}} ({{datum}})'
     sortable_fields: [datum, titel]
@@ -88,6 +91,7 @@ collections:
     label_singular: Produkt
     folder: src/content/shop
     create: true
+    identifier_field: titel
     slug: '{{slug}}'
     summary: '{{titel}}'
     fields:
