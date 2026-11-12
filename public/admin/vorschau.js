@@ -332,8 +332,14 @@
           if (!quelle && pic) { quelle = doc.createElement('source'); quelle.media = '(max-width: 640px)'; pic.insertBefore(quelle, img); }
           if (quelle) quelle.srcset = bild_handy;
         } else if (quelle) quelle.remove();
-        var ort = wert(d, ['ort']);
-        setzeText(doc, '#hero-cap', titel + (ort ? ' · ' + ort : ''));
+        // «Begegnungen»: angehaktes Foto (oder eigener Zuschnitt) an erster Stelle zeigen
+        var werkImg = doc.querySelector('#werke .werk img');
+        var werkbild = bildUrl(getAsset, wert(d, ['werkbild']));
+        if (werkImg && (wert(d, ['werk']) || werkbild)) {
+          var w = werkbild || bild;
+          if (werkImg.getAttribute('src') !== w) werkImg.setAttribute('src', w);
+          werkImg.loading = 'eager';
+        }
         return;
       }
       var lb = doc.getElementById('lightbox');
@@ -436,13 +442,11 @@
         h1.innerHTML = escape(wert(s, ['titel'])) + ' ' + (betont ? '<em>' + escape(betont) + '</em>' : '') + ' ' + escape(wert(s, ['titel_ende']));
       }
       setzeText(doc, '.hero-text p', wert(s, ['text']));
-      var serienKopf = doc.querySelector('#serien .block-head');
-      if (serienKopf) {
-        setzeText(serienKopf, 'h2', wert(s, ['serien_titel']));
-        var p = serienKopf.querySelector(':scope > p');
-        var text = wert(s, ['serien_text']);
-        if (text && !p) { p = doc.createElement('p'); serienKopf.insertBefore(p, serienKopf.children[1] || null); }
-        if (p) { if (text) p.textContent = text; else p.remove(); }
+      setzeText(doc, '#werke .block-head h2', wert(s, ['werke_titel']) || 'Begegnungen');
+      var werkeKnopf = doc.querySelector('#werke .werke-fuss .btn');
+      if (werkeKnopf) {
+        var kt = (wert(s, ['werke_knopf']) || 'Alle Galerien') + ' →';
+        if (werkeKnopf.textContent !== kt) werkeKnopf.innerHTML = escape(wert(s, ['werke_knopf']) || 'Alle Galerien') + ' <span aria-hidden="true">→</span>';
       }
       var u = d.get('ueber_mich');
       var ueber = doc.querySelector('#ueber .about > div:first-child');

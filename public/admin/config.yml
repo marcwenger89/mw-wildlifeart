@@ -58,7 +58,7 @@ collections:
         widget: select
         required: false
         default: center
-        hint: 'Nur wenn das Bild auf der Startseite ist. Das grosse Bild oben ist breit (am Handy hoch) und schneidet dein Foto zu. Hier wählst du, welcher Teil sichtbar bleibt.'
+        hint: 'Nur wenn das Bild auf der Startseite ist. Das Titelbild füllt den ganzen Bildschirm und schneidet dein Foto zu. Hier wählst du, welcher Teil sichtbar bleibt.'
         options:
           - { label: Mitte, value: center }
           - { label: Oben, value: 'center top' }
@@ -69,8 +69,10 @@ collections:
           - { label: Oben rechts, value: 'right top' }
           - { label: Unten links, value: 'left bottom' }
           - { label: Unten rechts, value: 'right bottom' }
-      - { name: startbild, label: 'Startseite: eigener Zuschnitt PC (optional)', widget: image, required: false, hint: 'Breitformat 2:1, z. B. 2400 × 1200 px. Wird statt des Fotos oben auf der Startseite gezeigt.' }
-      - { name: startbild_handy, label: 'Startseite: eigener Zuschnitt Handy (optional)', widget: image, required: false, hint: 'Hochformat 4:5, z. B. 1080 × 1350 px. Leer = Handy nimmt das PC-Bild bzw. das Foto.' }
+      - { name: startbild, label: 'Startseite: eigener Zuschnitt PC (optional)', widget: image, required: false, hint: 'Querformat 16:9, z. B. 2400 × 1350 px. Füllt oben auf der Startseite den ganzen Bildschirm, der Text steht darüber (oben ruhige, dunkle Fläche lassen).' }
+      - { name: startbild_handy, label: 'Startseite: eigener Zuschnitt Handy (optional)', widget: image, required: false, hint: 'Hochformat 9:16, z. B. 1080 × 1920 px. Leer = Handy schneidet die Mitte aus dem PC-Bild bzw. dem Foto.' }
+      - { name: werk, label: 'Startseite: bei «Begegnungen» zeigen (6 Bilder)', widget: boolean, default: false, hint: 'Angehakte Fotos stehen zuerst (neuestes zuerst). Sind weniger als 6 angehakt, wird mit den neuesten Fotos aufgefüllt.' }
+      - { name: werkbild, label: 'Begegnungen: eigener Zuschnitt (optional)', widget: image, required: false, hint: 'Querformat 3:2, z. B. 1800 × 1200 px. Gilt für PC und Handy. Leer = das Foto wird mittig auf 3:2 zugeschnitten.' }
       - { name: hochgeladen, label: Hochgeladen am, widget: datetime, format: 'YYYY-MM-DDTHH:mm', date_format: 'DD.MM.YYYY', time_format: 'HH:mm', required: false, hint: 'Wird beim Erstellen automatisch gesetzt. Das neueste Foto steht in der Galerie zuerst. Nur ändern, wenn ein Bild weiter nach vorne oder hinten soll.' }
       - { name: body, label: Geschichte zum Bild, widget: markdown, required: false, buttons: [bold, italic, link], editor_components: [] }
 
@@ -225,8 +227,9 @@ collections:
               - { name: titel_betont, label: 'Titel (betontes Wort, in Gold)', widget: string, required: false }
               - { name: titel_ende, label: 'Titel (Ende)', widget: string, required: false }
               - { name: text, label: Einleitung, widget: text }
-              - { name: serien_titel, label: Titel Galerien-Bereich, widget: string }
-              - { name: serien_text, label: Text Galerien-Bereich, widget: text, required: false, hint: 'Leer lassen = kein Text' }
+              - { name: werke_titel, label: 'Titel Bilder-Bereich (6 Bilder)', widget: string, required: false, default: 'Begegnungen' }
+              - { name: werke_knopf, label: 'Text des Knopfs darunter', widget: string, required: false, default: 'Alle Galerien' }
+              - { name: serien_titel, label: 'Titel der Galerie-Übersicht', widget: string, hint: 'Überschrift auf der Seite mit allen Galerien (z. B. «Lebensräume»).' }
               - { name: shop_titel, label: Titel Shop-Bereich, widget: string }
               - { name: shop_text, label: Text Shop-Bereich, widget: text }
           - name: ueber_mich

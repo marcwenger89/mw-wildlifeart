@@ -33,6 +33,8 @@ const fotos = defineCollection({
     iso: z.string().optional(),
     saal_link: z.string().optional(),
     startseite: z.boolean().default(false),
+    werk: z.boolean().default(false),
+    werkbild: optional(z.string().optional()),
     ausschnitt: optional(z.string().default('center')),
     startbild: optional(z.string().optional()),
     startbild_handy: optional(z.string().optional()),
