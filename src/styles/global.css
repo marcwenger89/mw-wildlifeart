@@ -337,6 +337,16 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 .abschnitt-bilder img.quadrat { aspect-ratio: 1; }
 .abschnitt-bilder img.breit { aspect-ratio: 16 / 9; }
 .abschnitt-bilder img.original { height: auto; }
+/* Leerzeile (mehrfaches Enter im Admin) */
+.prose p.leerzeile { margin: 0; height: 1.75em; }
+/* Schrift und Farbe pro Abschnitt (Admin) */
+.abschnitt.schrift-titel .prose { font-family: var(--f-display); font-size: 1.12em; }
+.abschnitt.schrift-kursiv .prose { font-family: var(--f-display); font-style: italic; font-size: 1.12em; }
+.abschnitt.schrift-mono .prose { font-family: var(--f-mono); font-size: .92em; }
+.abschnitt.farbe-hell .prose :is(p, li, h2, h3) { color: #f4f6f1; }
+.abschnitt.farbe-gold .prose :is(p, li, h2, h3) { color: var(--accent); }
+.abschnitt.farbe-sand .prose :is(p, li, h2, h3) { color: #d9c9a3; }
+.abschnitt.farbe-gedaempft .prose :is(p, li, h2, h3) { color: var(--muted); }
 /* «Bild so hoch wie der Text»: erstes Bild füllt die Höhe des Textes (zugeschnitten), nur am PC */
 @media (min-width: 861px) {
   .abschnitt.texthoehe { align-items: stretch; }

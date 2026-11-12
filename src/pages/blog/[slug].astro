@@ -1,6 +1,5 @@
 ---
 import Seite from '../../layouts/Seite.astro';
-import { render } from 'astro:content';
 import { alleBeitraege, datumCH } from '../../lib/inhalt';
 import { einfachesMarkdown } from '../../lib/text';
 import Teilen from '../../components/Teilen.astro';
@@ -9,7 +8,6 @@ export async function getStaticPaths() {
   return (await alleBeitraege()).map(p => ({ params: { slug: p.id }, props: { post: p } }));
 }
 const { post } = Astro.props;
-const { Content } = await render(post);
 ---
 <Seite titel={post.data.titel} beschreibung={post.data.kurztext} bild={post.data.bild} artikel>
   <article class="text-page">
@@ -19,10 +17,10 @@ const { Content } = await render(post);
       <div class="prose">
         <p class="eyebrow">{datumCH(post.data.datum)}</p>
         <h1>{post.data.titel}</h1>
-        <Content />
+        <Fragment set:html={einfachesMarkdown(post.body)} />
       </div>
       {post.data.abschnitte.map(a => (
-        <section class:list={['abschnitt', a.bilder.length > 0 && ['mit-bild', a.bildseite, a.bildseite !== 'unten' && a.bildbreite < 40 && 'schmal', a.bildseite !== 'unten' && a.bildhoehe === 'text' && 'texthoehe']]}
+        <section class:list={['abschnitt', a.schrift !== 'standard' && `schrift-${a.schrift}`, a.farbe !== 'standard' && `farbe-${a.farbe}`, a.bilder.length > 0 && ['mit-bild', a.bildseite, a.bildseite !== 'unten' && a.bildbreite < 40 && 'schmal', a.bildseite !== 'unten' && a.bildhoehe === 'text' && 'texthoehe']]}
                  style={a.bilder.length > 0 ? `--bildbreite: ${a.bildbreite}%` : undefined}>
           <div class="prose" set:html={einfachesMarkdown(a.text)} />
           {a.bilder.length > 0 && (
