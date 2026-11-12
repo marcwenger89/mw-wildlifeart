@@ -28,10 +28,10 @@ const absaetze = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
             <img src={f.data.startbild ?? f.data.bild} alt={f.data.titel} class={i === 0 ? 'on instant' : undefined}
                  style={`object-position: ${f.data.ausschnitt}`}
                  loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined}
-                 data-titel={f.data.titel} data-ort={f.data.ort ?? ''} data-link={`/fotos/${f.id}/`}>
+                 data-titel={f.data.titel} data-ort={f.data.ort ?? ''} data-link={`/galerien/${f.data.serie.id}/?bild=${f.id}`}>
           </picture>
         ))}
-        <a class="hero-link" id="hero-link" href={`/fotos/${heroFotos[0]?.id}/`} aria-label={`Foto ansehen: ${heroFotos[0]?.data.titel}`}></a>
+        <a class="hero-link" id="hero-link" href={`/galerien/${heroFotos[0]?.data.serie.id}/?bild=${heroFotos[0]?.id}`} aria-label={`Foto ansehen: ${heroFotos[0]?.data.titel}`}></a>
         {heroFotos.length > 1 && <>
           <button type="button" class="hero-pfeil zurueck" id="hero-zurueck" aria-label="Vorheriges Bild"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
           <button type="button" class="hero-pfeil weiter" id="hero-weiter" aria-label="Nächstes Bild"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
@@ -39,7 +39,7 @@ const absaetze = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
         <div class="hero-caption">
           <div>
             <p class="eyebrow" style="color:inherit;opacity:.8">Aktuelles Bild</p>
-            <p class="mono"><a id="hero-cap" href={`/fotos/${heroFotos[0]?.id}/`}>{heroFotos[0]?.data.titel}{heroFotos[0]?.data.ort && ` · ${heroFotos[0].data.ort}`}</a></p>
+            <p class="mono"><a id="hero-cap" href={`/galerien/${heroFotos[0]?.data.serie.id}/?bild=${heroFotos[0]?.id}`}>{heroFotos[0]?.data.titel}{heroFotos[0]?.data.ort && ` · ${heroFotos[0].data.ort}`}</a></p>
           </div>
           {heroFotos.length > 1 && (
             <div class="hero-dots" id="hero-dots" aria-label="Bild wählen">
