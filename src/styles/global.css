@@ -120,7 +120,8 @@ p { margin: 0; }
 .nav-drop-list .mono { color: var(--muted); font-size: .75rem; }
 
 /* ---------- Hero mit Überblenden ---------- */
-.hero { padding-block: 8px 72px; }
+.hero { padding-block: 32px 72px; }
+@media (max-width: 640px) { .hero { padding-block: 20px 56px; } }
 .hero-frame { position: relative; aspect-ratio: 16 / 8; overflow: hidden; background: var(--line); }
 @media (max-width: 640px) { .hero-frame { aspect-ratio: 4 / 5; } }
 .hero-frame img {
@@ -140,7 +141,24 @@ p { margin: 0; }
 .hero-caption a { text-decoration: none; }
 .hero-caption a:hover { text-decoration: underline; }
 .hero-caption .mono { opacity: .85; }
-.hero-dots { display: flex; gap: 8px; }
+.hero-dots { display: flex; gap: 8px; position: relative; z-index: 3; }
+/* ganzes Bild ist ein Link zur Foto-Detailseite */
+.hero-link { position: absolute; inset: 0; z-index: 1; }
+.hero-caption { z-index: 2; pointer-events: none; }
+.hero-caption a, .hero-caption button { pointer-events: auto; }
+/* transparente Pfeile links und rechts */
+.hero-pfeil {
+  position: absolute; top: 50%; z-index: 3; width: 48px; height: 48px; margin-top: -24px; padding: 0;
+  display: grid; place-items: center; border: 1px solid rgba(241, 243, 238, .35); border-radius: 50%;
+  background: rgba(8, 10, 9, .22); color: #f1f3ee; cursor: pointer;
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  opacity: .75; transition: opacity 300ms, background-color 300ms;
+}
+.hero-pfeil svg { width: 20px; height: 20px; }
+.hero-pfeil:hover, .hero-pfeil:focus-visible { opacity: 1; background: rgba(8, 10, 9, .45); }
+.hero-pfeil.zurueck { left: 16px; }
+.hero-pfeil.weiter { right: 16px; }
+@media (max-width: 640px) { .hero-pfeil { width: 38px; height: 38px; margin-top: -19px; } .hero-pfeil svg { width: 16px; height: 16px; } .hero-pfeil.zurueck { left: 10px; } .hero-pfeil.weiter { right: 10px; } }
 .hero-dots button { width: 28px; height: 3px; padding: 0; border: 0; background: rgba(241, 243, 238, .4); cursor: pointer; }
 .hero-dots button.on { background: #f1f3ee; }
 .hero-text { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px 64px; align-items: end; padding-top: 44px; }
@@ -174,7 +192,7 @@ section.block { padding-block: 72px; border-top: 1px solid var(--line); }
 .serie img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--t-hover) var(--ease); }
 .serie:hover img { transform: scale(1.05); }
 .serie h3 { font-size: 1.5rem; }
-.serie .meta { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); }
+.serie .meta { display: flex; justify-content: flex-end; gap: 12px; color: var(--muted); }
 
 /* ---------- Galerie-Unterseite und Mosaik ---------- */
 .gallery-page, .text-page { padding-block: 20px 72px; }
@@ -201,9 +219,14 @@ section.block { padding-block: 72px; border-top: 1px solid var(--line); }
 .tag-filter select:hover, .tag-filter select:focus-visible { border-color: var(--muted); }
 .tag-leer { color: var(--muted); }
 .tile[hidden] { display: none; }
-.mosaic { columns: 3 300px; column-gap: 14px; }
+/* Reihen: alle Bilder einer Reihe gleich hoch, jede Reihe füllt die Breite; Reihenfolge wie beim Lesen */
+.mosaic { display: flex; flex-wrap: wrap; gap: 14px; }
+.mosaic::after { content: ""; flex: 999 1 0; }
+.mosaic .tile { margin: 0; flex: var(--r, 1.5) 1 calc(var(--r, 1.5) * 280px); aspect-ratio: var(--r, 1.5); }
+.mosaic .tile img { height: 100%; object-fit: cover; }
+@media (max-width: 640px) { .mosaic { gap: 8px; } .mosaic .tile { flex-basis: calc(var(--r, 1.5) * 150px); } }
 .tile {
-  break-inside: avoid; margin: 0 0 14px; position: relative; overflow: hidden; cursor: zoom-in;
+  position: relative; overflow: hidden; cursor: zoom-in;
   display: block; background: var(--line); text-decoration: none;
 }
 .tile img { width: 100%; height: auto; transition: transform var(--t-hover) var(--ease); }
@@ -217,7 +240,6 @@ section.block { padding-block: 72px; border-top: 1px solid var(--line); }
 @media (hover: none) { .tile .cap { opacity: 1; transform: none; } }
 .tile .cap strong { display: block; font: 400 1.125rem/1.2 var(--f-display); }
 .tile .cap span { font: .75rem/1.4 var(--f-mono); opacity: .8; }
-.hint { margin-top: 18px; color: var(--muted); font-size: .9375rem; }
 
 /* ---------- Shop ---------- */
 .shop { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
@@ -267,6 +289,35 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 
 /* Fliesstext (Blog, Impressum, Datenschutz) */
 .prose { max-width: 68ch; }
+
+/* ---------- Teilen (Blog): Knopf «Teilen» mit Aufklapp-Menü ---------- */
+.teilen { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--line); position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.teilen-knopf {
+  display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; min-height: 42px;
+  font: 500 .9375rem/1 var(--f-body); color: var(--fg); text-decoration: none; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+  transition: border-color 300ms, color 300ms, background-color 200ms;
+}
+.teilen-knopf svg { width: 18px; height: 18px; flex: none; }
+.teilen-knopf .teilen-pfeil { width: 10px; height: 10px; transition: transform 250ms var(--ease); }
+.teilen.offen .teilen-pfeil { transform: rotate(180deg); }
+.teilen-haupt:hover, .teilen-haupt:focus-visible, .teilen.offen .teilen-haupt { border-color: var(--accent); }
+.teilen-knoepfe {
+  position: absolute; top: calc(28px + 42px + 8px); left: 0; z-index: 10; min-width: 220px; padding: 6px 0;
+  display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow);
+  opacity: 0; visibility: hidden; transform: translateY(6px);
+  transition: opacity 220ms var(--ease), transform 220ms var(--ease), visibility 0s linear 220ms;
+}
+.teilen.offen .teilen-knoepfe { opacity: 1; visibility: visible; transform: none; transition: opacity 220ms var(--ease), transform 220ms var(--ease), visibility 0s; }
+.teilen-knoepfe .teilen-knopf { border: 0; border-radius: 0; background: none; padding: 12px 18px; width: 100%; text-align: left; }
+.teilen-knoepfe .teilen-knopf:hover, .teilen-knoepfe .teilen-knopf:focus-visible { background: var(--bg); }
+.teilen-knopf.ok { color: var(--accent); }
+.teilen-hinweis { color: var(--muted); font-size: .9375rem; max-width: 46ch; }
+.teilen-hinweis[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) { .teilen-knoepfe, .teilen-pfeil { transition: none !important; } }
+
+.teilen-hinweis[hidden] { display: none; }
+
 .prose h1 { font-size: clamp(2.2rem, 4.6vw, 3.6rem); letter-spacing: -.02em; margin: 10px 0 28px; }
 .prose h2 { font-size: 1.7rem; margin: 40px 0 12px; }
 .prose h3 { font-size: 1.3rem; margin: 28px 0 10px; }

@@ -8,7 +8,8 @@ entwurf: false
 kopfbild: false
 abschnitte:
   - text: >-
-      Meine erste Kamera war die analoge meines Vaters. Schon in meiner Jugend
+      Ich heisse Marc Wenger und bin Naturfotograf aus Leidenschaft. Meine
+      erste Kamera war die analoge meines Vaters. Schon in meiner Jugend
       habe ich damit angefangen, damals noch in der Fliegereifotografie:
       Flugzeuge, Tempo und der richtige Moment.
 

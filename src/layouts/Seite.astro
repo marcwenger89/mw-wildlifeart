@@ -12,8 +12,8 @@ import InstaSymbol from '../components/InstaSymbol.astro';
 import { alleSerien, alleFotos } from '../lib/inhalt';
 import Intro from '../components/Intro.astro';
 
-interface Props { titel?: string; beschreibung?: string; bild?: string; galerie?: string; immerOffen?: boolean }
-const { titel, beschreibung = einstellungen.beschreibung, bild, galerie, immerOffen = false } = Astro.props;
+interface Props { titel?: string; beschreibung?: string; bild?: string; galerie?: string; immerOffen?: boolean; artikel?: boolean }
+const { titel, beschreibung = einstellungen.beschreibung, bild, galerie, immerOffen = false, artikel = false } = Astro.props;
 const name = einstellungen.seitenname;
 const shopAktiv = einstellungen.shop.aktiv;
 const seitentitel = titel ? `${titel} · ${name}` : name;
@@ -33,7 +33,12 @@ const baustelle = einstellungen.baustelle.aktiv && !immerOffen;
   <meta name="description" content={beschreibung}>
   <meta property="og:title" content={seitentitel}>
   <meta property="og:description" content={beschreibung}>
+  <meta property="og:type" content={artikel ? 'article' : 'website'}>
+  <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href}>
+  <meta property="og:site_name" content={name}>
+  <meta property="og:locale" content="de_CH">
   {ogBild && <meta property="og:image" content={ogBild}>}
+  <meta name="twitter:card" content={ogBild ? 'summary_large_image' : 'summary'}>
   <meta name="theme-color" content="#101412">
   <link rel="icon" href="/favicon-64.png" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -66,7 +71,7 @@ const baustelle = einstellungen.baustelle.aktiv && !immerOffen;
           </ul>
         </div>
         {shopAktiv && <a href="/#shop">Shop</a>}
-        <a href="/#blog">Blog</a>
+        <a href="/blog/" aria-current={Astro.url.pathname.startsWith('/blog') ? 'page' : undefined}>Blog</a>
         <a href="/#ueber">Über mich</a>
         <a href="/#kontakt">Kontakt</a>
         {einstellungen.instagram && <a class="nav-insta" href={einstellungen.instagram} target="_blank" rel="noopener" aria-label="MW-Wildlifeart auf Instagram"><InstaSymbol id="insta-kopf" /></a>}
