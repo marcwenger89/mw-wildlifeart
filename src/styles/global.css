@@ -349,6 +349,22 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 .reveal-pending { opacity: 0; transform: translateY(22px); }
 .reveal-in { opacity: 1; transform: none; transition: opacity var(--t-fade) var(--ease), transform var(--t-fade) var(--ease); }
 
+/* ---------- Nach oben ---------- */
+.nach-oben {
+  position: fixed; z-index: 15;
+  right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; padding: 0;
+  background: var(--kopf-bg-voll); color: var(--fg); border: 1px solid rgba(230, 233, 227, .18);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); box-shadow: var(--shadow);
+  opacity: 0; visibility: hidden; transform: translateY(8px);
+  transition: opacity 300ms var(--ease), transform 300ms var(--ease), visibility 0s linear 300ms, color 200ms var(--ease), border-color 200ms var(--ease);
+}
+.nach-oben.sichtbar { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.nach-oben:hover { color: var(--accent); border-color: var(--accent); }
+.nach-oben svg { width: 18px; height: 18px; }
+@media (min-width: 900px) { .nach-oben { right: 28px; bottom: 28px; width: 48px; height: 48px; } }
+@media (prefers-reduced-motion: reduce) { .nach-oben { transition: none; } }
+
 /* ---------- Vollbild ---------- */
 .lightbox {
   position: fixed; inset: 0; z-index: 70; background: var(--lightbox); color: var(--lightbox-fg);
