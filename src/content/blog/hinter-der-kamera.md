@@ -8,30 +8,36 @@ entwurf: false
 kopfbild: false
 abschnitte:
   - text: >-
-      Ich heisse Marc Wenger und bin Naturfotograf aus Leidenschaft. Meine
-      erste Kamera war die analoge meines Vaters. Schon in meiner Jugend
-      habe ich damit angefangen, damals noch in der Fliegereifotografie:
-      Flugzeuge, Tempo und der richtige Moment.
+      Ich heisse Marc Wenger und bin Naturfotograf aus Leidenschaft. Meine erste
+      Kamera war die analoge meines Vaters. Schon in meiner Jugend habe ich
+      damit angefangen, damals noch in der Fliegereifotografie: Flugzeuge, Tempo
+      und der richtige Moment.
 
 
       Doch eigentlich bin ich ein Naturmensch. Am liebsten bin ich draussen, am und auf dem See, in den Wäldern oder unterwegs auf Reisen. Irgendwann habe ich die Aviatik hinter mir gelassen und mich ganz den Tieren gewidmet, in der Schweiz wie in der Ferne.
 
 
       Was mich daran fesselt? Das Licht, das jeden Moment anders ist. Und die Spannung, nie zu wissen, was als Nächstes kommt.
-    bildbreite: 25
+
+
+      .
+
+
+      .
+
+
+      Unvergessen bleibt ein Abend in Skandinavien: Auf der Pirsch durch den Wald stand plötzlich ein Elch wenige Meter vor mir, im schönsten Abendlicht, und wir schauten uns direkt in die Augen.
+
+
+      Und in Afrika gab es viele Momente, in denen Licht, Stimmung, Tierwelt und Emotionen aufeinandertrafen.
+    bildbreite: 35
     bildseite: rechts
     bilder:
       - bild: /bilder/marc_2.jpg
         alt: Porträt von Marc Wenger
         format: hoch
         breite: voll
-  - text: >-
-      Unvergessen bleibt ein Abend in Skandinavien: Auf der Pirsch durch den
-      Wald stand plötzlich ein Elch wenige Meter vor mir, im schönsten
-      Abendlicht, und wir schauten uns direkt in die Augen.
-
-
-      Und in Afrika gab es viele Momente, in denen Licht, Stimmung, Tierwelt und Emotionen aufeinandertrafen.
+  - text: .
     bildbreite: 100
     bildseite: unten
     bilder:
