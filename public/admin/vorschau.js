@@ -85,6 +85,19 @@
     var v = map && map.getIn ? map.getIn(pfad) : undefined;
     return v == null ? '' : v;
   }
+  // Einheiten wie src/lib/einheiten.ts: nur Zahl im Admin, «f/», «1/», «mm» setzt die Seite; alte Einträge mit Einheit bleiben
+  var einheiten = (function () {
+    function rein(v) { return v == null ? '' : String(v).trim(); }
+    return {
+      blende: function (v) { var s = rein(v); return s ? 'f/' + s.replace(/^ƒ\s*\/?\s*|^f\s*\/?\s*/i, '') : ''; },
+      belichtung: function (v) {
+        var s = rein(v).replace(/\s*s(ek(\.|unden?)?)?$/i, '');
+        if (!s) return '';
+        return s.indexOf('/') >= 0 ? s.replace(/\s*\/\s*/, '/') : '1/' + s;
+      },
+      brennweite: function (v) { var s = rein(v).replace(/\s*mm$/i, ''); return s ? s + 'mm' : ''; }
+    };
+  })();
   function liste(v) { return v && v.toArray ? v.toArray() : (Array.isArray(v) ? v : []); }
   function bildUrl(getAsset, pfad) { return pfad ? String(getAsset(pfad)) : ''; }
   function setzeText(doc, sel, text) { var el = doc.querySelector(sel); if (el) el.textContent = text; return el; }
@@ -354,8 +367,8 @@
       if (lbImg && lbImg.getAttribute('src') !== bild) lbImg.setAttribute('src', bild);
       setzeText(doc, '#lb-titel', titel);
       var iso = wert(d, ['iso']);
-      setzeText(doc, '#lb-daten', [wert(d, ['ort']), wert(d, ['monat']), wert(d, ['brennweite']), wert(d, ['blende']),
-        wert(d, ['belichtung']), iso && 'ISO ' + iso, wert(d, ['koordinaten'])].filter(Boolean).join(' · '));
+      setzeText(doc, '#lb-daten', [wert(d, ['ort']), wert(d, ['monat']), wert(d, ['kamera']), einheiten.brennweite(wert(d, ['brennweite'])),
+        einheiten.blende(wert(d, ['blende'])), einheiten.belichtung(wert(d, ['belichtung'])), iso && 'ISO ' + iso, wert(d, ['koordinaten'])].filter(Boolean).join(' · '));
       var geschichte = String(wert(d, ['body'])).trim();
       var iKnopf = doc.getElementById('lb-i');
       var story = doc.getElementById('lb-story');
