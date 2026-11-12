@@ -3,6 +3,7 @@ import Seite from '../../layouts/Seite.astro';
 import { render } from 'astro:content';
 import { alleBeitraege, datumCH } from '../../lib/inhalt';
 import { einfachesMarkdown } from '../../lib/text';
+import Teilen from '../../components/Teilen.astro';
 
 export async function getStaticPaths() {
   return (await alleBeitraege()).map(p => ({ params: { slug: p.id }, props: { post: p } }));
@@ -10,7 +11,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 ---
-<Seite titel={post.data.titel} beschreibung={post.data.kurztext} bild={post.data.bild}>
+<Seite titel={post.data.titel} beschreibung={post.data.kurztext} bild={post.data.bild} artikel>
   <article class="text-page">
     <div class="wrap">
       <nav class="crumbs" aria-label="Pfad"><a href="/">Startseite</a><span aria-hidden="true">/</span><a href="/blog/">Blog</a></nav>
@@ -31,6 +32,7 @@ const { Content } = await render(post);
           )}
         </section>
       ))}
+      <Teilen titel={post.data.titel} url={new URL(`/blog/${post.id}/`, Astro.site).href} />
     </div>
   </article>
 </Seite>

@@ -117,7 +117,10 @@ const lb = reihe.map(f => ({
       img.complete ? zeigen() : img.addEventListener('load', zeigen, { once: true });
     }, 160);
   };
+  const start = Number(lb.dataset.start);
   const open = () => {
+    // immer mit dem Bild dieser Seite beginnen, nicht mit dem zuletzt angeschauten
+    i = start; wechsel++; img.classList.remove('weg');
     fill(); lb.hidden = false; document.body.style.overflow = 'hidden';
     requestAnimationFrame(() => requestAnimationFrame(() => lb.classList.add('open')));
     document.getElementById('lb-close')!.focus();

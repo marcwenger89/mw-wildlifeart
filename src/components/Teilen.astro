@@ -1,0 +1,60 @@
+---
+// Teilen-Leiste für Blogbeiträge: einfache Links (keine fremden Skripte, keine Cookies, DSG-freundlich).
+// Am Handy zusätzlich der Knopf «Teilen …», der das Teilen-Menü des Geräts öffnet (Instagram, Signal, SMS …).
+interface Props { titel: string; url: string }
+const { titel, url } = Astro.props;
+const u = encodeURIComponent(url);
+const t = encodeURIComponent(titel);
+const ziele = [
+  { name: 'WhatsApp', href: `https://wa.me/?text=${t}%20${u}`,
+    icon: '<path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.8-1.3A9.5 9.5 0 1 0 12 2.5Z"/><path d="M8.6 7.6c.2-.4.5-.4.8-.4h.5c.2 0 .4 0 .5.4l.7 1.7c.1.2 0 .4-.1.6l-.5.6c-.1.1-.2.3 0 .5.6 1 1.4 1.8 2.5 2.4.2.1.4.1.5 0l.6-.7c.2-.2.4-.2.6-.1l1.6.8c.2.1.4.2.4.4 0 .5-.2 1.2-.7 1.5-.5.4-1.3.6-2.2.3-1.2-.4-2.6-1.1-3.8-2.4-1-1.1-1.7-2.3-1.9-3.2-.2-.9.2-1.9.5-2.4Z" fill="currentColor" stroke="none"/>' },
+  { name: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${u}`,
+    icon: '<path d="M14 8.5h2.5V5H14a3.5 3.5 0 0 0-3.5 3.5V11H8v3.5h2.5V21H14v-6.5h2.5L17 11h-3V9a.5.5 0 0 1 .5-.5Z"/>' },
+  { name: 'Pinterest', href: `https://pinterest.com/pin/create/button/?url=${u}&description=${t}`,
+    icon: '<circle cx="12" cy="12" r="9.5"/><path d="M10.6 20.5 12.4 13M9.5 14.5c-.8-.8-1.1-1.9-1-3 .3-2.4 2.3-3.9 4.6-3.7 2.2.2 3.6 1.9 3.4 4-.2 2.2-1.5 3.7-3 3.6-1.3 0-1.9-1-1.6-2.2l.6-2.3"/>' },
+  { name: 'E-Mail', href: `mailto:?subject=${t}&body=${u}`,
+    icon: '<rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/>' },
+];
+---
+<div class="teilen" data-titel={titel} data-url={url}>
+  <p class="eyebrow">Beitrag teilen</p>
+  <div class="teilen-knoepfe">
+    <button type="button" class="teilen-knopf teilen-geraet" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 15V3M7.5 7.5 12 3l4.5 4.5M5 12v7.5h14V12"/></svg>
+      <span>Teilen …</span>
+    </button>
+    {ziele.map(z => (
+      <a class="teilen-knopf" href={z.href} target="_blank" rel="noopener" aria-label={`Auf ${z.name} teilen`} title={z.name}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" set:html={z.icon} />
+        <span class="teilen-name">{z.name}</span>
+      </a>
+    ))}
+    <button type="button" class="teilen-knopf teilen-kopieren" aria-label="Link kopieren" title="Link kopieren">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3.5-3.5a4 4 0 0 0-5.7-5.7L12 6.3"/><path d="M14 10a4 4 0 0 0-5.7 0l-3.5 3.5a4 4 0 0 0 5.7 5.7l1.5-1.5"/></svg>
+      <span class="teilen-name">Link kopieren</span>
+    </button>
+  </div>
+</div>
+
+<script>
+  for (const box of document.querySelectorAll<HTMLElement>('.teilen')) {
+    const titel = box.dataset.titel!, url = box.dataset.url!;
+    const geraet = box.querySelector<HTMLButtonElement>('.teilen-geraet')!;
+    // Teilen-Menü des Geräts nur dort anbieten, wo es das gibt (vor allem Handy und Tablet)
+    if (navigator.share && matchMedia('(pointer: coarse)').matches) {
+      geraet.hidden = false;
+      geraet.addEventListener('click', () => navigator.share({ title: titel, url }).catch(() => {}));
+    }
+    const kopieren = box.querySelector<HTMLButtonElement>('.teilen-kopieren')!;
+    const name = kopieren.querySelector('.teilen-name')!;
+    kopieren.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(url); } catch {
+        const f = document.createElement('textarea'); f.value = url; document.body.append(f); f.select();
+        try { document.execCommand('copy'); } catch {}
+        f.remove();
+      }
+      name.textContent = 'Kopiert ✓'; kopieren.classList.add('ok');
+      setTimeout(() => { name.textContent = 'Link kopieren'; kopieren.classList.remove('ok'); }, 2000);
+    });
+  }
+</script>

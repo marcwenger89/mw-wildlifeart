@@ -31,6 +31,11 @@ const absaetze = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
                  data-titel={f.data.titel} data-ort={f.data.ort ?? ''} data-link={`/fotos/${f.id}/`}>
           </picture>
         ))}
+        <a class="hero-link" id="hero-link" href={`/fotos/${heroFotos[0]?.id}/`} aria-label={`Foto ansehen: ${heroFotos[0]?.data.titel}`}></a>
+        {heroFotos.length > 1 && <>
+          <button type="button" class="hero-pfeil zurueck" id="hero-zurueck" aria-label="Vorheriges Bild"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
+          <button type="button" class="hero-pfeil weiter" id="hero-weiter" aria-label="Nächstes Bild"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
+        </>}
         <div class="hero-caption">
           <div>
             <p class="eyebrow" style="color:inherit;opacity:.8">Aktuelles Bild</p>
@@ -149,6 +154,7 @@ const absaetze = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
     const imgs = [...hero.querySelectorAll<HTMLImageElement>('img')];
     const dots = [...document.querySelectorAll<HTMLButtonElement>('#hero-dots button')];
     const cap = document.getElementById('hero-cap') as HTMLAnchorElement;
+    const link = document.getElementById('hero-link') as HTMLAnchorElement;
     const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let idx = 0, timer: number | undefined;
     requestAnimationFrame(() => requestAnimationFrame(() => imgs[0]?.classList.remove('instant')));
@@ -159,12 +165,26 @@ const absaetze = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
       const d = imgs[k].dataset;
       cap.textContent = d.titel + (d.ort ? ' · ' + d.ort : '');
       cap.href = d.link!;
+      link.href = d.link!;
+      link.setAttribute('aria-label', 'Foto ansehen: ' + d.titel);
     };
     const restart = () => {
       clearInterval(timer);
       if (!calm && imgs.length > 1) timer = window.setInterval(() => show((idx + 1) % imgs.length), 6500);
     };
     dots.forEach((b, i) => b.addEventListener('click', () => { show(i); restart(); }));
+    const schritt = (dir: number) => { show((idx + dir + imgs.length) % imgs.length); restart(); };
+    document.getElementById('hero-zurueck')?.addEventListener('click', () => schritt(-1));
+    document.getElementById('hero-weiter')?.addEventListener('click', () => schritt(1));
+    // Wischen am Handy
+    let tx: number | null = null, ty = 0;
+    hero.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+    hero.addEventListener('touchend', e => {
+      if (tx === null || imgs.length < 2) return;
+      const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+      tx = null;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) schritt(dx < 0 ? 1 : -1);
+    });
     restart();
   }
 </script>
