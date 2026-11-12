@@ -20,8 +20,7 @@ const absaetze = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
 ---
 <Seite bild={heroFotos[0]?.data.bild}>
   <section class="hero">
-    <div class="wrap">
-      <div class="hero-frame" id="hero">
+      <div class={`hero-frame${heroFotos.length > 1 ? ' mehrere' : ''}`} id="hero">
         {heroFotos.map((f, i) => (
           <picture>
             {f.data.startbild_handy && <source media="(max-width: 640px)" srcset={f.data.startbild_handy}>}
@@ -43,20 +42,18 @@ const absaetze = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
             </div>
           </div>
         )}
-      </div>
-      <div class="hero-text">
-        <h1>{s.titel} {s.titel_betont && <em>{s.titel_betont}</em>} {s.titel_ende}</h1>
-        <div>
+        <div class="hero-text">
+          <h1>{s.titel} {s.titel_betont && <em>{s.titel_betont}</em>} {s.titel_ende}</h1>
           <p>{s.text}</p>
           <div class="btn-row">
             <a class="btn primary" href="#werke">Galerien ansehen</a>
             {shopAktiv
-              ? <a class="btn" href="#shop">Prints und Kalender</a>
-              : <a class="btn" href="#ueber">Über mich</a>}
+              ? <a class="btn hell" href="#shop">Prints und Kalender</a>
+              : <a class="btn hell" href="#ueber">Über mich</a>}
           </div>
         </div>
+        <a class="hero-runter" href="#werke" aria-label="Nach unten"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 6 5 5 5-5"/></svg></a>
       </div>
-    </div>
   </section>
 
   {werke.length > 0 && (

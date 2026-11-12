@@ -127,10 +127,31 @@ p { margin: 0; }
 .nav-drop-list .mono { color: var(--muted); font-size: .75rem; }
 
 /* ---------- Hero mit Überblenden ---------- */
-.hero { padding-block: 32px 72px; }
-@media (max-width: 640px) { .hero { padding-block: 20px 56px; } }
-.hero-frame { position: relative; aspect-ratio: 16 / 8; overflow: hidden; background: var(--line); }
-@media (max-width: 640px) { .hero-frame { aspect-ratio: 4 / 5; } }
+/* Titelbild über den ganzen Bildschirm, Text darüber */
+.hero { padding: 0; }
+.hero-frame { position: relative; height: calc(100svh - var(--head-h)); min-height: 520px; overflow: hidden; background: var(--line); }
+.hero-frame::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(8, 10, 9, .45), rgba(8, 10, 9, .12) 40%, rgba(8, 10, 9, 0) 65%, rgba(8, 10, 9, .5));
+}
+.hero-text {
+  position: absolute; z-index: 2; left: 0; right: 0; top: clamp(56px, 14vh, 170px);
+  max-width: 980px; margin-inline: auto; padding-inline: 20px; text-align: center; color: #f1f3ee; pointer-events: none;
+}
+.hero-text a { pointer-events: auto; }
+.hero-text h1 { font-size: clamp(2.3rem, 5.4vw, 4.4rem); letter-spacing: -.02em; text-shadow: 0 2px 24px rgba(0, 0, 0, .35); }
+.hero-text h1 em { font-style: italic; color: var(--accent); }
+.hero-text p { color: rgba(241, 243, 238, .88); max-width: 46ch; margin: 18px auto 0; text-shadow: 0 1px 12px rgba(0, 0, 0, .4); }
+.hero-text .btn-row { justify-content: center; margin-top: 26px; }
+.btn.hell { border-color: rgba(241, 243, 238, .85); color: #f1f3ee; background: rgba(8, 10, 9, .18); }
+.btn.hell:hover { background: #f1f3ee; color: #101412; }
+@media (max-width: 640px) { .hero-text { top: clamp(40px, 10vh, 110px); } }
+.hero-runter {
+  position: absolute; z-index: 3; left: 50%; bottom: 22px; width: 44px; height: 44px; margin-left: -22px;
+  display: grid; place-items: center; border: 1px solid rgba(241, 243, 238, .45); border-radius: 50%; color: #f1f3ee; opacity: .8; transition: opacity 300ms;
+}
+.hero-runter:hover { opacity: 1; }
+.hero-runter svg { width: 18px; height: 18px; }
 .hero-frame img {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
   opacity: 0; transform: scale(1.04);
@@ -141,8 +162,7 @@ p { margin: 0; }
 @media (prefers-reduced-motion: reduce) { .hero-frame img { transition: none; transform: none; } }
 .hero-caption {
   position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: flex-end; align-items: end; gap: 12px;
-  padding: 40px clamp(16px, 4vw, 40px) clamp(16px, 3vw, 28px);
-  background: linear-gradient(to top, rgba(8, 10, 9, .35), transparent);
+  padding: 0 clamp(16px, 4vw, 40px) 40px;
   color: #f1f3ee;
 }
 .hero-caption a { text-decoration: none; }
@@ -165,14 +185,14 @@ p { margin: 0; }
 .hero-pfeil:hover, .hero-pfeil:focus-visible { opacity: 1; background: rgba(8, 10, 9, .45); }
 .hero-pfeil.zurueck { left: 16px; }
 .hero-pfeil.weiter { right: 16px; }
+@media (max-width: 640px) {
+  .hero-pfeil { top: auto; bottom: 22px; margin-top: 0; }
+  .hero-caption { justify-content: center; padding-bottom: 40px; }
+  .hero-frame.mehrere .hero-runter { display: none; }
+}
 @media (max-width: 640px) { .hero-pfeil { width: 38px; height: 38px; margin-top: -19px; } .hero-pfeil svg { width: 16px; height: 16px; } .hero-pfeil.zurueck { left: 10px; } .hero-pfeil.weiter { right: 10px; } }
 .hero-dots button { width: 28px; height: 3px; padding: 0; border: 0; background: rgba(241, 243, 238, .4); cursor: pointer; }
 .hero-dots button.on { background: #f1f3ee; }
-.hero-text { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px 64px; align-items: end; padding-top: 44px; }
-@media (max-width: 820px) { .hero-text { grid-template-columns: minmax(0, 1fr); } }
-.hero-text h1 { font-size: clamp(2.4rem, 5.6vw, 4.6rem); letter-spacing: -.02em; }
-.hero-text h1 em { font-style: italic; color: var(--accent); }
-.hero-text p { color: var(--muted); max-width: 42ch; }
 .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
 .btn {
   display: inline-flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer;

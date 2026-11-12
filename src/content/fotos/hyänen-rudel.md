@@ -10,7 +10,7 @@ belichtung: 1/640
 iso: "1250"
 tags:
   - Hyäne
-startseite: true
+startseite: false
 ausschnitt: center
 startbild: /bilder/hyäne_desktop_start_1.jpg
 startbild_handy: /bilder/hyaene_handy_start_1.jpg
