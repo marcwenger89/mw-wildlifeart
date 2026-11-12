@@ -20,10 +20,10 @@ abschnitte:
       Was mich daran fesselt? Das Licht, das jeden Moment anders ist. Und die Spannung, nie zu wissen, was als Nächstes kommt.
 
 
-      .
 
 
-      .
+
+
 
 
       Unvergessen bleibt ein Abend in Skandinavien: Auf der Pirsch durch den Wald stand plötzlich ein Elch wenige Meter vor mir, im schönsten Abendlicht, und wir schauten uns direkt in die Augen.
@@ -37,7 +37,8 @@ abschnitte:
         alt: Porträt von Marc Wenger
         format: hoch
         breite: voll
-  - text: .
+    farbe: standard
+  - text: ""
     bildbreite: 100
     bildseite: unten
     bilder:
