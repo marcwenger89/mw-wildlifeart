@@ -380,6 +380,13 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 .nach-oben:hover { color: var(--accent); border-color: var(--accent); }
 .nach-oben svg { width: 18px; height: 18px; }
 @media (min-width: 900px) { .nach-oben { right: 28px; bottom: 28px; width: 48px; height: 48px; } }
+/* Handy (v. a. Safari): «bottom» landet teils hinter der unteren Leiste des Browsers.
+   Darum ab der kleinsten sichtbaren Höhe (svh = Leisten ausgeklappt) von oben her setzen. */
+@supports (height: 100svh) {
+  @media (max-width: 899px) {
+    .nach-oben { bottom: auto; top: calc(100svh - 44px - 20px - env(safe-area-inset-bottom, 0px)); }
+  }
+}
 @media (prefers-reduced-motion: reduce) { .nach-oben { transition: none; } }
 
 /* ---------- Vollbild ---------- */
