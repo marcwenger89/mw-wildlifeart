@@ -46,9 +46,10 @@ collections:
       - { name: ort, label: Ort, widget: string, required: false, hint: 'z. B. Vallée de Joux VD' }
       - { name: koordinaten, label: Koordinaten, widget: string, required: false, hint: 'z. B. 46.62° N, 6.27° E. Leer lassen, wenn der Ort geheim bleiben soll.' }
       - { name: monat, label: Monat, widget: string, required: false }
-      - { name: brennweite, label: Brennweite, widget: string, required: false, hint: 'z. B. 600 mm' }
-      - { name: blende, label: Blende, widget: string, required: false, hint: 'z. B. f/4' }
-      - { name: belichtung, label: Belichtungszeit, widget: string, required: false, hint: 'z. B. 1/1000 s' }
+      - { name: kamera, label: Kamera, widget: string, required: false, hint: 'freiwillig, z. B. Z9' }
+      - { name: brennweite, label: Brennweite (mm), widget: string, required: false, hint: 'nur die Zahl, z. B. 800 – «mm» setzt die Seite automatisch' }
+      - { name: blende, label: Blende (f/), widget: string, required: false, hint: 'nur die Zahl, z. B. 6.3 – «f/» setzt die Seite automatisch' }
+      - { name: belichtung, label: Belichtungszeit (1/ s), widget: string, required: false, hint: 'nur die Zahl, z. B. 1000 für 1/1000 s – «1/» setzt die Seite automatisch' }
       - { name: iso, label: ISO, widget: string, required: false, hint: 'nur die Zahl, z. B. 800' }
       - { name: saal_link, label: Saal-Link für dieses Bild, widget: string, required: false, hint: 'Leer lassen, dann gilt der Saal-Link der Galerie.' }
       - { name: tags, label: Tags, widget: relation, collection: seite, file: tags, search_fields: ['tags.*'], value_field: 'tags.*', display_fields: ['tags.*'], multiple: true, required: false, hint: 'Zum Filtern unter «Alle Bilder». Neue Tags legst du unter Seitentexte → Tags an.' }

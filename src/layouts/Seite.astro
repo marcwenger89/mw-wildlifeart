@@ -9,7 +9,6 @@ import '@fontsource/ibm-plex-mono/500.css';
 import '../styles/global.css';
 import einstellungen from '../data/einstellungen.json';
 import InstaSymbol from '../components/InstaSymbol.astro';
-import { alleSerien, alleFotos } from '../lib/inhalt';
 import Intro from '../components/Intro.astro';
 
 interface Props { titel?: string; beschreibung?: string; bild?: string; galerie?: string; immerOffen?: boolean; artikel?: boolean }
@@ -17,9 +16,6 @@ const { titel, beschreibung = einstellungen.beschreibung, bild, galerie, immerOf
 const name = einstellungen.seitenname;
 const shopAktiv = einstellungen.shop.aktiv;
 const seitentitel = titel ? `${titel} · ${name}` : name;
-const serien = await alleSerien();
-const fotos = await alleFotos();
-const anzahl = (id: string) => fotos.filter(f => f.data.serie.id === id).length;
 const [vorname, ...rest] = name.split('-');
 const ogBild = bild ? new URL(bild, Astro.site).href : undefined;
 // «Über mich» im Menü führt direkt zum verlinkten Blogbeitrag (Admin: Seitentexte → Über mich → Link), sonst zum Abschnitt
@@ -70,18 +66,7 @@ const baustelle = einstellungen.baustelle.aktiv && !immerOffen;
     <div class="wrap">
       <a class="logo" href="/"><img src="/logo/elefant-weiss.png" alt="" width="34" height="34"><span>{vorname}{rest.length > 0 && <><em>-</em>{rest.join('-')}</>}</span></a>
       <nav class="site-nav" aria-label="Hauptnavigation">
-        <div class="nav-drop" id="nav-drop">
-          <button type="button" class="nav-drop-btn" id="nav-drop-btn" aria-expanded="false" aria-controls="nav-drop-list" data-current={galerie ? '' : undefined}>
-            Galerien
-            <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 3.5 5 6.5l3-3"/></svg>
-          </button>
-          <ul class="nav-drop-list" id="nav-drop-list">
-            <li class="sep"><a href="/galerien/alle/" aria-current={galerie === 'alle' ? 'page' : undefined}><span>Alle Bilder</span><span class="mono">{fotos.length}</span></a></li>
-            {serien.map(s => (
-              <li><a href={`/galerien/${s.id}/`} aria-current={galerie === s.id ? 'page' : undefined}><span>{s.data.titel}</span><span class="mono">{anzahl(s.id)}</span></a></li>
-            ))}
-          </ul>
-        </div>
+        <a href="/galerien/" aria-current={galerie ? 'page' : undefined}>Galerien</a>
         {shopAktiv && <a href="/#shop">Shop</a>}
         <a href="/blog/" aria-current={Astro.url.pathname.startsWith('/blog') && Astro.url.pathname !== ueberLink ? 'page' : undefined}>Blog</a>
         <a href={ueberLink} aria-current={ueberLink !== '/#ueber' && Astro.url.pathname === ueberLink ? 'page' : undefined}>Über mich</a>
@@ -131,25 +116,6 @@ const baustelle = einstellungen.baustelle.aktiv && !immerOffen;
     addEventListener('dragstart', e => { if (istBild(e)) e.preventDefault(); });
     const setHeadH = () => document.documentElement.style.setProperty('--head-h', kopf.offsetHeight + 'px');
     setHeadH(); addEventListener('resize', setHeadH);
-
-    // Aufklapp-Liste «Galerien»: Klick oder Hover
-    const drop = document.getElementById('nav-drop')!, btn = document.getElementById('nav-drop-btn')!;
-    let openedBy: string | null = null;
-    const setDrop = (open: boolean, by: string | null = null) => {
-      openedBy = open ? by : null;
-      drop.classList.toggle('open', open);
-      btn.setAttribute('aria-expanded', String(open));
-    };
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      if (drop.classList.contains('open') && openedBy === 'click') setDrop(false); else setDrop(true, 'click');
-    });
-    if (matchMedia('(hover: hover)').matches) {
-      drop.addEventListener('mouseenter', () => { if (!drop.classList.contains('open')) setDrop(true, 'hover'); });
-      drop.addEventListener('mouseleave', () => { if (openedBy === 'hover') setDrop(false); });
-    }
-    document.addEventListener('click', e => { if (!drop.contains(e.target as Node)) setDrop(false); });
-    drop.addEventListener('keydown', e => { if (e.key === 'Escape' && drop.classList.contains('open')) { setDrop(false); btn.focus(); } });
 
     // Einblenden beim Scrollen (nur was beim Laden noch nicht sichtbar ist)
     const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;

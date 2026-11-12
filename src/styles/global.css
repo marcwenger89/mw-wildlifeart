@@ -100,31 +100,6 @@ p { margin: 0; }
 .site-nav > a { text-decoration: none; color: var(--muted); padding-block: 4px; border-bottom: 1px solid transparent; transition: color 300ms, border-color 300ms; }
 .site-nav > a:hover, .site-nav > a[aria-current="page"] { color: var(--fg); border-color: var(--accent); }
 
-/* Aufklapp-Liste «Galerien» */
-.nav-drop { position: relative; }
-.nav-drop-btn {
-  font: inherit; color: var(--muted); background: none; border: 0; border-bottom: 1px solid transparent; padding: 4px 0;
-  cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: color 300ms, border-color 300ms;
-}
-.nav-drop-btn svg { width: 10px; height: 10px; transition: transform 250ms var(--ease); }
-.nav-drop-btn:hover, .nav-drop.open .nav-drop-btn, .nav-drop-btn[data-current] { color: var(--fg); border-color: var(--accent); }
-.nav-drop.open .nav-drop-btn svg { transform: rotate(180deg); }
-.nav-drop-list {
-  position: absolute; top: calc(100% + 10px); left: 0; z-index: 30; list-style: none; margin: 0; padding: 8px 0;
-  min-width: 240px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow);
-  opacity: 0; visibility: hidden; transform: translateY(6px);
-  transition: opacity 220ms var(--ease), transform 220ms var(--ease), visibility 0s linear 220ms;
-}
-.nav-drop-list::before { content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 12px; }
-.nav-drop.open .nav-drop-list { opacity: 1; visibility: visible; transform: none; transition: opacity 220ms var(--ease), transform 220ms var(--ease), visibility 0s; }
-@media (prefers-reduced-motion: reduce) { .nav-drop-list, .nav-drop-btn svg { transition: none !important; } }
-.nav-drop-list li.sep { border-bottom: 1px solid var(--line); margin-bottom: 6px; padding-bottom: 6px; }
-.nav-drop-list a {
-  display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding: 9px 18px;
-  color: var(--fg); text-decoration: none; transition: background-color 200ms;
-}
-.nav-drop-list a:hover, .nav-drop-list a[aria-current="page"] { background: var(--bg); }
-.nav-drop-list .mono { color: var(--muted); font-size: .75rem; }
 
 /* ---------- Hero mit Überblenden ---------- */
 /* Titelbild über den ganzen Bildschirm, Text darüber */

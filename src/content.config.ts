@@ -6,6 +6,8 @@ import { z } from 'astro/zod';
 const optional = <T extends z.ZodTypeAny>(schema: T) =>
   z.preprocess(v => (v === null || v === '' ? undefined : v), schema);
 
+const zahlOderText = z.union([z.string(), z.number()]).transform(v => String(v)).optional();
+
 const serien = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/serien' }),
   schema: z.object({
@@ -27,10 +29,12 @@ const fotos = defineCollection({
     ort: z.string().optional(),
     koordinaten: z.string().optional(),
     monat: z.string().optional(),
-    brennweite: z.string().optional(),
-    blende: z.string().optional(),
-    belichtung: z.string().optional(),
-    iso: z.string().optional(),
+    kamera: optional(z.string().optional()),
+    // Zahlen ohne Einheit dürfen auch als Zahl im Eintrag stehen (z. B. blende: 6.3)
+    brennweite: optional(zahlOderText),
+    blende: optional(zahlOderText),
+    belichtung: optional(zahlOderText),
+    iso: optional(zahlOderText),
     saal_link: z.string().optional(),
     startseite: z.boolean().default(false),
     werk: z.boolean().default(false),
