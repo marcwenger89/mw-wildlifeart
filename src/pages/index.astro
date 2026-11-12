@@ -27,10 +27,9 @@ const absaetze = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
             <img src={f.data.startbild ?? f.data.bild} alt={f.data.titel} class={i === 0 ? 'on instant' : undefined}
                  style={`object-position: ${f.data.ausschnitt}`}
                  loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined}
-                 data-titel={f.data.titel} data-ort={f.data.ort ?? ''} data-link={`/galerien/${f.data.serie.id}/?bild=${f.id}`}>
+                >
           </picture>
         ))}
-        <a class="hero-link" id="hero-link" href={`/galerien/${heroFotos[0]?.data.serie.id}/?bild=${heroFotos[0]?.id}`} aria-label={`Foto ansehen: ${heroFotos[0]?.data.titel}`}></a>
         {heroFotos.length > 1 && <>
           <button type="button" class="hero-pfeil zurueck" id="hero-zurueck" aria-label="Vorheriges Bild"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
           <button type="button" class="hero-pfeil weiter" id="hero-weiter" aria-label="Nächstes Bild"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
@@ -144,7 +143,6 @@ const absaetze = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
   if (hero) {
     const imgs = [...hero.querySelectorAll<HTMLImageElement>('img')];
     const dots = [...document.querySelectorAll<HTMLButtonElement>('#hero-dots button')];
-    const link = document.getElementById('hero-link') as HTMLAnchorElement;
     const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let idx = 0, timer: number | undefined;
     requestAnimationFrame(() => requestAnimationFrame(() => imgs[0]?.classList.remove('instant')));
@@ -152,9 +150,6 @@ const absaetze = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
       idx = k;
       imgs.forEach((el, i) => el.classList.toggle('on', i === k));
       dots.forEach((b, i) => b.classList.toggle('on', i === k));
-      const d = imgs[k].dataset;
-      link.href = d.link!;
-      link.setAttribute('aria-label', 'Foto ansehen: ' + d.titel);
     };
     const restart = () => {
       clearInterval(timer);
