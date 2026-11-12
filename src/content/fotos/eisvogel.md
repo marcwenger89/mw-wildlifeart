@@ -2,10 +2,13 @@
 titel: Eisvogel
 serie: skandinavien
 bild: /bilder/eisvogel.jpg
+ort: Schweiz
 brennweite: 800mm
 blende: f/6.3
 belichtung: 1/1000
 iso: "2500"
+tags:
+  - Vögel
 startseite: false
 ausschnitt: center
 werk: false
