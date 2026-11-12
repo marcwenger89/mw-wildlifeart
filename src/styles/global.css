@@ -23,6 +23,7 @@
   --verlauf-mitte: #101412;
   --verlauf-sand: #363225;
   --kopf-bg: rgba(22, 30, 23, .78);
+  --kopf-bg-voll: rgb(25, 34, 26);
   color-scheme: dark;
 }
 @media (prefers-reduced-motion: reduce) { :root { --t-fade: 1ms; --t-hover: 1ms; } }
@@ -31,6 +32,12 @@
 @view-transition { navigation: auto; }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 320ms; animation-timing-function: var(--ease); }
 @media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+/* Kopfzeile beim Seitenwechsel ruhig halten: nicht überblenden und ohne Weichzeichner
+   (Safari zeichnet den Glas-Effekt im Übergangsbild sonst über das Logo, es wirkt kurz weiss verschwommen) */
+::view-transition-old(kopfzeile) { display: none; }
+::view-transition-new(kopfzeile) { animation: none; }
+::view-transition-group(kopfzeile) { animation: none; }
+html.seitenwechsel .site-head { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--kopf-bg-voll); }
 
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--head-h) + 12px); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
