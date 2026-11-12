@@ -1,6 +1,7 @@
 ---
 import Seite from '../../layouts/Seite.astro';
 import Mosaik from '../../components/Mosaik.astro';
+import Vollbild from '../../components/Vollbild.astro';
 import { alleSerien, alleFotos } from '../../lib/inhalt';
 
 export async function getStaticPaths() {
@@ -51,6 +52,7 @@ const tags = serie === 'alle' ? [...new Set(fotos.flatMap(f => f.data.tags))].so
       <p class="tag-leer" id="tag-leer" hidden>Zu diesem Tag gibt es noch keine Bilder.</p>
     </div>
   </section>
+  <Vollbild fotos={fotos} />
 </Seite>
 
 <script>
