@@ -106,10 +106,23 @@ const baustelle = einstellungen.baustelle.aktiv && !immerOffen;
     </div>
   </footer>
 
+  <button class="nach-oben" id="nach-oben" type="button" aria-label="Nach oben" tabindex="-1">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+
   <script>
-    // Kopfzeile wird beim Scrollen schmaler
+    // Kopfzeile wird beim Scrollen schmaler; «Nach oben»-Knopf erscheint ab etwa einer Bildschirmhöhe
     const kopf = document.getElementById('kopf')!;
-    const onScroll = () => kopf.classList.toggle('scrolled', scrollY > 30);
+    const nachOben = document.getElementById('nach-oben')!;
+    const onScroll = () => {
+      kopf.classList.toggle('scrolled', scrollY > 30);
+      const zeigen = scrollY > innerHeight * 0.8;
+      nachOben.classList.toggle('sichtbar', zeigen);
+      nachOben.tabIndex = zeigen ? 0 : -1;
+    };
+    nachOben.addEventListener('click', () => {
+      scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    });
     addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
     // Bilder schützen: kein Rechtsklick-Menü und kein Herausziehen (Screenshots bleiben möglich)

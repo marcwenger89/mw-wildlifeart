@@ -123,6 +123,20 @@ const geschichten = await Promise.all(fotos.map(async f => (f.body?.trim() ? (aw
     });
   }
   document.getElementById('lb-close')!.addEventListener('click', close);
+  // Von der Startseite: /galerien/…/?bild=foto-id öffnet die Galerie direkt im Vollbild bei diesem Bild
+  const gewuenscht = new URLSearchParams(location.search).get('bild');
+  if (gewuenscht) {
+    const url = new URL(location.href); url.searchParams.delete('bild');
+    history.replaceState(history.state, '', url);
+    const o = oeffner.find(x => x.dataset.lbId === gewuenscht);
+    if (o) {
+      lb.classList.add('sofort');
+      open(Number(o.dataset.lbIndex), o);
+      // kein Fokus-Ring auf dem Schliessen-Knopf, wenn das Vollbild ohne Klick aufgeht
+      (document.activeElement as HTMLElement | null)?.blur();
+      setTimeout(() => lb.classList.remove('sofort'), 200);
+    }
+  }
   prev.addEventListener('click', () => step(-1));
   next.addEventListener('click', () => step(1));
   iKnopf.addEventListener('click', () => (story.hidden ? storyAuf() : storyZu()));

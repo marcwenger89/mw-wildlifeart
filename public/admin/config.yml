@@ -123,6 +123,13 @@ collections:
             required: false
             default: rechts
             options: [{ label: Rechts neben dem Text, value: rechts }, { label: Links neben dem Text, value: links }, { label: Unter dem Text, value: unten }]
+          - name: bildhoehe
+            label: Höhe des Bildes neben dem Text
+            widget: select
+            required: false
+            default: format
+            options: [{ label: 'Nach gewähltem Format', value: format }, { label: 'Genau so hoch wie der Text (Bild wird passend zugeschnitten)', value: text }]
+            hint: 'Nur für Bilder rechts oder links. Bei «so hoch wie der Text» zeigt der PC das erste Bild über die ganze Texthöhe, auf dem Handy bleibt das Format.'
           - name: bilder
             label: Bilder
             label_singular: Bild

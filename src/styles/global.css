@@ -199,7 +199,6 @@ section.block { padding-block: 72px; border-top: 1px solid var(--line); }
 .serie img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--t-hover) var(--ease); }
 .serie:hover img { transform: scale(1.05); }
 .serie h3 { font-size: 1.5rem; }
-.serie .meta { display: flex; justify-content: flex-end; gap: 12px; color: var(--muted); }
 
 /* ---------- Galerie-Unterseite und Mosaik ---------- */
 .gallery-page, .text-page { padding-block: 20px 72px; }
@@ -338,6 +337,14 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 .abschnitt-bilder img.quadrat { aspect-ratio: 1; }
 .abschnitt-bilder img.breit { aspect-ratio: 16 / 9; }
 .abschnitt-bilder img.original { height: auto; }
+/* «Bild so hoch wie der Text»: erstes Bild füllt die Höhe des Textes (zugeschnitten), nur am PC */
+@media (min-width: 861px) {
+  .abschnitt.texthoehe { align-items: stretch; }
+  .abschnitt.texthoehe > .prose > :last-child { margin-bottom: 0; }
+  .texthoehe .abschnitt-bilder { position: relative; top: auto; min-height: 240px; }
+  .texthoehe .abschnitt-bilder img { position: absolute; inset: 0; height: 100%; aspect-ratio: auto; }
+  .texthoehe .abschnitt-bilder img ~ img { display: none; }
+}
 @media (max-width: 860px) {
   .abschnitt.mit-bild { grid-template-columns: minmax(0, 1fr); }
   .abschnitt-bilder { position: static; }
@@ -349,30 +356,21 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 .reveal-pending { opacity: 0; transform: translateY(22px); }
 .reveal-in { opacity: 1; transform: none; transition: opacity var(--t-fade) var(--ease), transform var(--t-fade) var(--ease); }
 
-/* ---------- Foto-Detailseite ---------- */
-.detail-bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 12px 18px; }
-.back { font: 500 .9375rem/1 var(--f-body); color: var(--muted); text-decoration: none; display: inline-flex; gap: 8px; align-items: center; padding: 8px 0; }
-.back:hover { color: var(--fg); }
-.detail-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 32px 56px; padding-bottom: 72px; align-items: start; }
-@media (max-width: 900px) { .detail-grid { grid-template-columns: minmax(0, 1fr); } }
-.detail-img { position: relative; background: var(--line); cursor: zoom-in; border: 0; padding: 0; display: block; width: 100%; }
-.detail-img img { width: 100%; height: auto; }
-/* Am Computer passt das ganze Bild in den Bildschirm, die Infos stehen daneben */
-@media (min-width: 901px) {
-  .detail-img { background: none; justify-self: start; width: auto; }
-  .detail-img img { width: auto; max-height: calc(100svh - var(--head-h) - 110px); }
-  .detail-info { position: sticky; top: calc(var(--head-h) + 24px); }
+/* ---------- Nach oben ---------- */
+.nach-oben {
+  position: fixed; z-index: 15;
+  right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; padding: 0;
+  background: var(--kopf-bg-voll); color: var(--fg); border: 1px solid rgba(230, 233, 227, .18);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); box-shadow: var(--shadow);
+  opacity: 0; visibility: hidden; transform: translateY(8px);
+  transition: opacity 300ms var(--ease), transform 300ms var(--ease), visibility 0s linear 300ms, color 200ms var(--ease), border-color 200ms var(--ease);
 }
-.detail-img .fs { position: absolute; right: 12px; bottom: 12px; background: var(--scrim); color: #f1f3ee; font: 500 .8125rem/1 var(--f-body); padding: 9px 12px; display: inline-flex; gap: 8px; align-items: center; }
-.detail-info { display: grid; gap: 22px; }
-.detail-info h1 { font-size: clamp(2rem, 4vw, 3.2rem); letter-spacing: -.015em; margin-top: 10px; }
-.detail-info .story { color: var(--muted); }
-.detail-info .story p + p { margin-top: 12px; }
-.exif { display: grid; grid-template-columns: auto 1fr; gap: 8px 20px; margin: 0; padding-block: 18px; border-block: 1px solid var(--line); font-variant-numeric: tabular-nums; }
-.exif dt { font: 500 .6875rem/1.9 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-.exif dd { margin: 0; font: .875rem/1.6 var(--f-mono); }
-.buy-note { font-size: .875rem; color: var(--muted); margin-top: 10px; }
-.detail-nav { display: flex; justify-content: space-between; gap: 16px; }
+.nach-oben.sichtbar { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.nach-oben:hover { color: var(--accent); border-color: var(--accent); }
+.nach-oben svg { width: 18px; height: 18px; }
+@media (min-width: 900px) { .nach-oben { right: 28px; bottom: 28px; width: 48px; height: 48px; } }
+@media (prefers-reduced-motion: reduce) { .nach-oben { transition: none; } }
 
 /* ---------- Vollbild ---------- */
 .lightbox {
@@ -382,6 +380,7 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
   opacity: 0; transition: opacity 400ms var(--ease); touch-action: pinch-zoom;
 }
 .lightbox.open { opacity: 1; }
+.lightbox.sofort { transition: none; }
 @media (prefers-reduced-motion: reduce) { .lightbox { transition: none; } }
 .lb-top { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
 /* Das ganze Bild wird eingepasst und zentriert, nie abgeschnitten; die Infos stehen direkt darunter */
