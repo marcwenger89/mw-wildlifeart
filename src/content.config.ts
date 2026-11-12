@@ -57,7 +57,7 @@ const blog = defineCollection({
     entwurf: z.boolean().default(false),
     kopfbild: z.boolean().default(true),
     abschnitte: z.array(z.object({
-      text: z.string().default(''),
+      text: z.string().nullish().transform(v => v ?? ''),
       bilder: z.array(z.object({
         bild: z.string(),
         alt: z.string().default(''),
@@ -67,6 +67,8 @@ const blog = defineCollection({
       bildbreite: optional(z.number().min(15).max(100).default(50)),
       bildseite: optional(z.enum(['rechts', 'links', 'unten']).default('rechts')),
       bildhoehe: optional(z.enum(['format', 'text']).default('format')),
+      schrift: optional(z.enum(['standard', 'titel', 'kursiv', 'mono']).default('standard')),
+      farbe: optional(z.enum(['standard', 'hell', 'gold', 'sand', 'gedaempft']).default('standard')),
     })).default([]),
   }),
 });

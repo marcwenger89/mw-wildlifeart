@@ -115,7 +115,28 @@ collections:
         summary: '{{fields.text}}'
         hint: 'Erscheinen nach dem Text. Bilder stehen neben dem Abschnitt, auf dem Handy darunter (schmale Bildspalte: darüber).'
         fields:
-          - { name: text, label: Text, widget: markdown, buttons: [bold, italic, link, heading-two, bulleted-list], editor_components: [] }
+          - { name: text, label: Text, widget: markdown, required: false, buttons: [bold, italic, link, heading-two, bulleted-list], editor_components: [], hint: 'Mehrmals Enter = mehr Abstand (jede leere Zeile wird übernommen). Leer lassen für nur Bilder.' }
+          - name: schrift
+            label: Schriftart des Textes
+            widget: select
+            required: false
+            default: standard
+            options:
+              - { label: 'Standard (Karla, wie heute)', value: standard }
+              - { label: 'Titelschrift (Fraunces)', value: titel }
+              - { label: 'Titelschrift kursiv (Fraunces)', value: kursiv }
+              - { label: 'Schreibmaschine (IBM Plex Mono)', value: mono }
+          - name: farbe
+            label: Textfarbe
+            widget: select
+            required: false
+            default: standard
+            options:
+              - { label: 'Standard (hellgrau, wie heute)', value: standard }
+              - { label: 'Hell (fast weiss)', value: hell }
+              - { label: 'Gold (wie die Akzente)', value: gold }
+              - { label: 'Sand', value: sand }
+              - { label: 'Gedämpft (dunkleres Grau)', value: gedaempft }
           - { name: bildbreite, label: 'Breite der Bilder in % (15–100)', widget: number, value_type: int, min: 15, max: 100, step: 5, default: 50, required: false, hint: 'Neben dem Text: z.B. 25 für ein kleines Porträt, 50 für halb/halb (über 75 wird es eng). Unter dem Text: Breite des Bildblocks, 100 = ganze Breite.' }
           - name: bildseite
             label: Wo stehen die Bilder

@@ -1,18 +1,18 @@
 ---
 import Seite from '../layouts/Seite.astro';
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
+import { einfachesMarkdown } from '../lib/text';
 
 export async function getStaticPaths() {
   return (await getCollection('seiten')).map(s => ({ params: { seite: s.id }, props: { eintrag: s } }));
 }
 const { eintrag } = Astro.props;
-const { Content } = await render(eintrag);
 ---
 <Seite titel={eintrag.data.titel} immerOffen>
   <article class="text-page">
     <div class="wrap prose">
       <h1>{eintrag.data.titel}</h1>
-      <Content />
+      <Fragment set:html={einfachesMarkdown(eintrag.body)} />
     </div>
   </article>
 </Seite>
