@@ -66,6 +66,7 @@ const blog = defineCollection({
       })).default([]),
       bildbreite: optional(z.number().min(15).max(100).default(50)),
       bildseite: optional(z.enum(['rechts', 'links', 'unten']).default('rechts')),
+      bildhoehe: optional(z.enum(['format', 'text']).default('format')),
     })).default([]),
   }),
 });

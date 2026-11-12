@@ -338,6 +338,14 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 .abschnitt-bilder img.quadrat { aspect-ratio: 1; }
 .abschnitt-bilder img.breit { aspect-ratio: 16 / 9; }
 .abschnitt-bilder img.original { height: auto; }
+/* «Bild so hoch wie der Text»: erstes Bild füllt die Höhe des Textes (zugeschnitten), nur am PC */
+@media (min-width: 861px) {
+  .abschnitt.texthoehe { align-items: stretch; }
+  .abschnitt.texthoehe > .prose > :last-child { margin-bottom: 0; }
+  .texthoehe .abschnitt-bilder { position: relative; top: auto; min-height: 240px; }
+  .texthoehe .abschnitt-bilder img { position: absolute; inset: 0; height: 100%; aspect-ratio: auto; }
+  .texthoehe .abschnitt-bilder img ~ img { display: none; }
+}
 @media (max-width: 860px) {
   .abschnitt.mit-bild { grid-template-columns: minmax(0, 1fr); }
   .abschnitt-bilder { position: static; }
