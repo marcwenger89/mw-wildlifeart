@@ -219,19 +219,14 @@ section.block { padding-block: 72px; border-top: 1px solid var(--line); }
 .tag-filter select:hover, .tag-filter select:focus-visible { border-color: var(--muted); }
 .tag-leer { color: var(--muted); }
 .tile[hidden] { display: none; }
-.mosaic-spalten { columns: 3 300px; column-gap: 14px; }
 /* Reihen: alle Bilder einer Reihe gleich hoch, jede Reihe füllt die Breite; Reihenfolge wie beim Lesen */
-.mosaic-reihen { display: flex; flex-wrap: wrap; gap: 14px; }
-.mosaic-reihen::after { content: ""; flex: 999 1 0; }
-.mosaic-reihen .tile { margin: 0; flex: var(--r, 1.5) 1 calc(var(--r, 1.5) * 280px); aspect-ratio: var(--r, 1.5); }
-.mosaic-reihen .tile img { height: 100%; object-fit: cover; }
-@media (max-width: 640px) { .mosaic-reihen { gap: 8px; } .mosaic-reihen .tile { flex-basis: calc(var(--r, 1.5) * 150px); } }
-/* Raster: gleich grosse Kacheln 3:2, Bilder werden zugeschnitten */
-.mosaic-raster { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 14px; }
-.mosaic-raster .tile { margin: 0; aspect-ratio: 3 / 2; }
-.mosaic-raster .tile img { height: 100%; object-fit: cover; }
+.mosaic { display: flex; flex-wrap: wrap; gap: 14px; }
+.mosaic::after { content: ""; flex: 999 1 0; }
+.mosaic .tile { margin: 0; flex: var(--r, 1.5) 1 calc(var(--r, 1.5) * 280px); aspect-ratio: var(--r, 1.5); }
+.mosaic .tile img { height: 100%; object-fit: cover; }
+@media (max-width: 640px) { .mosaic { gap: 8px; } .mosaic .tile { flex-basis: calc(var(--r, 1.5) * 150px); } }
 .tile {
-  break-inside: avoid; margin: 0 0 14px; position: relative; overflow: hidden; cursor: zoom-in;
+  position: relative; overflow: hidden; cursor: zoom-in;
   display: block; background: var(--line); text-decoration: none;
 }
 .tile img { width: 100%; height: auto; transition: transform var(--t-hover) var(--ease); }
@@ -308,13 +303,14 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 .teilen-knopf svg { width: 18px; height: 18px; flex: none; }
 .teilen-knopf:hover, .teilen-knopf:focus-visible { border-color: var(--accent); }
 .teilen-knopf.ok { color: var(--accent); border-color: var(--accent); }
-.teilen-geraet { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.teilen-hinweis { color: var(--muted); font-size: .9375rem; }
 @media (max-width: 640px) {
-  .teilen-knoepfe { gap: 8px; }
-  .teilen-knopf { padding: 0; width: 42px; height: 42px; min-height: 0; justify-content: center; }
-  .teilen-knopf .teilen-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  .teilen-geraet { width: auto; padding: 0 14px 0 12px; }
+  .teilen-knoepfe { gap: 8px; flex-wrap: nowrap; }
+  .teilen-knopf { flex: 1 1 auto; justify-content: center; gap: 6px; padding: 9px 8px; font-size: .8125rem; white-space: nowrap; }
+  .teilen-knopf svg { width: 16px; height: 16px; }
 }
+.teilen-hinweis[hidden] { display: none; }
+
 .prose h1 { font-size: clamp(2.2rem, 4.6vw, 3.6rem); letter-spacing: -.02em; margin: 10px 0 28px; }
 .prose h2 { font-size: 1.7rem; margin: 40px 0 12px; }
 .prose h3 { font-size: 1.3rem; margin: 28px 0 10px; }

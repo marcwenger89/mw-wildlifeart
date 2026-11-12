@@ -1,10 +1,10 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { seitenverhaeltnis } from '../lib/bildgroesse';
-interface Props { fotos: CollectionEntry<'fotos'>[]; von: string; art?: 'spalten' | 'reihen' | 'raster' }
-const { fotos, von, art = 'reihen' } = Astro.props;
+interface Props { fotos: CollectionEntry<'fotos'>[]; von: string }
+const { fotos, von } = Astro.props;
 ---
-<div class={`mosaic mosaic-${art}`} data-art={art}>
+<div class="mosaic">
   {fotos.map(f => (
     <a class="tile" href={`/fotos/${f.id}/?von=${von}`} data-tags={f.data.tags.join('|')} style={`--r: ${(seitenverhaeltnis(f.data.bild) ?? 1.5).toFixed(4)}`}>
       <img src={f.data.bild} alt={f.data.titel} loading="lazy">
