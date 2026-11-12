@@ -1,0 +1,62 @@
+---
+// Digitale Visitenkarte: nur über den QR-Code erreichbar (nicht im Menü, nicht verlinkt, noindex).
+// Texte und Nummern pflegt Marc im Admin unter Seitentexte → Digitale Visitenkarte.
+import '@fontsource-variable/fraunces/opsz.css';
+import '@fontsource-variable/fraunces/opsz-italic.css';
+import '@fontsource/karla/400.css';
+import '@fontsource/karla/500.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../../styles/global.css';
+import einstellungen from '../../data/einstellungen.json';
+
+const k = einstellungen.karte;
+const telefon = (k.telefon || '').trim();
+const telLink = 'tel:' + telefon.replace(/[^\d+]/g, '');
+---
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Marc Wenger · {einstellungen.seitenname}</title>
+  <meta name="theme-color" content="#101412">
+  <link rel="icon" href="/favicon-64.png" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head>
+<body>
+  <div class="karte-bg" aria-hidden="true"></div>
+  <main>
+    <img class="elefant" src="/logo/elefant-weiss.png" alt="" width="96" height="96">
+    <h1>Marc Wenger</h1>
+    <p class="rolle">{k.rolle}</p>
+    <p class="marke">{einstellungen.seitenname}</p>
+    <nav class="knoepfe" aria-label="Kontakt">
+      <a class="k" href={`mailto:${k.email}`}><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span>E-Mail <small>{k.email}</small></span></a>
+      {telefon && <a class="k" href={telLink}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><span>Telefon <small>{telefon}</small></span></a>}
+      <a class="k" href="https://www.mw-wildlifeart.ch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><span>Webseite <small>mw-wildlifeart.ch</small></span></a>
+      {einstellungen.instagram && <a class="k" href={einstellungen.instagram}><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r=".6"/></svg><span>Instagram <small>@{einstellungen.instagram.split('/').filter(Boolean).pop()}</small></span></a>}
+      <a class="k haupt" href="/qrkarte/marc-wenger.vcf" download="Marc-Wenger.vcf"><span>Kontakt speichern</span></a>
+    </nav>
+  </main>
+</body>
+</html>
+
+<style is:global>
+  .karte-bg { position: fixed; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(16,20,18,.55), rgba(16,20,18,.72) 45%, rgba(16,20,18,.9)), url(/bilder/zebras-gewitter-pc.jpg) center / cover no-repeat; }
+  @media (max-width: 719px) { .karte-bg { background-image: linear-gradient(180deg, rgba(16,20,18,.55), rgba(16,20,18,.72) 45%, rgba(16,20,18,.9)), url(/bilder/zebras-gewitter-handy.jpg); } }
+  main { min-height: 100svh; max-width: 440px; margin: 0 auto; padding: max(48px, env(safe-area-inset-top)) 24px max(32px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .elefant { width: 96px; height: 96px; margin-bottom: 28px; }
+  h1 { font-size: 2.6rem; }
+  .rolle { font: 400 .8rem/1.2 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 14px 0 0; }
+  .marke { font: italic 300 1.15rem/1.3 var(--f-display); margin: 6px 0 0; opacity: .85; }
+  .knoepfe { width: 100%; display: grid; gap: 12px; margin-top: 40px; }
+  a.k { display: flex; align-items: center; gap: 14px; min-height: 54px; padding: 0 20px; border: 1px solid rgba(230,233,227,.22); border-radius: 999px; text-decoration: none; font-weight: 500; background: rgba(16,20,18,.35); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+  a.k svg { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  a.k span { flex: 1; text-align: left; }
+  a.k small { color: var(--muted); font-weight: 400; font-size: .82rem; }
+  a.k:hover, a.k:focus-visible { border-color: var(--accent); }
+  a.k.haupt { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); margin-top: 8px; justify-content: center; }
+  a.k.haupt span { flex: none; }
+  @media (min-width: 720px) { main { padding-block: 64px; } h1 { font-size: 3rem; } }
+</style>

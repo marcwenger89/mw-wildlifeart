@@ -249,6 +249,13 @@ collections:
               - { name: titel, label: Titel, widget: string }
               - { name: text, label: Text, widget: text }
               - { name: web3forms_schluessel, label: 'Web3Forms-Schlüssel (Access Key)', widget: string, required: false, hint: 'Von web3forms.com. Damit kommen Nachrichten direkt in dein Postfach.' }
+          - name: karte
+            label: 'Digitale Visitenkarte (nur per QR-Code erreichbar: mw-wildlifeart.ch/qrkarte/)'
+            widget: object
+            fields:
+              - { name: rolle, label: Berufsbezeichnung, widget: string, default: Naturfotograf }
+              - { name: email, label: E-Mail, widget: string }
+              - { name: telefon, label: 'Telefon (z. B. +41 79 123 45 67; leer = kein Telefon-Knopf)', widget: string, required: false }
           - name: shop
             label: Shop und Kaufen-Knöpfe
             widget: object
