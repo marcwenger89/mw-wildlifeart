@@ -1,6 +1,6 @@
 ---
 titel: Haussperling "SPAZ"
-serie: skandinavien
+serie: schweiz
 bild: /bilder/spaz_1.jpg
 ort: Schweiz
 brennweite: 800mm
