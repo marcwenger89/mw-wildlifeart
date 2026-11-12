@@ -22,6 +22,8 @@ const fotos = await alleFotos();
 const anzahl = (id: string) => fotos.filter(f => f.data.serie.id === id).length;
 const [vorname, ...rest] = name.split('-');
 const ogBild = bild ? new URL(bild, Astro.site).href : undefined;
+// «Über mich» im Menü führt direkt zum verlinkten Blogbeitrag (Admin: Seitentexte → Über mich → Link), sonst zum Abschnitt
+const ueberLink = einstellungen.ueber_mich.link || '/#ueber';
 const baustelle = einstellungen.baustelle.aktiv && !immerOffen;
 ---
 <!doctype html>
@@ -71,8 +73,8 @@ const baustelle = einstellungen.baustelle.aktiv && !immerOffen;
           </ul>
         </div>
         {shopAktiv && <a href="/#shop">Shop</a>}
-        <a href="/blog/" aria-current={Astro.url.pathname.startsWith('/blog') ? 'page' : undefined}>Blog</a>
-        <a href="/#ueber">Über mich</a>
+        <a href="/blog/" aria-current={Astro.url.pathname.startsWith('/blog') && Astro.url.pathname !== ueberLink ? 'page' : undefined}>Blog</a>
+        <a href={ueberLink} aria-current={ueberLink !== '/#ueber' && Astro.url.pathname === ueberLink ? 'page' : undefined}>Über mich</a>
         <a href="/#kontakt">Kontakt</a>
         {einstellungen.instagram && <a class="nav-insta" href={einstellungen.instagram} target="_blank" rel="noopener" aria-label="MW-Wildlifeart auf Instagram"><InstaSymbol id="insta-kopf" /></a>}
       </nav>
