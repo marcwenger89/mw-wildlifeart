@@ -290,25 +290,32 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 /* Fliesstext (Blog, Impressum, Datenschutz) */
 .prose { max-width: 68ch; }
 
-/* ---------- Teilen (Blog) ---------- */
-.teilen { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--line); display: grid; gap: 14px; }
-.teilen-knoepfe { display: flex; flex-wrap: wrap; gap: 10px; }
+/* ---------- Teilen (Blog): Knopf «Teilen» mit Aufklapp-Menü ---------- */
+.teilen { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--line); position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
 .teilen-knopf {
-  display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px 9px 12px; min-height: 42px;
-  font: 500 .875rem/1 var(--f-body); color: var(--fg); text-decoration: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; min-height: 42px;
+  font: 500 .9375rem/1 var(--f-body); color: var(--fg); text-decoration: none; cursor: pointer;
   background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
-  transition: border-color 300ms, color 300ms;
+  transition: border-color 300ms, color 300ms, background-color 200ms;
 }
-.teilen-knopf[hidden] { display: none; }
 .teilen-knopf svg { width: 18px; height: 18px; flex: none; }
-.teilen-knopf:hover, .teilen-knopf:focus-visible { border-color: var(--accent); }
-.teilen-knopf.ok { color: var(--accent); border-color: var(--accent); }
-.teilen-hinweis { color: var(--muted); font-size: .9375rem; }
-@media (max-width: 640px) {
-  .teilen-knoepfe { gap: 8px; flex-wrap: nowrap; }
-  .teilen-knopf { flex: 1 1 auto; justify-content: center; gap: 6px; padding: 9px 8px; font-size: .8125rem; white-space: nowrap; }
-  .teilen-knopf svg { width: 16px; height: 16px; }
+.teilen-knopf .teilen-pfeil { width: 10px; height: 10px; transition: transform 250ms var(--ease); }
+.teilen.offen .teilen-pfeil { transform: rotate(180deg); }
+.teilen-haupt:hover, .teilen-haupt:focus-visible, .teilen.offen .teilen-haupt { border-color: var(--accent); }
+.teilen-knoepfe {
+  position: absolute; top: calc(28px + 42px + 8px); left: 0; z-index: 10; min-width: 220px; padding: 6px 0;
+  display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow);
+  opacity: 0; visibility: hidden; transform: translateY(6px);
+  transition: opacity 220ms var(--ease), transform 220ms var(--ease), visibility 0s linear 220ms;
 }
+.teilen.offen .teilen-knoepfe { opacity: 1; visibility: visible; transform: none; transition: opacity 220ms var(--ease), transform 220ms var(--ease), visibility 0s; }
+.teilen-knoepfe .teilen-knopf { border: 0; border-radius: 0; background: none; padding: 12px 18px; width: 100%; text-align: left; }
+.teilen-knoepfe .teilen-knopf:hover, .teilen-knoepfe .teilen-knopf:focus-visible { background: var(--bg); }
+.teilen-knopf.ok { color: var(--accent); }
+.teilen-hinweis { color: var(--muted); font-size: .9375rem; max-width: 46ch; }
+.teilen-hinweis[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) { .teilen-knoepfe, .teilen-pfeil { transition: none !important; } }
+
 .teilen-hinweis[hidden] { display: none; }
 
 .prose h1 { font-size: clamp(2.2rem, 4.6vw, 3.6rem); letter-spacing: -.02em; margin: 10px 0 28px; }
