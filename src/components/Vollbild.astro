@@ -1,0 +1,170 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+// Vollbild für eine Liste von Fotos. Öffnen über Elemente mit data-lb-index="n" (Index in dieser Liste).
+// Unter dem Bild: Titel links, daneben alle vorhandenen Daten; gibt es eine Geschichte, ein goldenes «i».
+interface Props { fotos: CollectionEntry<'fotos'>[] }
+const { fotos } = Astro.props;
+const bilder = fotos.map(f => {
+  const d = f.data;
+  return {
+    src: d.bild,
+    titel: d.titel,
+    daten: [d.ort, d.monat, d.brennweite, d.blende, d.belichtung, d.iso && `ISO ${d.iso}`, d.koordinaten].filter(Boolean).join(' · '),
+    geschichte: Boolean(f.body?.trim()),
+  };
+});
+const geschichten = await Promise.all(fotos.map(async f => (f.body?.trim() ? (await render(f)).Content : null)));
+---
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Vollbildansicht" data-bilder={JSON.stringify(bilder)}>
+  <div class="lb-top">
+    <button class="lb-btn" type="button" id="lb-close" aria-label="Vollbild schliessen"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3 3 13"/></svg></button>
+  </div>
+  <div class="lb-stage" id="lb-stage">
+    <img id="lb-img" alt="">
+    <div class="lb-cap" id="lb-cap">
+      <strong class="lb-titel" id="lb-titel"></strong>
+      <span class="lb-daten" id="lb-daten"></span>
+      <div class="lb-story" id="lb-story" hidden>
+        <button class="lb-btn lb-story-zu" type="button" id="lb-story-zu" aria-label="Geschichte schliessen"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3 3 13"/></svg></button>
+        <h2 id="lb-story-titel"></h2>
+        <div class="lb-story-text" id="lb-story-text"></div>
+      </div>
+      <button class="lb-i" type="button" id="lb-i" aria-label="Geschichte zum Bild" aria-expanded="false" aria-controls="lb-story" hidden>i</button>
+    </div>
+    <button class="lb-btn lb-nav lb-prev" type="button" id="lb-prev" aria-label="Vorheriges Bild"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
+    <button class="lb-btn lb-nav lb-next" type="button" id="lb-next" aria-label="Nächstes Bild"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
+  </div>
+  {geschichten.map((G, n) => G && <template id={`lb-g-${n}`}><G /></template>)}
+</div>
+
+<script>
+  // Vollbild: ganzes Bild eingepasst, Blättern mit Pfeilen, Tastatur, Mausrad und Wischen.
+  // Geblättert wird nur durch die Bilder, die gerade sichtbar sind (Tag-Filter).
+  const lb = document.getElementById('lightbox')!;
+  const stage = document.getElementById('lb-stage')!;
+  const img = document.getElementById('lb-img') as HTMLImageElement;
+  const titel = document.getElementById('lb-titel')!;
+  const daten = document.getElementById('lb-daten')!;
+  const iKnopf = document.getElementById('lb-i')!;
+  const story = document.getElementById('lb-story')!;
+  const storyText = document.getElementById('lb-story-text')!;
+  const prev = document.getElementById('lb-prev')!;
+  const next = document.getElementById('lb-next')!;
+  const bilder: { src: string; titel: string; daten: string; geschichte: boolean }[] = JSON.parse(lb.dataset.bilder!);
+  const oeffner = [...document.querySelectorAll<HTMLElement>('[data-lb-index]')];
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let reihe: number[] = [];   // Indizes der sichtbaren Bilder
+  let pos = 0;                // Stelle in der Reihe
+  let zuletzt: HTMLElement | null = null;
+  const jetzt = () => reihe[pos];
+  const vorladen = (p: number) => { new Image().src = bilder[reihe[(p + reihe.length) % reihe.length]].src; };
+
+  const storyZu = () => { story.hidden = true; iKnopf.setAttribute('aria-expanded', 'false'); };
+  const storyAuf = () => {
+    const t = document.getElementById(`lb-g-${jetzt()}`) as HTMLTemplateElement | null;
+    if (!t) return;
+    document.getElementById('lb-story-titel')!.textContent = bilder[jetzt()].titel;
+    storyText.replaceChildren(t.content.cloneNode(true));
+    story.hidden = false; story.scrollTop = 0;
+    iKnopf.setAttribute('aria-expanded', 'true');
+  };
+  const fill = () => {
+    const b = bilder[jetzt()];
+    img.src = b.src; img.alt = b.titel;
+    titel.textContent = b.titel; daten.textContent = b.daten;
+    iKnopf.hidden = !b.geschichte;
+    storyZu();
+    if (reihe.length > 1) { vorladen(pos + 1); vorladen(pos - 1); }
+  };
+  let wechsel = 0;
+  const step = (dir: number) => {
+    if (reihe.length < 2) return;
+    pos = (pos + dir + reihe.length) % reihe.length;
+    if (calm) { fill(); return; }
+    // kurz ausblenden, Bild tauschen, wieder einblenden
+    const nr = ++wechsel;
+    img.classList.add('weg');
+    setTimeout(() => {
+      if (nr !== wechsel) return;
+      fill();
+      const zeigen = () => { if (nr === wechsel) img.classList.remove('weg'); };
+      img.complete ? zeigen() : img.addEventListener('load', zeigen, { once: true });
+    }, 160);
+  };
+  const open = (index: number, von: HTMLElement) => {
+    reihe = oeffner.filter(o => !o.closest('[hidden]')).map(o => Number(o.dataset.lbIndex));
+    if (!reihe.includes(index)) reihe = [index];
+    // Detailseite: ein Öffner, geblättert wird durch die ganze Galerie
+    if (oeffner.length === 1) reihe = bilder.map((_, n) => n);
+    pos = reihe.indexOf(index);
+    zuletzt = von; wechsel++; img.classList.remove('weg');
+    prev.hidden = next.hidden = reihe.length < 2;
+    fill(); lb.hidden = false; document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => requestAnimationFrame(() => lb.classList.add('open')));
+    document.getElementById('lb-close')!.focus();
+    // Zurück-Taste bzw. Zurück-Wischen am Handy schliesst das Vollbild statt die Seite zu verlassen
+    history.pushState({ ...(history.state ?? {}), vollbild: true }, '');
+  };
+  const zu = () => {
+    if (lb.hidden) return;
+    lb.classList.remove('open');
+    setTimeout(() => { lb.hidden = true; document.body.style.overflow = ''; zuletzt?.focus({ preventScroll: true }); }, calm ? 0 : 380);
+  };
+  const close = () => { if (history.state?.vollbild) history.back(); else zu(); };
+  addEventListener('popstate', zu);
+
+  for (const o of oeffner) {
+    o.addEventListener('click', e => {
+      // Ctrl-/Cmd-Klick öffnet weiterhin die Bildseite in einem neuen Tab
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      open(Number(o.dataset.lbIndex), o);
+    });
+  }
+  document.getElementById('lb-close')!.addEventListener('click', close);
+  prev.addEventListener('click', () => step(-1));
+  next.addEventListener('click', () => step(1));
+  iKnopf.addEventListener('click', () => (story.hidden ? storyAuf() : storyZu()));
+  document.getElementById('lb-story-zu')!.addEventListener('click', storyZu);
+  // Klick neben das Bild schliesst (auch in den leeren Rand neben einem eingepassten Bild)
+  lb.addEventListener('click', e => {
+    const t = e.target as HTMLElement;
+    if (t === lb || t === stage) return close();
+    if (t === img) {
+      if (!story.hidden) return storyZu();
+      const r = img.getBoundingClientRect(), s = Math.min(r.width / img.naturalWidth, r.height / img.naturalHeight);
+      const w = img.naturalWidth * s, h = img.naturalHeight * s;
+      if (Math.abs(e.clientX - (r.left + r.width / 2)) > w / 2 || Math.abs(e.clientY - (r.top + r.height / 2)) > h / 2) close();
+    }
+  });
+  let touchX: number | null = null, touchY = 0;
+  lb.addEventListener('touchstart', e => {
+    if (e.touches.length > 1 || story.contains(e.target as Node)) { touchX = null; return; }
+    touchX = e.touches[0].clientX; touchY = e.touches[0].clientY;
+  }, { passive: true });
+  lb.addEventListener('touchend', e => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX, dy = e.changedTouches[0].clientY - touchY;
+    touchX = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1);
+    else if (dy > 90 && dy > Math.abs(dx) * 1.5) close();
+  });
+  // Mausrad / Trackpad: ein Schritt pro Bewegung (in der Geschichte normal scrollen)
+  let rad = 0, radSperre = false, radTimer = 0;
+  lb.addEventListener('wheel', e => {
+    if (story.contains(e.target as Node)) return;
+    e.preventDefault();
+    clearTimeout(radTimer);
+    radTimer = window.setTimeout(() => { radSperre = false; rad = 0; }, 220);
+    if (radSperre) return;
+    rad += Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    if (Math.abs(rad) > 40) { step(rad > 0 ? 1 : -1); radSperre = true; rad = 0; }
+  }, { passive: false });
+  document.addEventListener('keydown', e => {
+    if (lb.hidden) return;
+    if (e.key === 'Escape') { if (!story.hidden) storyZu(); else close(); }
+    else if (e.key === 'ArrowRight') step(1);
+    else if (e.key === 'ArrowLeft') step(-1);
+  });
+</script>

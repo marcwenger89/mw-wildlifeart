@@ -46,6 +46,16 @@ const baustelle = einstellungen.baustelle.aktiv && !immerOffen;
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)}>
   {baustelle && <meta name="robots" content="noindex">}
+  <script is:inline>
+    // Seitenwechsel mit Überblenden: Kopfzeile währenddessen ohne Glas-Effekt (siehe global.css)
+    addEventListener('pageswap', function (e) { if (e.viewTransition) document.documentElement.classList.add('seitenwechsel'); });
+    addEventListener('pagereveal', function (e) {
+      if (!e.viewTransition) return;
+      var h = document.documentElement; h.classList.add('seitenwechsel');
+      e.viewTransition.finished.finally(function () { h.classList.remove('seitenwechsel'); });
+    });
+    addEventListener('pageshow', function (e) { if (e.persisted) document.documentElement.classList.remove('seitenwechsel'); });
+  </script>
   {baustelle && (
     <script is:inline>
       // «Work in progress» aktiv: Besucher sehen /bald/, freigeschaltete Geräte (über /vorschau/) die echte Seite

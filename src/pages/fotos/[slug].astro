@@ -3,6 +3,7 @@ import Seite from '../../layouts/Seite.astro';
 import { getEntry, render } from 'astro:content';
 import { alleFotos, SAAL_STANDARD } from '../../lib/inhalt';
 import einstellungen from '../../data/einstellungen.json';
+import Vollbild from '../../components/Vollbild.astro';
 
 export async function getStaticPaths() {
   const fotos = await alleFotos();
@@ -22,11 +23,6 @@ const exif = [
   ['Brennweite', d.brennweite], ['Blende', d.blende], ['Belichtung', d.belichtung],
   ['ISO', d.iso], ['Koordinaten', d.koordinaten], ['Monat', d.monat],
 ].filter(([, v]) => v);
-const lb = reihe.map(f => ({
-  src: f.data.bild,
-  alt: f.data.titel,
-  cap: [f.data.ort, f.data.brennweite, f.data.belichtung, f.data.iso && `ISO\u00a0${f.data.iso}`].filter(Boolean).join(' · '),
-}));
 ---
 <Seite titel={d.titel} beschreibung={`${d.titel}${d.ort ? ', ' + d.ort : ''}. Wildtierfotografie von MW-Wildlifeart.`} bild={d.bild} galerie={foto.data.serie.id}>
   <div class="wrap">
@@ -39,7 +35,7 @@ const lb = reihe.map(f => ({
     </div>
   </div>
   <div class="wrap detail-grid">
-    <button class="detail-img" type="button" id="d-imgbtn" aria-label="Vollbild öffnen">
+    <button class="detail-img" type="button" id="d-imgbtn" aria-label="Vollbild öffnen" data-lb-index={k}>
       <img src={d.bild} alt={d.titel} fetchpriority="high">
       <span class="fs"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg>Vollbild</span>
     </button>
@@ -68,19 +64,7 @@ const lb = reihe.map(f => ({
     </div>
   </div>
 
-  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Vollbildansicht" data-bilder={JSON.stringify(lb)} data-start={k}>
-    <div class="lb-top">
-      <button class="lb-btn" type="button" id="lb-close" aria-label="Vollbild schliessen"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3 3 13"/></svg></button>
-    </div>
-    <div class="lb-stage" id="lb-stage">
-      <img id="lb-img" alt="">
-      <p class="lb-cap" id="lb-cap"></p>
-      {lb.length > 1 && <>
-        <button class="lb-btn lb-nav lb-prev" type="button" id="lb-prev" aria-label="Vorheriges Bild"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
-        <button class="lb-btn lb-nav lb-next" type="button" id="lb-next" aria-label="Nächstes Bild"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
-      </>}
-    </div>
-  </div>
+  <Vollbild fotos={reihe} />
 </Seite>
 
 <script>
@@ -88,88 +72,10 @@ const lb = reihe.map(f => ({
   const von = new URLSearchParams(location.search).get('von');
   if (von === 'alle') (document.getElementById('d-back') as HTMLAnchorElement).href = '/galerien/alle/';
 
-  // Vollbild: ganzes Bild eingepasst, Blättern innerhalb der Galerie mit Pfeilen, Tastatur, Mausrad und Wischen
-  const lb = document.getElementById('lightbox')!;
-  const stage = document.getElementById('lb-stage')!;
-  const img = document.getElementById('lb-img') as HTMLImageElement;
-  const cap = document.getElementById('lb-cap')!;
-  const bilder: { src: string; alt: string; cap: string }[] = JSON.parse(lb.dataset.bilder!);
-  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const mehrere = bilder.length > 1;
-  let i = Number(lb.dataset.start);
-  const vorladen = (n: number) => { new Image().src = bilder[(n + bilder.length) % bilder.length].src; };
-  const fill = () => {
-    img.src = bilder[i].src; img.alt = bilder[i].alt; cap.textContent = bilder[i].cap;
-    if (mehrere) { vorladen(i + 1); vorladen(i - 1); }
-  };
-  let wechsel = 0;
-  const step = (dir: number) => {
-    if (!mehrere) return;
-    i = (i + dir + bilder.length) % bilder.length;
-    if (calm) { fill(); return; }
-    // kurz ausblenden, Bild tauschen, wieder einblenden
-    const nr = ++wechsel;
-    img.classList.add('weg');
-    setTimeout(() => {
-      if (nr !== wechsel) return;
-      fill();
-      const zeigen = () => { if (nr === wechsel) img.classList.remove('weg'); };
-      img.complete ? zeigen() : img.addEventListener('load', zeigen, { once: true });
-    }, 160);
-  };
-  const start = Number(lb.dataset.start);
-  const open = () => {
-    // immer mit dem Bild dieser Seite beginnen, nicht mit dem zuletzt angeschauten
-    i = start; wechsel++; img.classList.remove('weg');
-    fill(); lb.hidden = false; document.body.style.overflow = 'hidden';
-    requestAnimationFrame(() => requestAnimationFrame(() => lb.classList.add('open')));
-    document.getElementById('lb-close')!.focus();
-  };
-  const close = () => {
-    lb.classList.remove('open');
-    setTimeout(() => { lb.hidden = true; document.body.style.overflow = ''; document.getElementById('d-imgbtn')!.focus(); }, calm ? 0 : 380);
-  };
-  document.getElementById('d-imgbtn')!.addEventListener('click', open);
-  document.getElementById('lb-close')!.addEventListener('click', close);
-  document.getElementById('lb-prev')?.addEventListener('click', () => step(-1));
-  document.getElementById('lb-next')?.addEventListener('click', () => step(1));
-  // Klick neben das Bild schliesst (auch in den leeren Rand neben einem eingepassten Bild)
-  lb.addEventListener('click', e => {
-    const t = e.target as HTMLElement;
-    if (t === lb || t === stage) return close();
-    if (t === img) {
-      const r = img.getBoundingClientRect(), s = Math.min(r.width / img.naturalWidth, r.height / img.naturalHeight);
-      const w = img.naturalWidth * s, h = img.naturalHeight * s;
-      if (Math.abs(e.clientX - (r.left + r.width / 2)) > w / 2 || Math.abs(e.clientY - (r.top + r.height / 2)) > h / 2) close();
-    }
-  });
-  let touchX: number | null = null, touchY = 0;
-  lb.addEventListener('touchstart', e => { if (e.touches.length > 1) { touchX = null; return; } touchX = e.touches[0].clientX; touchY = e.touches[0].clientY; }, { passive: true });
-  lb.addEventListener('touchend', e => {
-    if (touchX === null) return;
-    const dx = e.changedTouches[0].clientX - touchX, dy = e.changedTouches[0].clientY - touchY;
-    touchX = null;
-    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1);
-    else if (dy > 90 && dy > Math.abs(dx) * 1.5) close();
-  });
-  // Mausrad / Trackpad: ein Schritt pro Bewegung
-  let rad = 0, radSperre = false, radTimer = 0;
-  lb.addEventListener('wheel', e => {
-    e.preventDefault();
-    clearTimeout(radTimer);
-    radTimer = window.setTimeout(() => { radSperre = false; rad = 0; }, 220);
-    if (radSperre) return;
-    rad += Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-    if (Math.abs(rad) > 40) { step(rad > 0 ? 1 : -1); radSperre = true; rad = 0; }
-  }, { passive: false });
+  // Pfeiltasten blättern auf der Bildseite zum nächsten Bild (im Vollbild übernimmt das Vollbild selbst)
   document.addEventListener('keydown', e => {
-    if (lb.hidden) {
-      if (e.key === 'ArrowRight') (document.querySelector('a[rel=next]') as HTMLAnchorElement | null)?.click();
-      else if (e.key === 'ArrowLeft') (document.querySelector('a[rel=prev]') as HTMLAnchorElement | null)?.click();
-      return;
-    }
-    if (e.key === 'Escape') close();
-    else if (e.key === 'ArrowRight') step(1);
-    else if (e.key === 'ArrowLeft') step(-1);
+    if (!document.getElementById('lightbox')!.hidden) return;
+    if (e.key === 'ArrowRight') (document.querySelector('a[rel=next]') as HTMLAnchorElement | null)?.click();
+    else if (e.key === 'ArrowLeft') (document.querySelector('a[rel=prev]') as HTMLAnchorElement | null)?.click();
   });
 </script>
