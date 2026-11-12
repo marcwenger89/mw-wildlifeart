@@ -169,8 +169,6 @@ p { margin: 0; }
 .hero-caption a:hover { text-decoration: underline; }
 .hero-caption .mono { opacity: .85; }
 .hero-dots { display: flex; gap: 8px; position: relative; z-index: 3; }
-/* ganzes Bild ist ein Link zur Foto-Detailseite */
-.hero-link { position: absolute; inset: 0; z-index: 1; }
 .hero-caption { z-index: 2; pointer-events: none; }
 .hero-caption a, .hero-caption button { pointer-events: auto; }
 /* transparente Pfeile links und rechts */
