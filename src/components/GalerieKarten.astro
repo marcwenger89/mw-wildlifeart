@@ -8,7 +8,6 @@ const { serien, fotos } = Astro.props;
     <a class="serie" href={`/galerien/${serie.id}/`}>
       <div class="ph"><img src={serie.data.titelbild} alt="" loading="lazy"></div>
       <h3>{serie.data.titel}</h3>
-      <div class="meta"><span aria-hidden="true">→</span></div>
     </a>
   ))}
 </div>
