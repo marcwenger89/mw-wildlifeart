@@ -1,8 +1,8 @@
 ---
 // Teilen-Leiste für Blogbeiträge: Instagram, Facebook, Link kopieren.
 // Nur einfache Links, keine fremden Skripte oder Cookies (DSG-freundlich).
-// Instagram kennt keinen Teilen-Link fürs Web: Der Knopf kopiert den Link und öffnet Instagram
-// (App am Handy, instagram.com am PC), dort fügt man ihn ein.
+// Instagram kennt keinen Teilen-Link fürs Web. Am Handy öffnet der Knopf darum das Teilen-Menü
+// des Handys (dort Instagram wählen). Am PC kopiert er den Link und öffnet instagram.com.
 interface Props { titel: string; url: string }
 const { titel, url } = Astro.props;
 const facebook = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
@@ -60,9 +60,16 @@ const facebook = `https://www.facebook.com/sharer/sharer.php?u=${encodeURICompon
     kopierKnopf.addEventListener('click', async () => { await kopieren(); melden(kopierKnopf, 'Kopiert ✓'); setTimeout(() => setOffen(false), 1200); });
     box.querySelector('.teilen-fb')!.addEventListener('click', () => setOffen(false));
     const insta = box.querySelector<HTMLButtonElement>('.teilen-insta')!;
-    insta.addEventListener('click', () => {
-      // Instagram bietet keinen Teilen-Link für Webseiten: Link kopieren und Instagram öffnen
-      // (am Handy öffnet der Link die Instagram-App, am PC instagram.com in einem neuen Tab).
+    const titel = box.dataset.titel || document.title;
+    const handy = window.matchMedia('(pointer: coarse)').matches && typeof navigator.share === 'function';
+    insta.addEventListener('click', async () => {
+      if (handy) {
+        // Handy: Teilen-Menü des Handys mit Titel und Link, dort Instagram (oder etwas anderes) wählen.
+        setOffen(false);
+        try { await navigator.share({ title: titel, text: titel, url }); return; }
+        catch (e) { if ((e as DOMException)?.name === 'AbortError') return; }
+      }
+      // PC (oder Handy ohne Teilen-Menü): Link kopieren und instagram.com öffnen.
       kopieren();
       window.open('https://www.instagram.com/', '_blank', 'noopener');
       melden(insta, 'Link kopiert ✓', 'Link kopiert. In Instagram einfach in deine Story, einen Beitrag oder eine Nachricht einfügen.');
