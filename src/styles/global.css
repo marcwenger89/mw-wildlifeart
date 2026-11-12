@@ -140,9 +140,9 @@ p { margin: 0; }
 .hero-frame img.instant { transition: none; }
 @media (prefers-reduced-motion: reduce) { .hero-frame img { transition: none; transform: none; } }
 .hero-caption {
-  position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px;
-  padding: 80px clamp(16px, 4vw, 40px) clamp(16px, 3vw, 28px);
-  background: linear-gradient(to top, rgba(8, 10, 9, .62), transparent);
+  position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: flex-end; align-items: end; gap: 12px;
+  padding: 40px clamp(16px, 4vw, 40px) clamp(16px, 3vw, 28px);
+  background: linear-gradient(to top, rgba(8, 10, 9, .35), transparent);
   color: #f1f3ee;
 }
 .hero-caption a { text-decoration: none; }
@@ -463,3 +463,11 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
   .logo { font-size: 1.3rem; gap: 10px; }
   .logo img { width: 28px; height: 28px; }
 }
+
+/* Startseite: Begegnungen (6 Bilder, Raster 3 x 2 im Format 3:2) */
+.werke { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.werk { display: block; aspect-ratio: 3 / 2; overflow: hidden; background: var(--line); }
+.werk img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform var(--t-hover) var(--ease); }
+.werk:hover img { transform: scale(1.03); }
+@media (max-width: 640px) { .werke { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } }
+.werke-fuss { margin-top: 28px; }
