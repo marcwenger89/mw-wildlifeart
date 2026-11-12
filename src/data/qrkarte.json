@@ -1,0 +1,17 @@
+{
+  "name": "Marc Wenger",
+  "rolle": "Naturfotograf",
+  "marke": "MW-Wildlifeart",
+  "email": "mr.wenger@gmx.ch",
+  "telefon": "",
+  "webseite": "https://www.mw-wildlifeart.ch",
+  "instagram": "https://www.instagram.com/mw_wildlifeart",
+  "hintergrund_pc": "/bilder/zebras-gewitter-pc.jpg",
+  "hintergrund_handy": "/bilder/zebras-gewitter-handy.jpg",
+  "text_email": "E-Mail",
+  "text_telefon": "Telefon",
+  "text_webseite": "Webseite",
+  "text_instagram": "Instagram",
+  "text_speichern": "Kontakt speichern",
+  "land": "Schweiz"
+}

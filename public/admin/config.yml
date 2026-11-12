@@ -205,6 +205,29 @@ collections:
       - { name: saal_link, label: Link zu Saal Digital, widget: string }
       - { name: reihenfolge, label: Reihenfolge, widget: number, value_type: int, default: 100 }
 
+  - name: qrkarte
+    label: QR-Karte
+    files:
+      - name: qrkarte
+        label: 'Digitale Visitenkarte (mw-wildlifeart.ch/qrkarte/, nur per QR-Code erreichbar)'
+        file: src/data/qrkarte.json
+        fields:
+          - { name: name, label: Name, widget: string }
+          - { name: rolle, label: Berufsbezeichnung (unter dem Namen), widget: string }
+          - { name: marke, label: 'Zeile darunter (kursiv)', widget: string, required: false }
+          - { name: hintergrund_pc, label: 'Hintergrundbild PC (Querformat, z. B. 2400×1350)', widget: image, required: false, hint: 'Wird abgedunkelt. Leer = nur ruhiger Verlauf.' }
+          - { name: hintergrund_handy, label: 'Hintergrundbild Handy (Hochformat, z. B. 1080×1920)', widget: image, required: false }
+          - { name: email, label: E-Mail-Adresse, widget: string }
+          - { name: telefon, label: 'Telefonnummer (z. B. +41 79 123 45 67; leer = kein Telefon-Knopf)', widget: string, required: false }
+          - { name: webseite, label: 'Webseite (vollständiger Link, leer = kein Knopf)', widget: string, required: false }
+          - { name: instagram, label: 'Instagram (vollständiger Link, leer = kein Knopf)', widget: string, required: false }
+          - { name: land, label: 'Land in der Adresse der vCard', widget: string, required: false }
+          - { name: text_email, label: 'Beschriftung Knopf E-Mail', widget: string }
+          - { name: text_telefon, label: 'Beschriftung Knopf Telefon', widget: string }
+          - { name: text_webseite, label: 'Beschriftung Knopf Webseite', widget: string }
+          - { name: text_instagram, label: 'Beschriftung Knopf Instagram', widget: string }
+          - { name: text_speichern, label: 'Beschriftung Knopf Kontakt speichern', widget: string }
+
   - name: seite
     label: Seitentexte
     files:
