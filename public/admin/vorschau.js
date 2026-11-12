@@ -109,7 +109,10 @@
             'html{scroll-behavior:auto!important}html,body{overflow-x:hidden}' +
             '.reveal-pending{opacity:1!important;transform:none!important}' +
             'a{pointer-events:none}button{pointer-events:none}.lb-i{pointer-events:auto;cursor:pointer}' +
-            '.nach-oben,#nach-oben{display:none!important}';
+            '.nach-oben,#nach-oben{display:none!important}' +
+            // Titelbild ist 100svh hoch: im Vorschau-Rahmen feste Höhe, sonst wächst der Rahmen endlos
+            '.hero-frame{height:760px!important;min-height:0!important}' +
+            '@media (max-width:640px){.hero-frame{height:700px!important}}';
           doc.head.appendChild(zusatz);
           return '<!doctype html>' + doc.documentElement.outerHTML;
         })
@@ -185,7 +188,7 @@
             });
             hoch = Math.max(300, Math.ceil(hoch));
           }
-          if (hoch !== self.state.hoehe) self.setState({ hoehe: hoch });
+          if (Math.abs(hoch - self.state.hoehe) > 2) self.setState({ hoehe: hoch });
         };
         messe();
         clearTimeout(this.timer);
