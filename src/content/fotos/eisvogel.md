@@ -1,6 +1,6 @@
 ---
 titel: Eisvogel
-serie: skandinavien
+serie: schweiz
 bild: /bilder/eisvogel.jpg
 ort: Schweiz
 brennweite: 800mm
