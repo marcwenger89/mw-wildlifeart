@@ -1,8 +1,8 @@
 ---
 // Teilen-Leiste für Blogbeiträge: Instagram, Facebook, Link kopieren.
 // Nur einfache Links, keine fremden Skripte oder Cookies (DSG-freundlich).
-// Instagram kennt keinen Teilen-Link fürs Web: Am Handy öffnet der Knopf das Teilen-Menü des Geräts
-// (dort Instagram wählen), am PC wird der Link kopiert, damit man ihn in Instagram einfügen kann.
+// Instagram kennt keinen Teilen-Link fürs Web: Der Knopf kopiert den Link und öffnet Instagram
+// (App am Handy, instagram.com am PC), dort fügt man ihn ein.
 interface Props { titel: string; url: string }
 const { titel, url } = Astro.props;
 const facebook = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
@@ -32,7 +32,7 @@ const facebook = `https://www.facebook.com/sharer/sharer.php?u=${encodeURICompon
 
 <script>
   for (const box of document.querySelectorAll<HTMLElement>('.teilen')) {
-    const titel = box.dataset.titel!, url = box.dataset.url!;
+    const url = box.dataset.url!;
     const hinweis = box.querySelector<HTMLElement>('.teilen-hinweis')!;
     // Aufklapp-Menü: Klick auf «Teilen» öffnet/schliesst, Klick daneben oder Escape schliesst
     const haupt = box.querySelector<HTMLButtonElement>('.teilen-haupt')!;
@@ -60,15 +60,12 @@ const facebook = `https://www.facebook.com/sharer/sharer.php?u=${encodeURICompon
     kopierKnopf.addEventListener('click', async () => { await kopieren(); melden(kopierKnopf, 'Kopiert ✓'); setTimeout(() => setOffen(false), 1200); });
     box.querySelector('.teilen-fb')!.addEventListener('click', () => setOffen(false));
     const insta = box.querySelector<HTMLButtonElement>('.teilen-insta')!;
-    insta.addEventListener('click', async () => {
-      // Handy: Teilen-Menü des Geräts, dort Instagram wählen
-      if (navigator.share && matchMedia('(pointer: coarse)').matches) {
-        setOffen(false);
-        navigator.share({ title: titel, url }).catch(() => {});
-        return;
-      }
-      await kopieren();
-      melden(insta, 'Link kopiert ✓', 'Link kopiert. Füge ihn in Instagram in deine Story, einen Beitrag oder eine Nachricht ein.');
+    insta.addEventListener('click', () => {
+      // Instagram bietet keinen Teilen-Link für Webseiten: Link kopieren und Instagram öffnen
+      // (am Handy öffnet der Link die Instagram-App, am PC instagram.com in einem neuen Tab).
+      kopieren();
+      window.open('https://www.instagram.com/', '_blank', 'noopener');
+      melden(insta, 'Link kopiert ✓', 'Link kopiert. In Instagram einfach in deine Story, einen Beitrag oder eine Nachricht einfügen.');
       setOffen(false);
     });
   }
