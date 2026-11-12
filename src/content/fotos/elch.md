@@ -2,6 +2,7 @@
 titel: Elch
 serie: skandinavien
 bild: /bilder/elch.jpg
+ort: Schweden
 brennweite: 400mm
 blende: f/4
 belichtung: 1/640
