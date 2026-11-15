@@ -9,18 +9,17 @@ const beitraege = await alleBeitraege();
       <nav class="crumbs" aria-label="Pfad"><a href="/">Startseite</a><span aria-hidden="true">/</span><span>Blog</span></nav>
       <div class="block-head">
         <div>
-          <h1 class="g-title">Über mich</h1>
+          <p class="eyebrow">{beitraege.length} Beiträge</p>
+          <h1 class="g-title">Aus dem Feld</h1>
         </div>
       </div>
-      <div class="posts liste">
+      <div class="posts">
         {beitraege.map(p => (
           <a class="post" href={`/blog/${p.id}/`}>
             {p.data.bild && <div class="ph"><img src={p.data.bild} alt="" loading="lazy"></div>}
-            <div class="post-text">
-              <span class="mono" style="color:var(--muted)">{datumCH(p.data.datum)}</span>
-              <h3>{p.data.titel}</h3>
-              <p>{p.data.kurztext}</p>
-            </div>
+            <span class="mono" style="color:var(--muted)">{datumCH(p.data.datum)}</span>
+            <h3>{p.data.titel}</h3>
+            <p>{p.data.kurztext}</p>
           </a>
         ))}
       </div>
