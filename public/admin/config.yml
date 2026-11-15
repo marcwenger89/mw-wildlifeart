@@ -95,16 +95,27 @@ collections:
         widget: select
         required: false
         default: ''
-        hint: 'Standard = wie heute (PC etwa 58). Auf dem Handy wird ein grosser Titel automatisch etwas kleiner, damit er passt.'
+        hint: 'Standard = wie heute (PC 58, Handy 35). Auf dem Handy wird grosse Schrift automatisch etwas kleiner, damit sie passt.'
         options:
           - { label: 'Standard', value: '' }
+          - { label: '12', value: '12' }
+          - { label: '14', value: '14' }
+          - { label: '16', value: '16' }
+          - { label: '18', value: '18' }
+          - { label: '20', value: '20' }
+          - { label: '22', value: '22' }
           - { label: '24', value: '24' }
+          - { label: '26', value: '26' }
           - { label: '28', value: '28' }
+          - { label: '30', value: '30' }
           - { label: '32', value: '32' }
           - { label: '36', value: '36' }
           - { label: '40', value: '40' }
+          - { label: '44', value: '44' }
           - { label: '48', value: '48' }
+          - { label: '52', value: '52' }
           - { label: '56', value: '56' }
+          - { label: '60', value: '60' }
           - { label: '64', value: '64' }
           - { label: '72', value: '72' }
       - name: text_groesse
@@ -122,8 +133,47 @@ collections:
           - { label: '20', value: '20' }
           - { label: '22', value: '22' }
           - { label: '24', value: '24' }
+          - { label: '26', value: '26' }
           - { label: '28', value: '28' }
+          - { label: '30', value: '30' }
           - { label: '32', value: '32' }
+          - { label: '36', value: '36' }
+          - { label: '40', value: '40' }
+          - { label: '44', value: '44' }
+          - { label: '48', value: '48' }
+          - { label: '52', value: '52' }
+          - { label: '56', value: '56' }
+          - { label: '60', value: '60' }
+          - { label: '64', value: '64' }
+          - { label: '72', value: '72' }
+      - name: zwischentitel_groesse
+        label: 'Schriftgrösse Zwischentitel'
+        widget: select
+        required: false
+        default: ''
+        hint: 'Für Überschriften im Text (Knopf «Heading»). Standard = wie heute (27).'
+        options:
+          - { label: 'Standard', value: '' }
+          - { label: '12', value: '12' }
+          - { label: '14', value: '14' }
+          - { label: '16', value: '16' }
+          - { label: '18', value: '18' }
+          - { label: '20', value: '20' }
+          - { label: '22', value: '22' }
+          - { label: '24', value: '24' }
+          - { label: '26', value: '26' }
+          - { label: '28', value: '28' }
+          - { label: '30', value: '30' }
+          - { label: '32', value: '32' }
+          - { label: '36', value: '36' }
+          - { label: '40', value: '40' }
+          - { label: '44', value: '44' }
+          - { label: '48', value: '48' }
+          - { label: '52', value: '52' }
+          - { label: '56', value: '56' }
+          - { label: '60', value: '60' }
+          - { label: '64', value: '64' }
+          - { label: '72', value: '72' }
       - { name: body, label: Text, widget: markdown, required: false }
       - name: abschnitte
         label: Abschnitte mit Bildern daneben
@@ -170,8 +220,47 @@ collections:
               - { label: '20', value: '20' }
               - { label: '22', value: '22' }
               - { label: '24', value: '24' }
+              - { label: '26', value: '26' }
               - { label: '28', value: '28' }
+              - { label: '30', value: '30' }
               - { label: '32', value: '32' }
+              - { label: '36', value: '36' }
+              - { label: '40', value: '40' }
+              - { label: '44', value: '44' }
+              - { label: '48', value: '48' }
+              - { label: '52', value: '52' }
+              - { label: '56', value: '56' }
+              - { label: '60', value: '60' }
+              - { label: '64', value: '64' }
+              - { label: '72', value: '72' }
+          - name: zwischentitel_groesse
+            label: 'Schriftgrösse Zwischentitel'
+            widget: select
+            required: false
+            default: ''
+            hint: 'Für Überschriften im Text (Knopf «Heading»). Standard = wie heute (27).'
+            options:
+              - { label: 'Standard', value: '' }
+              - { label: '12', value: '12' }
+              - { label: '14', value: '14' }
+              - { label: '16', value: '16' }
+              - { label: '18', value: '18' }
+              - { label: '20', value: '20' }
+              - { label: '22', value: '22' }
+              - { label: '24', value: '24' }
+              - { label: '26', value: '26' }
+              - { label: '28', value: '28' }
+              - { label: '30', value: '30' }
+              - { label: '32', value: '32' }
+              - { label: '36', value: '36' }
+              - { label: '40', value: '40' }
+              - { label: '44', value: '44' }
+              - { label: '48', value: '48' }
+              - { label: '52', value: '52' }
+              - { label: '56', value: '56' }
+              - { label: '60', value: '60' }
+              - { label: '64', value: '64' }
+              - { label: '72', value: '72' }
           - { name: bildbreite, label: 'Breite der Bilder in % (15–100)', widget: number, value_type: int, min: 15, max: 100, step: 5, default: 50, required: false, hint: 'Neben dem Text: z.B. 25 für ein kleines Porträt, 50 für halb/halb (über 75 wird es eng). Unter dem Text: Breite des Bildblocks, 100 = ganze Breite.' }
           - name: bildseite
             label: Wo stehen die Bilder

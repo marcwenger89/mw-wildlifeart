@@ -65,6 +65,7 @@ const blog = defineCollection({
     // Schriftgrössen in px, leer = Standard
     titel_groesse: optional(z.coerce.string().optional()),
     text_groesse: optional(z.coerce.string().optional()),
+    zwischentitel_groesse: optional(z.coerce.string().optional()),
     abschnitte: z.array(z.object({
       text: z.string().nullish().transform(v => v ?? ''),
       bilder: z.array(z.object({
@@ -79,6 +80,7 @@ const blog = defineCollection({
       schrift: optional(z.enum(['standard', 'titel', 'kursiv', 'mono']).default('standard')),
       farbe: optional(z.enum(['standard', 'hell', 'gold', 'sand', 'gedaempft']).default('standard')),
       groesse: optional(z.coerce.string().optional()),
+      zwischentitel_groesse: optional(z.coerce.string().optional()),
     })).default([]),
   }),
 });
