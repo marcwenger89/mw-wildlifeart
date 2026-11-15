@@ -295,7 +295,7 @@ form.contact { display: grid; gap: 14px; margin-top: 18px; }
 .teilen-hinweis[hidden] { display: none; }
 
 .prose h1 { font-size: clamp(2.2rem, 4.6vw, 3.6rem); letter-spacing: -.02em; margin: 10px 0 28px; }
-.prose h2 { font-size: 1.7rem; margin: 40px 0 12px; }
+.prose h2 { font-size: var(--zt, 1.7rem); margin: 40px 0 12px; }
 .prose h3 { font-size: 1.3rem; margin: 28px 0 10px; }
 .prose p, .prose ul, .prose ol { margin: 0 0 16px; color: #c9cec6; }
 .prose a { color: var(--accent); }

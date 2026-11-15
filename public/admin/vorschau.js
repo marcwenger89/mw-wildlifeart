@@ -262,14 +262,24 @@
   }
 
   // ---------- Blog ----------
+  // Schriftgrösse aus dem Admin (px) → gleiche Umrechnung wie src/pages/blog/[slug].astro
+  function groesse(px) { return 'min(' + Number(px) / 16 + 'rem, 11vw)'; }
+  function groesseStil(px, zt) {
+    var teile = [];
+    if (px) teile.push('font-size: ' + groesse(px));
+    if (zt) teile.push('--zt: ' + groesse(zt));
+    return teile.length ? ' style="' + teile.join('; ') + '"' : '';
+  }
   function beitragHtml(d, getAsset) {
     var titel = wert(d, ['titel']) || 'Ohne Titel';
     var bild = wert(d, ['bild']);
     var html = '<article class="text-page"><div class="wrap">' +
       '<nav class="crumbs"><a>Startseite</a><span>/</span><a>Blog</a></nav>';
     if (bild && d.get('kopfbild') !== false) html += '<img class="post-hero" src="' + escape(bildUrl(getAsset, bild)) + '" alt="">';
-    html += '<div class="prose"><p class="eyebrow">' + datumCH(wert(d, ['datum'])) + '</p><h1>' + escape(titel) + '</h1>' +
-      markdown(wert(d, ['body'])) + '</div>';
+    var tg = wert(d, ['titel_groesse']), xg = wert(d, ['text_groesse']);
+    html += '<div class="prose"><p class="eyebrow">' + datumCH(wert(d, ['datum'])) + '</p><h1' +
+      (tg ? ' style="font-size: ' + groesse(tg) + '"' : '') + '>' + escape(titel) + '</h1>' +
+      '<div' + groesseStil(xg, wert(d, ['zwischentitel_groesse'])) + '>' + markdown(wert(d, ['body'])) + '</div></div>';
     liste(d.get('abschnitte')).forEach(function (a) {
       if (!a || !a.get) return;
       var bilder = liste(a.get('bilder')).filter(function (b) { return b && b.get && b.get('bild'); });
@@ -285,7 +295,7 @@
         if (seite !== 'unten' && a.get('bildhoehe') === 'text') klassen.push('texthoehe');
       }
       html += '<section class="' + klassen.join(' ') + '"' + (bilder.length ? ' style="--bildbreite: ' + breite + '%"' : '') + '>' +
-        '<div class="prose">' + markdown(a.get('text')) + '</div>';
+        '<div class="prose"' + groesseStil(a.get('groesse'), a.get('zwischentitel_groesse')) + '>' + markdown(a.get('text')) + '</div>';
       if (bilder.length) {
         html += '<div class="abschnitt-bilder">';
         bilder.forEach(function (b) {
