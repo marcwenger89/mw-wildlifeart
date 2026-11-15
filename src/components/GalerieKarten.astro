@@ -3,7 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 interface Props { serien: CollectionEntry<'serien'>[]; fotos: CollectionEntry<'fotos'>[] }
 const { serien, fotos } = Astro.props;
 ---
-<div class="series">
+<div class="series linie">
   {serien.map(serie => (
     <a class="serie" href={`/galerien/${serie.id}/`}>
       <div class="ph"><img src={serie.data.titelbild} alt="" loading="lazy"></div>
