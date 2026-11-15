@@ -8,6 +8,9 @@ export async function getStaticPaths() {
   return (await alleBeitraege()).map(p => ({ params: { slug: p.id }, props: { post: p } }));
 }
 const { post } = Astro.props;
+// Schriftgrösse aus dem Admin (px), Titel am Handy höchstens 11 % der Bildschirmbreite
+const gr = (px?: string) => (px ? `font-size: ${Number(px) / 16}rem` : undefined);
+const titelGr = post.data.titel_groesse ? `font-size: min(${Number(post.data.titel_groesse) / 16}rem, 11vw)` : undefined;
 ---
 <Seite titel={post.data.titel} beschreibung={post.data.kurztext} bild={post.data.bild} artikel>
   <article class="text-page">
@@ -16,13 +19,13 @@ const { post } = Astro.props;
       {post.data.bild && post.data.kopfbild && <img class="post-hero" src={post.data.bild} alt="">}
       <div class="prose">
         <p class="eyebrow">{datumCH(post.data.datum)}</p>
-        <h1>{post.data.titel}</h1>
-        <Fragment set:html={einfachesMarkdown(post.body)} />
+        <h1 style={titelGr}>{post.data.titel}</h1>
+        <div style={gr(post.data.text_groesse)}><Fragment set:html={einfachesMarkdown(post.body)} /></div>
       </div>
       {post.data.abschnitte.map(a => (
         <section class:list={['abschnitt', a.schrift !== 'standard' && `schrift-${a.schrift}`, a.farbe !== 'standard' && `farbe-${a.farbe}`, a.bilder.length > 0 && ['mit-bild', a.bildseite, a.bildseite !== 'unten' && a.bildbreite < 40 && 'schmal', a.bildseite !== 'unten' && a.bildhoehe === 'text' && 'texthoehe']]}
                  style={a.bilder.length > 0 ? `--bildbreite: ${a.bildbreite}%` : undefined}>
-          <div class="prose" set:html={einfachesMarkdown(a.text)} />
+          <div class="prose" style={gr(a.groesse)} set:html={einfachesMarkdown(a.text)} />
           {a.bilder.length > 0 && (
             <div class="abschnitt-bilder">
               {a.bilder.map(b => <img class:list={[b.format, b.breite]} src={b.bild} alt={b.alt} loading="lazy">)}
