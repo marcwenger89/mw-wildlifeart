@@ -186,7 +186,17 @@ section.block { padding-block: 72px; border-top: 1px solid var(--line); }
 /* ---------- Galerien ---------- */
 .series { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
 @media (max-width: 960px) { .series { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 480px) { .series { grid-template-columns: minmax(0, 1fr); } }
+/* Handy: zwei Galerien nebeneinander, Name darunter, dann Abstand bzw. feine Linie */
+@media (max-width: 480px) {
+  .series { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 12px; row-gap: 40px; }
+  .serie { gap: 10px; }
+  .serie h3 { font-size: 1.2rem; }
+  .series.linie { row-gap: 44px; }
+  .series.linie .serie { position: relative; }
+  .series.linie .serie:nth-child(odd):not(:nth-last-child(-n+2))::after {
+    content: ''; position: absolute; left: 0; bottom: -22px; width: calc(200% + 12px); height: 1px; background: rgba(230, 233, 227, .16);
+  }
+}
 .serie { text-decoration: none; display: grid; gap: 14px; }
 .serie .ph { aspect-ratio: 4 / 5; overflow: hidden; background: var(--line); }
 .serie img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--t-hover) var(--ease); }
