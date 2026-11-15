@@ -1,7 +1,7 @@
 ---
 titel: Hinter der Kamera
 datum: 2026-10-30
-bild: /bilder/elch_1.jpg
+bild: /bilder/marc-blog-titelbild.jpg
 kurztext: Wie ich von der Fliegerei zur Wildtierfotografie kam, welche Momente
   ich nie vergesse und womit ich fotografiere.
 entwurf: false

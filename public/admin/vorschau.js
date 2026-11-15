@@ -322,7 +322,7 @@
 
   // ---------- Fotos: Vollbild (wie beim Klick in der Galerie) und Startseite ----------
   CMS.registerPreviewTemplate('fotos', vorlage({
-    ansichten: [{ wert: 'vollbild', label: 'Vollbild' }, { wert: 'startseite', label: 'Startseite' }],
+    ansichten: [{ wert: 'vollbild', label: 'Vollbild' }, { wert: 'startseite', label: 'Begegnungen' }],
     seite: function (d, ansicht) {
       if (ansicht === 'startseite') return '/';
       var serie = wert(d, ['serie']);
@@ -334,21 +334,9 @@
       var titel = wert(d, ['titel']);
       var bild = bildUrl(getAsset, wert(d, ['bild']));
       if (ansicht === 'startseite') {
-        var img = doc.querySelector('.hero-frame img');
-        if (!img) return;
-        doc.querySelectorAll('.hero-frame img').forEach(function (i) { if (i !== img) i.classList.remove('on'); });
-        img.classList.add('on');
-        var pc = bildUrl(getAsset, wert(d, ['startbild'])) || bild;
-        if (img.getAttribute('src') !== pc) img.setAttribute('src', pc);
-        img.style.objectPosition = wert(d, ['ausschnitt']) || 'center';
-        var bild_handy = bildUrl(getAsset, wert(d, ['startbild_handy']));
-        var pic = img.parentElement;
-        var quelle = pic && pic.querySelector('source');
-        if (bild_handy) {
-          if (!quelle && pic) { quelle = doc.createElement('source'); quelle.media = '(max-width: 640px)'; pic.insertBefore(quelle, img); }
-          if (quelle) quelle.srcset = bild_handy;
-        } else if (quelle) quelle.remove();
         // «Begegnungen»: angehaktes Foto (oder eigener Zuschnitt) an erster Stelle zeigen
+        var werkeBlock = doc.getElementById('werke');
+        if (werkeBlock && !werkeBlock.dataset.vorschauGescrollt) { werkeBlock.dataset.vorschauGescrollt = '1'; werkeBlock.scrollIntoView(); }
         var werkImg = doc.querySelector('#werke .werk img');
         var werkbild = bildUrl(getAsset, wert(d, ['werkbild']));
         if (werkImg && (wert(d, ['werk']) || werkbild)) {
@@ -458,6 +446,20 @@
         h1.innerHTML = escape(wert(s, ['titel'])) + ' ' + (betont ? '<em>' + escape(betont) + '</em>' : '') + ' ' + escape(wert(s, ['titel_ende']));
       }
       setzeText(doc, '.hero-text p', wert(s, ['text']));
+      // Titelbild oben (eigenes Bild, nicht aus einer Galerie)
+      var heroImg = doc.querySelector('.hero-frame img');
+      var tb = bildUrl(getAsset, wert(s, ['titelbild']));
+      if (heroImg && tb) {
+        if (heroImg.getAttribute('src') !== tb) heroImg.setAttribute('src', tb);
+        heroImg.style.objectPosition = wert(s, ['titelbild_ausschnitt']) || 'center';
+        var tbHandy = bildUrl(getAsset, wert(s, ['titelbild_handy']));
+        var bildRahmen = heroImg.parentElement;
+        var quelle = bildRahmen && bildRahmen.querySelector('source');
+        if (tbHandy) {
+          if (!quelle && bildRahmen) { quelle = doc.createElement('source'); quelle.media = '(max-width: 640px)'; bildRahmen.insertBefore(quelle, heroImg); }
+          if (quelle) quelle.srcset = tbHandy;
+        } else if (quelle) quelle.remove();
+      }
       setzeText(doc, '#werke .block-head h2', wert(s, ['werke_titel']) || 'Begegnungen');
       var werkeKnopf = doc.querySelector('#werke .werke-fuss .btn');
       if (werkeKnopf) {

@@ -53,25 +53,6 @@ collections:
       - { name: iso, label: ISO, widget: string, required: false, hint: 'nur die Zahl, z. B. 800' }
       - { name: saal_link, label: Saal-Link für dieses Bild, widget: string, required: false, hint: 'Leer lassen, dann gilt der Saal-Link der Galerie.' }
       - { name: tags, label: Tags, widget: relation, collection: seite, file: tags, search_fields: ['tags.*'], value_field: 'tags.*', display_fields: ['tags.*'], multiple: true, required: false, hint: 'Zum Filtern unter «Alle Bilder». Neue Tags legst du unter Seitentexte → Tags an.' }
-      - { name: startseite, label: Auf der Startseite zeigen (grosses Bild oben), widget: boolean, default: false }
-      - name: ausschnitt
-        label: 'Startseite: Bildausschnitt'
-        widget: select
-        required: false
-        default: center
-        hint: 'Nur wenn das Bild auf der Startseite ist. Das Titelbild füllt den ganzen Bildschirm und schneidet dein Foto zu. Hier wählst du, welcher Teil sichtbar bleibt.'
-        options:
-          - { label: Mitte, value: center }
-          - { label: Oben, value: 'center top' }
-          - { label: Unten, value: 'center bottom' }
-          - { label: Links, value: 'left center' }
-          - { label: Rechts, value: 'right center' }
-          - { label: Oben links, value: 'left top' }
-          - { label: Oben rechts, value: 'right top' }
-          - { label: Unten links, value: 'left bottom' }
-          - { label: Unten rechts, value: 'right bottom' }
-      - { name: startbild, label: 'Startseite: eigener Zuschnitt PC (optional)', widget: image, required: false, hint: 'Querformat 16:9, z. B. 2400 × 1350 px. Füllt oben auf der Startseite den ganzen Bildschirm, der Text steht darüber (oben ruhige, dunkle Fläche lassen).' }
-      - { name: startbild_handy, label: 'Startseite: eigener Zuschnitt Handy (optional)', widget: image, required: false, hint: 'Hochformat 9:16, z. B. 1080 × 1920 px. Leer = Handy schneidet die Mitte aus dem PC-Bild bzw. dem Foto.' }
       - { name: werk, label: 'Startseite: bei «Begegnungen» zeigen (6 Bilder)', widget: boolean, default: false, hint: 'Angehakte Fotos stehen zuerst (neuestes zuerst). Sind weniger als 6 angehakt, wird mit den neuesten Fotos aufgefüllt.' }
       - { name: werkbild, label: 'Begegnungen: eigener Zuschnitt (optional)', widget: image, required: false, hint: 'Querformat 3:2, z. B. 1800 × 1200 px. Gilt für PC und Handy. Leer = das Foto wird mittig auf 3:2 zugeschnitten.' }
       - { name: hochgeladen, label: Hochgeladen am, widget: datetime, format: 'YYYY-MM-DDTHH:mm', date_format: 'DD.MM.YYYY', time_format: 'HH:mm', required: false, hint: 'Wird beim Erstellen automatisch gesetzt. Das neueste Foto steht in der Galerie zuerst. Nur ändern, wenn ein Bild weiter nach vorne oder hinten soll.' }
@@ -251,6 +232,21 @@ collections:
               - { name: titel_betont, label: 'Titel (betontes Wort, in Gold)', widget: string, required: false }
               - { name: titel_ende, label: 'Titel (Ende)', widget: string, required: false }
               - { name: text, label: Einleitung, widget: text }
+              - { name: titelbild, label: 'Titelbild oben PC', widget: image, required: false, hint: 'Nur auf der Startseite, in keiner Galerie. Querformat 16:9, z. B. 2400 × 1350 px. Füllt den ganzen Bildschirm, der Text steht darüber (oben ruhige, dunkle Fläche lassen).' }
+              - { name: titelbild_handy, label: 'Titelbild oben Handy (optional)', widget: image, required: false, hint: 'Hochformat 9:16, z. B. 1080 × 1920 px. Leer = das Handy schneidet die Mitte aus dem PC-Bild.' }
+              - name: titelbild_ausschnitt
+                label: 'Titelbild: Bildausschnitt'
+                widget: select
+                required: false
+                default: center
+                hint: 'Welcher Teil des Bildes sichtbar bleibt, wenn der Bildschirm es zuschneidet.'
+                options:
+                  - { label: Mitte, value: center }
+                  - { label: Oben, value: 'center top' }
+                  - { label: Unten, value: 'center bottom' }
+                  - { label: Links, value: 'left center' }
+                  - { label: Rechts, value: 'right center' }
+              - { name: titelbild_alt, label: 'Titelbild: kurze Beschreibung', widget: string, required: false, hint: 'Für Suchmaschinen und Screenreader, z. B. «Zebras im Gewitter».' }
               - { name: werke_titel, label: 'Titel Bilder-Bereich (6 Bilder)', widget: string, required: false, default: 'Begegnungen' }
               - { name: werke_knopf, label: 'Text des Knopfs darunter', widget: string, required: false, default: 'Alle Galerien' }
               - { name: serien_titel, label: 'Titel der Galerie-Übersicht', widget: string, hint: 'Überschrift auf der Seite mit allen Galerien (z. B. «Lebensräume»).' }

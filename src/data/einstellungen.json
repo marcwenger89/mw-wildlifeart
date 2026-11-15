@@ -20,7 +20,11 @@
     "serien_titel": "Lebensräume",
     "serien_text": "",
     "titel_betont": "still...",
-    "shop_titel": "Bilder für die Wand und den Tisch"
+    "shop_titel": "Bilder für die Wand und den Tisch",
+    "titelbild": "/bilder/zebras-gewitter-pc.jpg",
+    "titelbild_handy": "/bilder/zebras-gewitter-handy.jpg",
+    "titelbild_ausschnitt": "center",
+    "titelbild_alt": "Zebras im Gewitter"
   },
   "beschreibung": "Wildtierfotografie von Marc Wenger: Afrika, Skandinavien und die Schweiz.",
   "seitenname": "MW-Wildlifeart",
