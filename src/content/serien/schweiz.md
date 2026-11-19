@@ -1,6 +1,6 @@
 ---
 titel: Schweiz
-titelbild: /bilder/spaz_1.jpg
+titelbild: /bilder/schweiz-titelbild-vogel.jpg
 reihenfolge: 100
 startseite: false
 ---
