@@ -12,6 +12,6 @@ iso: "800"
 tags:
   - Vögel
 werk: true
-werkbild: /bilder/vogel-im-herbstlaub-startseite.jpg
+werkbild: /bilder/vogel_6er-gallerie.jpg
 hochgeladen: 2026-11-19T16:20
 ---
