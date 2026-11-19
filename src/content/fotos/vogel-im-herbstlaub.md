@@ -9,6 +9,8 @@ brennweite: "560"
 blende: "4.5"
 belichtung: "2500"
 iso: "800"
+tags:
+  - Vögel
 werk: true
 werkbild: /bilder/vogel-im-herbstlaub-startseite.jpg
 hochgeladen: 2026-11-19T16:20
