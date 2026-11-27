@@ -20,7 +20,7 @@ export const GET: APIRoute = async ({ site }) => {
     { loc: url('/galerien/alle/') },
     ...serien.map(s => ({
       loc: url(`/galerien/${s.id}/`),
-      bilder: fotos.filter(f => f.data.serie.id === s.id).map(f => ({ loc: url(f.data.bild), titel: bildText(f.data) })),
+      bilder: fotos.filter(f => f.data.serie.id === s.id).map(f => ({ loc: url(f.data.bild), titel: bildText(f.data, s.data.titel) })),
     })),
     { loc: url('/blog/') },
     ...beitraege.map(p => ({ loc: url(`/blog/${p.id}/`), lastmod: p.data.datum })),

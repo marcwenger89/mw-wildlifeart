@@ -1,14 +1,15 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { seitenverhaeltnis } from '../lib/bildgroesse';
-import { bildText } from '../lib/inhalt';
+import { bildText, galerieTitel } from '../lib/inhalt';
 interface Props { fotos: CollectionEntry<'fotos'>[]; von: string }
+const galerien = await galerieTitel();
 const { fotos, von } = Astro.props;
 ---
 <div class="mosaic">
   {fotos.map((f, n) => (
     <a class="tile" href={`/galerien/${von}/?bild=${f.id}`} data-lb-index={n} data-lb-id={f.id} data-tags={f.data.tags.join('|')} style={`--r: ${(seitenverhaeltnis(f.data.bild) ?? 1.5).toFixed(4)}`}>
-      <img src={f.data.bild} alt={bildText(f.data)} loading="lazy">
+      <img src={f.data.bild} alt={bildText(f.data, galerien.get(f.data.serie.id))} loading="lazy">
     </a>
   ))}
 </div>

@@ -2,17 +2,18 @@
 import type { CollectionEntry } from 'astro:content';
 import { render } from 'astro:content';
 import { blende, belichtung, brennweite } from '../lib/einheiten';
-import { bildText } from '../lib/inhalt';
+import { bildText, galerieTitel } from '../lib/inhalt';
 // Vollbild für eine Liste von Fotos. Öffnen über Elemente mit data-lb-index="n" (Index in dieser Liste).
 // Unter dem Bild: Titel links, daneben alle vorhandenen Daten; gibt es eine Geschichte, ein goldenes «i».
 interface Props { fotos: CollectionEntry<'fotos'>[] }
 const { fotos } = Astro.props;
+const galerien = await galerieTitel();
 const bilder = fotos.map(f => {
   const d = f.data;
   return {
     src: d.bild,
     titel: d.titel,
-    alt: bildText(d),
+    alt: bildText(d, galerien.get(d.serie.id)),
     daten: [d.ort, d.monat, d.kamera, brennweite(d.brennweite), blende(d.blende), belichtung(d.belichtung), d.iso && `ISO ${d.iso}`, d.koordinaten].filter(Boolean).join(' · '),
     geschichte: Boolean(f.body?.trim()),
   };
