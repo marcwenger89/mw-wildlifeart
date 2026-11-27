@@ -424,8 +424,8 @@
       setzeText(doc, '.g-title', titel);
       var crumbs = doc.querySelectorAll('.crumbs span');
       if (crumbs.length) crumbs[crumbs.length - 1].textContent = titel;
-      var intro = doc.querySelector('.block-head > p');
-      if (intro) intro.textContent = wert(d, ['kurztext']);
+      var intro = doc.querySelector('.g-intro');
+      if (intro) { intro.textContent = wert(d, ['kurztext']); intro.hidden = !intro.textContent; }
     }
   }));
 

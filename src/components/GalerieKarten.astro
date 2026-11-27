@@ -6,7 +6,7 @@ const { serien, fotos } = Astro.props;
 <div class="series linie">
   {serien.map(serie => (
     <a class="serie" href={`/galerien/${serie.id}/`}>
-      <div class="ph"><img src={serie.data.titelbild} alt="" loading="lazy"></div>
+      <div class="ph"><img src={serie.data.titelbild} alt={`Galerie ${serie.data.titel} · Wildtierfotografie von Marc Wenger`} loading="lazy"></div>
       <h3>{serie.data.titel}</h3>
     </a>
   ))}

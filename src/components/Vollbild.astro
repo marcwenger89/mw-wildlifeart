@@ -2,15 +2,18 @@
 import type { CollectionEntry } from 'astro:content';
 import { render } from 'astro:content';
 import { blende, belichtung, brennweite } from '../lib/einheiten';
+import { bildText, galerieTitel } from '../lib/inhalt';
 // Vollbild für eine Liste von Fotos. Öffnen über Elemente mit data-lb-index="n" (Index in dieser Liste).
 // Unter dem Bild: Titel links, daneben alle vorhandenen Daten; gibt es eine Geschichte, ein goldenes «i».
 interface Props { fotos: CollectionEntry<'fotos'>[] }
 const { fotos } = Astro.props;
+const galerien = await galerieTitel();
 const bilder = fotos.map(f => {
   const d = f.data;
   return {
     src: d.bild,
     titel: d.titel,
+    alt: bildText(d, galerien.get(d.serie.id)),
     daten: [d.ort, d.monat, d.kamera, brennweite(d.brennweite), blende(d.blende), belichtung(d.belichtung), d.iso && `ISO ${d.iso}`, d.koordinaten].filter(Boolean).join(' · '),
     geschichte: Boolean(f.body?.trim()),
   };
@@ -52,7 +55,7 @@ const geschichten = await Promise.all(fotos.map(async f => (f.body?.trim() ? (aw
   const storyText = document.getElementById('lb-story-text')!;
   const prev = document.getElementById('lb-prev')!;
   const next = document.getElementById('lb-next')!;
-  const bilder: { src: string; titel: string; daten: string; geschichte: boolean }[] = JSON.parse(lb.dataset.bilder!);
+  const bilder: { src: string; titel: string; alt: string; daten: string; geschichte: boolean }[] = JSON.parse(lb.dataset.bilder!);
   const oeffner = [...document.querySelectorAll<HTMLElement>('[data-lb-index]')];
   const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let reihe: number[] = [];   // Indizes der sichtbaren Bilder
@@ -72,7 +75,7 @@ const geschichten = await Promise.all(fotos.map(async f => (f.body?.trim() ? (aw
   };
   const fill = () => {
     const b = bilder[jetzt()];
-    img.src = b.src; img.alt = b.titel;
+    img.src = b.src; img.alt = b.alt;
     titel.textContent = b.titel; daten.textContent = b.daten;
     iKnopf.hidden = !b.geschichte;
     storyZu();

@@ -32,8 +32,8 @@ const tags = serie === 'alle' ? [...new Set(fotos.flatMap(f => f.data.tags))].so
         <div>
           <p class="eyebrow"><span id="anzahl">{fotos.length}</span> <span id="anzahl-wort">{fotos.length === 1 ? 'Bild' : 'Bilder'}</span></p>
           <h1 class="g-title">{titel}</h1>
+          <p class="g-intro" hidden={!intro}>{intro}</p>
         </div>
-        <p>{intro}</p>
       </div>
       <nav class="filters" aria-label="Andere Galerien">
         <a class="chip" href="/galerien/alle/" aria-current={serie === 'alle' ? 'page' : undefined}>Alle Bilder</a>

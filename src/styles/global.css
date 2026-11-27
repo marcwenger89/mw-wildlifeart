@@ -209,6 +209,8 @@ section.block { padding-block: 72px; border-top: 1px solid var(--line); }
 .crumbs a { text-decoration: none; }
 .crumbs a:hover { color: var(--fg); }
 .g-title { font-size: clamp(2.4rem, 5vw, 4rem); letter-spacing: -.02em; margin-top: 10px; }
+/* Kurztext der Galerie: unter dem Namen (PC und Handy) */
+.g-intro { margin-top: 14px; }
 .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
 .chip {
   font: 500 .875rem/1 var(--f-body); padding: 9px 14px; border-radius: 999px; text-decoration: none; display: inline-block;

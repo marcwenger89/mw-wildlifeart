@@ -25,3 +25,15 @@ export const datumCH = (d: Date) =>
   d.toLocaleDateString('de-CH', { day: 'numeric', month: 'long', year: 'numeric' });
 
 export const SAAL_STANDARD = 'https://www.saal-digital.ch/';
+
+export const FOTOGRAF = 'Marc Wenger';
+
+/** Bildbeschreibung für Google und Screenreader (unsichtbar), aus Titel, Ort und Galerie:
+ *  «Eisvogel, Flachsee, Schweiz · Wildtierfotografie von Marc Wenger». Galerie nur, wenn sie nicht schon der Ort ist. */
+export const bildText = (d: { titel: string; ort?: string }, galerie?: string) =>
+  `${[d.titel, d.ort, galerie !== d.ort ? galerie : undefined].filter(Boolean).join(', ')} · Wildtierfotografie von ${FOTOGRAF}`;
+
+/** Galerie-Titel nach Kennung (z.B. «afrika» → «Afrika») */
+export async function galerieTitel() {
+  return new Map((await alleSerien()).map(s => [s.id, s.data.titel]));
+}
