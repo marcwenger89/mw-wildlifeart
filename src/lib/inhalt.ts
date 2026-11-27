@@ -25,3 +25,9 @@ export const datumCH = (d: Date) =>
   d.toLocaleDateString('de-CH', { day: 'numeric', month: 'long', year: 'numeric' });
 
 export const SAAL_STANDARD = 'https://www.saal-digital.ch/';
+
+export const FOTOGRAF = 'Marc Wenger';
+
+/** Bildbeschreibung für Google und Screenreader (unsichtbar): «Eisvogel, Schweiz · Wildtierfotografie von Marc Wenger» */
+export const bildText = (d: { titel: string; ort?: string }) =>
+  `${[d.titel, d.ort].filter(Boolean).join(', ')} · Wildtierfotografie von ${FOTOGRAF}`;

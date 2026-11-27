@@ -1,12 +1,13 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { bildText } from '../lib/inhalt';
 interface Props { fotos: CollectionEntry<'fotos'>[] }
 const { fotos } = Astro.props;
 ---
 <div class="werke">
   {fotos.map(f => (
     <a class="werk" href={`/galerien/${f.data.serie.id}/?bild=${f.id}`} aria-label={`${f.data.titel}: im Vollbild ansehen`}>
-      <img src={f.data.werkbild ?? f.data.bild} alt={f.data.titel} loading="lazy">
+      <img src={f.data.werkbild ?? f.data.bild} alt={bildText(f.data)} loading="lazy">
     </a>
   ))}
 </div>

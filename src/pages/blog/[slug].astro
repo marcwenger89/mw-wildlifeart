@@ -13,13 +13,20 @@ const { post } = Astro.props;
 const g = (px?: string) => `min(${Number(px) / 16}rem, 11vw)`;
 const gr = (text?: string, zt?: string) =>
   [text && `font-size: ${g(text)}`, zt && `--zt: ${g(zt)}`].filter(Boolean).join('; ') || undefined;
+const adresse = new URL(`/blog/${post.id}/`, Astro.site).href;
+const schema = {
+  '@type': 'BlogPosting', headline: post.data.titel, description: post.data.kurztext || undefined,
+  datePublished: post.data.datum.toISOString().slice(0, 10), inLanguage: 'de-CH', url: adresse, mainEntityOfPage: adresse,
+  author: { '@id': new URL('/#marc-wenger', Astro.site).href },
+  ...(post.data.bild ? { image: new URL(post.data.bild, Astro.site).href } : {}),
+};
 const titelGr = post.data.titel_groesse ? `font-size: ${g(post.data.titel_groesse)}` : undefined;
 ---
-<Seite titel={post.data.titel} beschreibung={post.data.kurztext} bild={post.data.bild} artikel>
+<Seite titel={post.data.titel} beschreibung={post.data.kurztext} bild={post.data.bild} artikel schema={schema}>
   <article class="text-page">
     <div class="wrap">
       <nav class="crumbs" aria-label="Pfad"><a href="/">Startseite</a><span aria-hidden="true">/</span><a href="/blog/">Blog</a></nav>
-      {post.data.bild && post.data.kopfbild && <img class="post-hero" src={post.data.bild} alt="">}
+      {post.data.bild && post.data.kopfbild && <img class="post-hero" src={post.data.bild} alt={post.data.titel}>}
       <div class="prose">
         <p class="eyebrow">{datumCH(post.data.datum)}</p>
         <h1 style={titelGr}>{post.data.titel}</h1>
@@ -31,7 +38,7 @@ const titelGr = post.data.titel_groesse ? `font-size: ${g(post.data.titel_groess
           <div class="prose" style={gr(a.groesse, a.zwischentitel_groesse)} set:html={einfachesMarkdown(a.text)} />
           {a.bilder.length > 0 && (
             <div class="abschnitt-bilder">
-              {a.bilder.map(b => <img class:list={[b.format, b.breite]} src={b.bild} alt={b.alt} loading="lazy">)}
+              {a.bilder.map(b => <img class:list={[b.format, b.breite]} src={b.bild} alt={b.alt || post.data.titel} loading="lazy">)}
             </div>
           )}
         </section>

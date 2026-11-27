@@ -14,7 +14,7 @@ const beitraege = await alleBeitraege();
       <div class="posts">
         {beitraege.map(p => (
           <a class="post" href={`/blog/${p.id}/`}>
-            {p.data.bild && <div class="ph"><img src={p.data.bild} alt="" loading="lazy"></div>}
+            {p.data.bild && <div class="ph"><img src={p.data.bild} alt={p.data.titel} loading="lazy"></div>}
             <span class="mono" style="color:var(--muted)">{datumCH(p.data.datum)}</span>
             <h3>{p.data.titel}</h3>
             <p>{p.data.kurztext}</p>

@@ -12,7 +12,7 @@ const fotos = await alleFotos();
 const neueste = [...fotos].sort((a, b) => (b.data.hochgeladen?.getTime() ?? 0) - (a.data.hochgeladen?.getTime() ?? 0));
 const werke = [...neueste.filter(f => f.data.werk), ...neueste.filter(f => !f.data.werk)].slice(0, 6);
 // Titelbild oben: eigenes Bild aus den Seitentexten, nicht mit einem Galerie-Foto verknüpft
-const heroFotos = s.titelbild ? [{ pc: s.titelbild, handy: s.titelbild_handy || undefined, ausschnitt: s.titelbild_ausschnitt || 'center', alt: s.titelbild_alt || '' }] : [];
+const heroFotos = s.titelbild ? [{ pc: s.titelbild, handy: s.titelbild_handy || undefined, ausschnitt: s.titelbild_ausschnitt || 'center', alt: s.titelbild_alt ? `${s.titelbild_alt} · Wildtierfotografie von Marc Wenger` : '' }] : [];
 const shopAktiv = einstellungen.shop.aktiv;
 const shop = (await getCollection('shop')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
 const beitraege = (await alleBeitraege()).slice(0, 3);
@@ -107,7 +107,7 @@ const absaetze = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
         <div class="posts">
           {beitraege.map(p => (
             <a class="post" href={`/blog/${p.id}/`}>
-              {p.data.bild && <div class="ph"><img src={p.data.bild} alt="" loading="lazy"></div>}
+              {p.data.bild && <div class="ph"><img src={p.data.bild} alt={p.data.titel} loading="lazy"></div>}
               <span class="mono" style="color:var(--muted)">{datumCH(p.data.datum)}</span>
               <h3>{p.data.titel}</h3>
               <p>{p.data.kurztext}</p>
@@ -125,7 +125,7 @@ const absaetze = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
         <h2>{ueber.titel}</h2>
         {absaetze(ueber.text).map(t => <p>{t}</p>)}
         {ueber.link && <a class="btn" href={ueber.link}>{ueber.knopf_text || 'Mehr über mich'}</a>}
-        {ueber.bild && <img class="portrait" src={ueber.bild} alt="Porträt" loading="lazy">}
+        {ueber.bild && <img class="portrait" src={ueber.bild} alt="Marc Wenger, Naturfotograf" loading="lazy">}
       </div>
       <div id="kontakt">
         <p class="eyebrow">Kontakt</p>
