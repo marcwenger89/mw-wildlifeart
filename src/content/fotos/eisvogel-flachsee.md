@@ -5,8 +5,8 @@ startseite: false
 serie: schweiz
 bild: /bilder/eisvogel-flachsee.jpg
 ort: ""
-koordinaten: November
-monat: ""
+koordinaten: ""
+monat: November
 kamera: Z7 II
 brennweite: "800"
 blende: "6.3"
