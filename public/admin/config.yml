@@ -68,7 +68,7 @@ collections:
     summary: '{{titel}}'
     fields:
       - { name: titel, label: Titel, widget: string }
-      - { name: kurztext, label: Kurztext, widget: text, required: false }
+      - { name: kurztext, label: Kurztext, widget: text, required: false, hint: 'Steht auf der Galerie-Seite unter dem Namen der Galerie (PC und Handy). Google zeigt ihn auch als Beschreibung im Suchergebnis.' }
       - { name: titelbild, label: Titelbild (hochformatig), widget: image, hint: 'Bild auf der Seite «Lebensräume». Hochformat 4:5, am besten 1000 × 1250 px (Lightroom: lange Kante 1250 px, JPEG 80, sRGB). Gleiches Bild für PC und Handy. Andere Formate werden mittig auf 4:5 zugeschnitten.' }
       - { name: saal_link, label: Link zur Saal-Galerie, widget: string, required: false }
       - { name: reihenfolge, label: Reihenfolge, widget: number, value_type: int, default: 100, hint: 'Kleinere Zahl kommt zuerst.' }
